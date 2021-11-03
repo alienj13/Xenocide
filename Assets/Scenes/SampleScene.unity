@@ -458,7 +458,7 @@ MonoBehaviour:
   teamMaterial:
   - {fileID: 2100000, guid: b7bffaa294940e6469f8cbf1f3ef535d, type: 2}
   - {fileID: 2100000, guid: 6f43e2e4d0fe3ed428b7851a9e2a9efd, type: 2}
-  tileSize: 2
+  tileSize: 4
   yoffset: 0
   center: {x: 0, y: 0, z: 0}
 --- !u!4 &1095984551

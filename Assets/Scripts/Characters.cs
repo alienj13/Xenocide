@@ -17,9 +17,13 @@ public int currentX;
 public int currentY;
 public characterType type;
 
-private Vector3 TargetPositon;
-private Vector3 TargetScale;
 
+public bool ValidMove(Characters[,] board, int x1, int y1, int x2, int y2){
+  if(board[x2,y2]!= null ){
+      return false;
+  }
+  return true;
+}
 
 
 }

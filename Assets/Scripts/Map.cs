@@ -49,57 +49,110 @@ public class Map : MonoBehaviour
         hover = hitPosition;
         tiles[hitPosition.x,hitPosition.y].layer = LayerMask.NameToLayer("Hover");
       }
-      // if(Input.GetMouseButtonDown(0)){
-      //   if(character[hitPosition.x,hitPosition.y] != null){
-      //     if(true){
-      //       selected = character[hitPosition.x,hitPosition.y];
-      //     }
-      //   } 
-      // }
-      // if(selected !=null && Input.GetMouseButtonUp(0)){
-      //   Vector2Int LastPosition = new Vector2Int(selected.currentX,selected.currentY);
-      //   bool validMove = Move(selected,hitPosition.x,hitPosition.y);
-      //   if(!validMove){
-      //     selected.transform.position = GetTileCenter(LastPosition.x,LastPosition.y);
-      //     selected = null;
-      //   }
-      // }
-
+     
+       
        mouseOver.x = (int)hitPosition.x;
        mouseOver.y = (int)hitPosition.y;
        int x = mouseOver.x;
        int y = mouseOver.y;
+    //    if(selected != null){
+       
+    //   PickUp(selected);
+      
+    // }
        if(Input.GetMouseButtonDown(0)){
          SelectPiece(x,y);
          
        }
-       if(Input.GetMouseButtonDown(0)){
+       if(Input.GetMouseButtonUp(0)){
          attemptMove((int)StartMove.x,(int)StartMove.y,x,y);
        }
 
     }else {
 
-      mouseOver.x = -1;
-      mouseOver.y = -1;
+      
       if(hover != -Vector2Int.one){
           tiles[hover.x,hover.y].layer = LayerMask.NameToLayer("Tile");
           hover = -Vector2Int.one; 
         }
+        mouseOver.x = -1;
+      mouseOver.y = -1;
       }
-
+      
       //Debug.Log(mouseOver);
   }
    
 
-private void attemptMove(int x1, int y1, int x2, int y2){
-StartMove = new Vector2Int(x1,y1);
-EndMove = new Vector2Int(x2,y2);
-selected = character[x1,y1];
-if(selected != null)
-Move(selected,x2,y2);
-selected = null;
+  private void attemptMove(int x1, int y1, int x2, int y2){
+    StartMove = new Vector2Int(x1,y1);
+    EndMove = new Vector2Int(x2,y2);
+    selected = character[x1,y1];
 
-}
+    if(selected != null){
+       
+    //   Move(selected,x1,y1);
+    //   selected = null;
+
+    //   StartMove = Vector2Int.zero;
+    // }if(selected != null){
+       if(StartMove == EndMove){
+        Move(selected,x1,y1);
+        selected = null;
+        StartMove = Vector2Int.zero;
+        return;
+       }
+
+     if(selected.ValidMove(character,x1,y1,x2,y2)){
+         character[x2,y2] = selected;
+         character[x1,y1] = null;
+         Move(selected,x2,y2);
+     }else{
+         Move(selected,x1,y1);
+        selected = null;
+        StartMove = Vector2Int.zero;
+        return;
+     }
+     
+    }
+  }
+
+
+    
+  
+  private void PickUp(Characters ch){
+    if(!c){
+      c = Camera.main;
+      return;
+    }
+    RaycastHit info;
+    Ray ray = c.ScreenPointToRay(Input.mousePosition);
+    if(Physics.Raycast(ray,out info,100,LayerMask.GetMask("Tile","Hover"))){
+      Vector2Int hitPosition = GetTileIndex(info.transform.gameObject);
+      if(hover == -Vector2Int.one){
+        hover = hitPosition;
+        tiles[hitPosition.x,hitPosition.y].layer = LayerMask.NameToLayer("Hover");
+      }
+      if(hover != hitPosition){
+        tiles[hover.x,hover.y].layer = LayerMask.NameToLayer("Tile");
+        hover = hitPosition;
+        tiles[hitPosition.x,hitPosition.y].layer = LayerMask.NameToLayer("Hover");
+      }
+     
+       
+       ch.transform.position = info.point+Vector3.up;
+
+    }else {
+
+      
+      if(hover != -Vector2Int.one){
+          tiles[hover.x,hover.y].layer = LayerMask.NameToLayer("Tile");
+          hover = -Vector2Int.one; 
+        }
+       
+      }
+
+
+  }
   private void generateTiles(float size, int xcount, int ycount){//creates a grid of 20x20 tiles
     yoffset+=transform.position.y;
     bounds = new Vector3((xcount/2) * tileSize,0,(xcount/2) * tileSize)+center;
@@ -198,33 +251,20 @@ selected = null;
     return new Vector3(x*tileSize,1,y*tileSize)-bounds + new Vector3(tileSize/2,0,tileSize/2);
   }
 
-
-  // private bool Move(Characters c,int x,int y ){
-  //   Vector2Int LastPosition = new Vector2Int(c.currentX,c.currentY);
-  //   if(character[x,y] != null ){
-  //     Debug.Log("yo");
-  //      Characters other = character[x,y];
-  //      if (c.team == other.team){
-  //        return false;
-  //      }
-  //   }
-  //   character[x,y] = c;
-  //   character[LastPosition.x,LastPosition.y] = null;
-  //   singlePosition(x,y);
-  //   return true;
-  // }
-
-
 private void SelectPiece(int x, int y){
    Characters c = character[x,y];
    if(c != null){
      selected = c;
      StartMove = mouseOver;
-    Debug.Log(selected.type);
-
+     Debug.Log(selected.type);
    }
+   
 }
 private void Move(Characters c,int x, int y){
-  c.transform.position = GetTileCenter(x,y);
-}
+  
+  //c.transform.position = GetTileCenter(x,y);
+     character[x,y].currentX = x;
+     character[x,y].currentY = y;
+    character[x,y].transform.position = GetTileCenter(x,y);
+ }
 }
