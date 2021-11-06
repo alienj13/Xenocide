@@ -38,3 +38,6 @@ sysinfo.txt
 *.unitypackage
 *.log
 *.log
+
+# (IBN) Testing
+Logs/*
