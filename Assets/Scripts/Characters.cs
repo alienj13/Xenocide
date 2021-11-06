@@ -9,20 +9,17 @@ public enum characterType {
     Queen = 3
 }
 
-public class Characters : MonoBehaviour {
+public abstract class Characters : MonoBehaviour {
 
     public int team;
     public int currentX;
     public int currentY;
     public characterType type;
+    
 
 
-    public bool ValidMove(Characters[,] board, int x1, int y1, int x2, int y2) {
-        if (board[x2, y2] != null) {
-            return false;
-        }
-        return true;
-    }
+    public abstract bool ValidMove(Characters[,] board, int x1, int y1, int x2, int y2, Characters c);
 
+   
 
 }
