@@ -22,8 +22,10 @@ public class Map : MonoBehaviour {
     private Vector2Int mouseOver;
     private Vector2Int StartMove;
     private Vector2Int EndMove;
+    private bool IsTeam0Turn;
 
     private void Awake() {
+        IsTeam0Turn = true;
         generateTiles(tileSize, XCount, YCount);//calls our functions 
         Spawnall();
         allPosition();
@@ -60,8 +62,11 @@ public class Map : MonoBehaviour {
 
             // }
             if (Input.GetMouseButtonDown(0)) {
-                SelectPiece(x, y);
-
+                if (character[hitPosition.x, hitPosition.y] != null) {
+                    if ((character[hitPosition.x, hitPosition.y].team == 0 && IsTeam0Turn) || (character[hitPosition.x, hitPosition.y].team == 1 && !IsTeam0Turn)) {
+                        SelectPiece(x, y);
+                    }
+                }
             }
             if (Input.GetMouseButtonUp(0)) {
                 attemptMove((int)StartMove.x, (int)StartMove.y, x, y);
@@ -88,13 +93,14 @@ public class Map : MonoBehaviour {
         EndMove = new Vector2Int(x2, y2);
         selected = character[x1, y1];
 
+        //if (selected != null) {
+
+        //      Move(selected,x1,y1);
+        //       selected = null;
+
+        //    StartMove = Vector2Int.zero;
+        //}
         if (selected != null) {
-
-            //   Move(selected,x1,y1);
-            //   selected = null;
-
-            //   StartMove = Vector2Int.zero;
-            // }if(selected != null){
             if (StartMove == EndMove) {
                 Move(selected, x1, y1);
                 selected = null;
@@ -102,10 +108,11 @@ public class Map : MonoBehaviour {
                 return;
             }
 
-            if (selected.ValidMove(character, x1, y1, x2, y2)) {
+            if (selected.ValidMove(character, x1, y1, x2, y2, selected)) {
                 character[x2, y2] = selected;
                 character[x1, y1] = null;
                 Move(selected, x2, y2);
+                IsTeam0Turn = !IsTeam0Turn;
             }
             else {
                 Move(selected, x1, y1);
@@ -204,21 +211,22 @@ public class Map : MonoBehaviour {
         // character[i,0] = spawnCharacter(characterType.Drone,0);
         // character[i,19] = spawnCharacter(characterType.Queen,1);
         // }
-        character[1, 0] = spawnCharacter(characterType.Queen, 0);
-        character[2, 0] = spawnCharacter(characterType.Queen, 0);
-        character[3, 0] = spawnCharacter(characterType.Queen, 0);
-        character[4, 0] = spawnCharacter(characterType.Queen, 0);
-        character[5, 0] = spawnCharacter(characterType.Queen, 0);
-        character[6, 0] = spawnCharacter(characterType.Queen, 0);
-        character[7, 0] = spawnCharacter(characterType.Queen, 0);
 
-        character[1, 19] = spawnCharacter(characterType.Warrior, 1);
-        character[2, 19] = spawnCharacter(characterType.Queen, 1);
-        character[3, 19] = spawnCharacter(characterType.Queen, 1);
-        character[4, 19] = spawnCharacter(characterType.Queen, 1);
-        character[5, 19] = spawnCharacter(characterType.Queen, 1);
-        character[6, 19] = spawnCharacter(characterType.Queen, 1);
-        character[7, 19] = spawnCharacter(characterType.Queen, 1);
+        character[10, 0] = spawnCharacter(characterType.Queen, 0);
+        character[11, 0] = spawnCharacter(characterType.Warrior, 0);
+        character[9, 0] = spawnCharacter(characterType.Warrior, 0);
+        character[10, 1] = spawnCharacter(characterType.Warrior, 0);
+        character[10, 3] = spawnCharacter(characterType.Drone, 0);
+        character[8, 3] = spawnCharacter(characterType.Drone, 0);
+        character[12, 3] = spawnCharacter(characterType.Drone, 0);
+
+        character[10, 19] = spawnCharacter(characterType.Queen, 1);
+        character[11, 19] = spawnCharacter(characterType.Warrior, 1);
+        character[9, 19] = spawnCharacter(characterType.Warrior, 1);
+        character[10, 18] = spawnCharacter(characterType.Warrior, 1);
+        character[10, 16] = spawnCharacter(characterType.Drone, 1);
+        character[8, 16] = spawnCharacter(characterType.Drone, 1);
+        character[12, 16] = spawnCharacter(characterType.Drone, 1);
     }
 
     private Characters spawnCharacter(characterType type, int team) {
