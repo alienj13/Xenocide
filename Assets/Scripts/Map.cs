@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,7 @@ public class Map : MonoBehaviour {
     [SerializeField] private float tileSize = 1.0f;
     [SerializeField] private float yoffset = 0.2f;
     [SerializeField] private Vector3 center = Vector3.zero;
+    List<Vector2Int> HighlightMoves = new List<Vector2Int>();
     private Characters[,] character;
     private Characters selected;
     private const int XCount = 10;
@@ -39,18 +41,25 @@ public class Map : MonoBehaviour {
         }
         RaycastHit info;
         Ray ray = c.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out info, 100, LayerMask.GetMask("Tile", "Hover"))) {
+        if (Physics.Raycast(ray, out info, 100, LayerMask.GetMask("Tile", "Hover","Highlight"))) {
             Vector2Int hitPosition = GetTileIndex(info.transform.gameObject);
             if (hover == -Vector2Int.one) {
                 hover = hitPosition;
                 tiles[hitPosition.x, hitPosition.y].layer = LayerMask.NameToLayer("Hover");
             }
             if (hover != hitPosition) {
-                tiles[hover.x, hover.y].layer = LayerMask.NameToLayer("Tile");
+
+                if (MouseHighlight()) {
+                    tiles[hover.x, hover.y].layer = LayerMask.NameToLayer("Highlight");
+                }
+                else {
+                    tiles[hover.x, hover.y].layer = LayerMask.NameToLayer("Tile");
+                }
+
                 hover = hitPosition;
                 tiles[hitPosition.x, hitPosition.y].layer = LayerMask.NameToLayer("Hover");
             }
-
+            
 
             mouseOver.x = (int)hitPosition.x;
             mouseOver.y = (int)hitPosition.y;
@@ -61,18 +70,27 @@ public class Map : MonoBehaviour {
                 if (character[hitPosition.x, hitPosition.y] != null ) {
                     if ((character[hitPosition.x, hitPosition.y].team == 0 && IsTeam0Turn) || (character[hitPosition.x, hitPosition.y].team == 1 && !IsTeam0Turn)) {
                         SelectPiece(x, y);
-                        Debug.Log(StartMove);
+                        HighlightMoves = selected.setMoves(selected.currentX,selected.currentY);
+                        highlightmoves();
+                      
                     }
                 }
             }
             if (Input.GetMouseButtonUp(0)) {
+                Removehighlightmoves();
                 attemptMove((int)StartMove.x, (int)StartMove.y, x, y);
-                Debug.Log(StartMove.x);
+             
             }
         }
         else { 
             if (hover != -Vector2Int.one) {
-                tiles[hover.x, hover.y].layer = LayerMask.NameToLayer("Tile");
+                if (MouseHighlight()) {
+                    tiles[hover.x, hover.y].layer = LayerMask.NameToLayer("Highlight");
+                }
+                else {
+                    tiles[hover.x, hover.y].layer = LayerMask.NameToLayer("Tile");
+                }
+              
                 hover = -Vector2Int.one;
             }
             mouseOver.x = -1;
@@ -80,6 +98,27 @@ public class Map : MonoBehaviour {
         }
     }
 
+    private void highlightmoves() {
+        foreach (Vector2Int i in HighlightMoves) {
+            tiles[i.x, i.y].layer = LayerMask.NameToLayer("Highlight");
+        }
+        //HighlightMoves.Clear();
+    }
+
+    private void Removehighlightmoves() {
+        foreach (Vector2Int i in HighlightMoves) {
+            tiles[i.x, i.y].layer = LayerMask.NameToLayer("Tile");
+        }
+        HighlightMoves.Clear();
+    }
+    private bool MouseHighlight() {
+        foreach (Vector2Int i in HighlightMoves) {
+            if(i.x == mouseOver.x && i.y == mouseOver.y){
+                return true;
+            }
+        }
+    return false;
+    }
 
     private void attemptMove(int x1, int y1, int x2, int y2) {
         StartMove = new Vector2Int(x1, y1);
@@ -90,6 +129,7 @@ public class Map : MonoBehaviour {
             if (StartMove == EndMove) {
                 Move(selected, x1, y1);
                 selected = null;
+                Removehighlightmoves();
                 StartMove = Vector2Int.zero;
                 return;
             }
@@ -100,17 +140,20 @@ public class Map : MonoBehaviour {
                 Move(selected, x2, y2);
                 IsTeam0Turn = !IsTeam0Turn;
                 selected = null;
+                Removehighlightmoves();
                 StartMove = Vector2Int.zero;
             }
             else if (!selected.ValidMove(character, x1, y1, x2, y2, selected) && selected.hasAttcked) {
                 selected.hasAttcked = false;
                 selected = null;
+                Removehighlightmoves();
                 StartMove = Vector2Int.zero;
                 IsTeam0Turn = !IsTeam0Turn;
             }
             else {
                 Move(selected, x1, y1);
                 selected = null;
+                Removehighlightmoves();
                 StartMove = Vector2Int.zero;
                 return;
             }
@@ -214,6 +257,7 @@ public class Map : MonoBehaviour {
     }
 
     private void SelectPiece(int x, int y) {
+        Removehighlightmoves();
         Characters c = character[x, y];
         if (c != null) {
             selected = c;

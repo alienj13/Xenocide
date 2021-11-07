@@ -5,6 +5,7 @@ using UnityEngine;
 public class Queen : Characters
 
 {
+    private List<Vector2Int> mV = new List<Vector2Int>();
     public override void SetHealth() {
         health = 100;
     }
@@ -19,7 +20,8 @@ public class Queen : Characters
         
     }
 
-    public override void setMoves(int x, int y) {
-       //no moves
+    public override List<Vector2Int> setMoves(int x, int y) {
+        mV.Add(new Vector2Int(x , y ));
+        return mV;
     }
 }

@@ -24,7 +24,7 @@ public abstract class Characters : MonoBehaviour {
     public abstract bool ValidMove(Characters[,] board, int x1, int y1, int x2, int y2, Characters c);
     public abstract void attack(Characters opponent, Characters player);
     public abstract void SetHealth();
-    public abstract void setMoves(int x, int y);
+    public abstract List<Vector2Int> setMoves(int x, int y);
 
 
 

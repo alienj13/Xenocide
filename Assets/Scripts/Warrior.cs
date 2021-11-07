@@ -58,15 +58,32 @@ public class Warrior : Characters
         return false;
     }
 
-    public override void setMoves(int x, int y) {
-        mV.Add(new Vector2Int(x + 1, y));//right
-        mV.Add(new Vector2Int(x - 1, y));//left
-        mV.Add(new Vector2Int(x, y + 1));//up
-        mV.Add(new Vector2Int(x, y - 1));//down
-        mV.Add(new Vector2Int(x + 1, y + 1));//diag up right
-        mV.Add(new Vector2Int(x - 1, y - 1));//diag down left
-        mV.Add(new Vector2Int(x + 1, y - 1));//diag down right
-        mV.Add(new Vector2Int(x - 1, y + 1));//diag up left
+    public override List<Vector2Int> setMoves(int x, int y) {
+        if (x + 1 <= 9) {
+            mV.Add(new Vector2Int(x + 1, y));//right
+        }
+        if (x - 1 >= 0) {
+            mV.Add(new Vector2Int(x - 1, y));//left
+        }
+        if (y + 1 <= 9) {
+            mV.Add(new Vector2Int(x, y + 1));//up
+        }
+        if (y - 1 >= 0) {
+            mV.Add(new Vector2Int(x, y - 1));//down
+        }
+        if (x + 1 <= 9 && y + 1 <= 9) {
+            mV.Add(new Vector2Int(x + 1, y + 1));//diag up right
+        }
+        if (x - 1 >= 0 && y - 1 >= 0) {
+            mV.Add(new Vector2Int(x - 1, y - 1));//diag down left
+        }
+        if (x + 1 <= 9 && y - 1 >= 0) {
+            mV.Add(new Vector2Int(x + 1, y - 1));//diag down right
+        }
+        if (x - 1 >= 0 && y + 1 <= 9) {
+            mV.Add(new Vector2Int(x - 1, y + 1));//diag up left
+        }
+        return mV;
 
     }
 }
