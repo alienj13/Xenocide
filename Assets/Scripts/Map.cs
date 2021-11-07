@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,10 +12,11 @@ public class Map : MonoBehaviour {
     [SerializeField] private float tileSize = 1.0f;
     [SerializeField] private float yoffset = 0.2f;
     [SerializeField] private Vector3 center = Vector3.zero;
+    List<Vector2Int> HighlightMoves = new List<Vector2Int>();
     private Characters[,] character;
     private Characters selected;
-    private const int XCount = 20;
-    private const int YCount = 20;
+    private const int XCount = 10;
+    private const int YCount = 10;
     private GameObject[,] tiles;
     private Camera c;
     private Vector2Int hover;
@@ -39,84 +41,121 @@ public class Map : MonoBehaviour {
         }
         RaycastHit info;
         Ray ray = c.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out info, 100, LayerMask.GetMask("Tile", "Hover"))) {
+        if (Physics.Raycast(ray, out info, 100, LayerMask.GetMask("Tile", "Hover","Highlight"))) {
             Vector2Int hitPosition = GetTileIndex(info.transform.gameObject);
             if (hover == -Vector2Int.one) {
                 hover = hitPosition;
                 tiles[hitPosition.x, hitPosition.y].layer = LayerMask.NameToLayer("Hover");
             }
             if (hover != hitPosition) {
-                tiles[hover.x, hover.y].layer = LayerMask.NameToLayer("Tile");
+                
+                   if (MouseHighlight()) {
+                    tiles[hover.x, hover.y].layer = LayerMask.NameToLayer("Highlight");
+                }
+                else {
+                    tiles[hover.x, hover.y].layer = LayerMask.NameToLayer("Tile");
+                }
+                
                 hover = hitPosition;
                 tiles[hitPosition.x, hitPosition.y].layer = LayerMask.NameToLayer("Hover");
             }
-
+            
 
             mouseOver.x = (int)hitPosition.x;
             mouseOver.y = (int)hitPosition.y;
             int x = mouseOver.x;
             int y = mouseOver.y;
-            //    if(selected != null){
-
-            //   PickUp(selected);
-
-            // }
+          
             if (Input.GetMouseButtonDown(0)) {
-                if (character[hitPosition.x, hitPosition.y] != null) {
+                if (character[hitPosition.x, hitPosition.y] != null ) {
                     if ((character[hitPosition.x, hitPosition.y].team == 0 && IsTeam0Turn) || (character[hitPosition.x, hitPosition.y].team == 1 && !IsTeam0Turn)) {
                         SelectPiece(x, y);
+                        HighlightMoves = selected.setMoves(selected.currentX,selected.currentY);
+                        highlightmoves();
+                      
                     }
                 }
             }
             if (Input.GetMouseButtonUp(0)) {
+                Removehighlightmoves();
                 attemptMove((int)StartMove.x, (int)StartMove.y, x, y);
+             
             }
-
         }
-        else {
-
-
+        else { 
             if (hover != -Vector2Int.one) {
-                tiles[hover.x, hover.y].layer = LayerMask.NameToLayer("Tile");
+                if (MouseHighlight()) {
+                    tiles[hover.x, hover.y].layer = LayerMask.NameToLayer("Highlight");
+                }
+                else {
+                    tiles[hover.x, hover.y].layer = LayerMask.NameToLayer("Tile");
+                }
+              
                 hover = -Vector2Int.one;
             }
             mouseOver.x = -1;
             mouseOver.y = -1;
         }
-
-        //Debug.Log(mouseOver);
     }
 
+    private void highlightmoves() {
+        foreach (Vector2Int i in HighlightMoves) {
+            tiles[i.x, i.y].layer = LayerMask.NameToLayer("Highlight");
+        }
+        //HighlightMoves.Clear();
+    }
+
+    private void Removehighlightmoves() {
+        foreach (Vector2Int i in HighlightMoves) {
+            tiles[i.x, i.y].layer = LayerMask.NameToLayer("Tile");
+        }
+        HighlightMoves.Clear();
+    }
+    private bool MouseHighlight() {
+        foreach (Vector2Int i in HighlightMoves) {
+            if(i.x == mouseOver.x && i.y == mouseOver.y){
+                return true;
+            }
+        }
+    return false;
+    }
 
     private void attemptMove(int x1, int y1, int x2, int y2) {
         StartMove = new Vector2Int(x1, y1);
         EndMove = new Vector2Int(x2, y2);
         selected = character[x1, y1];
 
-        //if (selected != null) {
-
-        //      Move(selected,x1,y1);
-        //       selected = null;
-
-        //    StartMove = Vector2Int.zero;
-        //}
         if (selected != null) {
             if (StartMove == EndMove) {
                 Move(selected, x1, y1);
                 selected = null;
+                Removehighlightmoves();
                 StartMove = Vector2Int.zero;
                 return;
             }
 
-            if (selected.ValidMove(character, x1, y1, x2, y2, selected)) {
+            else if (selected.ValidMove(character, x1, y1, x2, y2, selected) ) {
                 character[x2, y2] = selected;
                 character[x1, y1] = null;
                 Move(selected, x2, y2);
                 IsTeam0Turn = !IsTeam0Turn;
+                selected = null;
+                Removehighlightmoves();
+                StartMove = Vector2Int.zero;
             }
+            else if (selected.hasAttcked == true || selected.hasKilled == true) {
+                    selected.hasAttcked = false;
+                    selected.hasKilled = false;
+                    selected = null;
+                    Removehighlightmoves();
+                    StartMove = Vector2Int.zero;
+                    IsTeam0Turn = !IsTeam0Turn;
+            }
+            
             else {
                 Move(selected, x1, y1);
                 selected = null;
+                Removehighlightmoves();
                 StartMove = Vector2Int.zero;
                 return;
             }
@@ -124,42 +163,6 @@ public class Map : MonoBehaviour {
         }
     }
 
-
-
-
-    private void PickUp(Characters ch) {
-        if (!c) {
-            c = Camera.main;
-            return;
-        }
-        RaycastHit info;
-        Ray ray = c.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out info, 100, LayerMask.GetMask("Tile", "Hover"))) {
-            Vector2Int hitPosition = GetTileIndex(info.transform.gameObject);
-            if (hover == -Vector2Int.one) {
-                hover = hitPosition;
-                tiles[hitPosition.x, hitPosition.y].layer = LayerMask.NameToLayer("Hover");
-            }
-            if (hover != hitPosition) {
-                tiles[hover.x, hover.y].layer = LayerMask.NameToLayer("Tile");
-                hover = hitPosition;
-                tiles[hitPosition.x, hitPosition.y].layer = LayerMask.NameToLayer("Hover");
-            }
-
-
-            ch.transform.position = info.point + Vector3.up;
-
-        }
-        else {
-            if (hover != -Vector2Int.one) {
-                tiles[hover.x, hover.y].layer = LayerMask.NameToLayer("Tile");
-                hover = -Vector2Int.one;
-            }
-
-        }
-
-
-    }
     private void generateTiles(float size, int xcount, int ycount) {//creates a grid of 20x20 tiles
         yoffset += transform.position.y;
         bounds = new Vector3((xcount / 2) * tileSize, 0, (xcount / 2) * tileSize) + center;
@@ -206,27 +209,22 @@ public class Map : MonoBehaviour {
 
 
     private void Spawnall() {
-        character = new Characters[XCount, YCount];
-        // for(int i = 0;i<XCount;i++){
-        // character[i,0] = spawnCharacter(characterType.Drone,0);
-        // character[i,19] = spawnCharacter(characterType.Queen,1);
-        // }
+        character = new Characters[XCount, YCount];    
+        character[5, 0] = spawnCharacter(characterType.Queen, 0);
+        character[6, 0] = spawnCharacter(characterType.Warrior, 0);
+        character[4, 0] = spawnCharacter(characterType.Warrior, 0);
+        character[5, 1] = spawnCharacter(characterType.Warrior, 0);
+        character[5, 3] = spawnCharacter(characterType.Drone, 0);
+        character[3, 3] = spawnCharacter(characterType.Drone, 0);
+        character[7, 3] = spawnCharacter(characterType.Drone, 0);
 
-        character[10, 0] = spawnCharacter(characterType.Queen, 0);
-        character[11, 0] = spawnCharacter(characterType.Warrior, 0);
-        character[9, 0] = spawnCharacter(characterType.Warrior, 0);
-        character[10, 1] = spawnCharacter(characterType.Warrior, 0);
-        character[10, 3] = spawnCharacter(characterType.Drone, 0);
-        character[8, 3] = spawnCharacter(characterType.Drone, 0);
-        character[12, 3] = spawnCharacter(characterType.Drone, 0);
-
-        character[10, 19] = spawnCharacter(characterType.Queen, 1);
-        character[11, 19] = spawnCharacter(characterType.Warrior, 1);
-        character[9, 19] = spawnCharacter(characterType.Warrior, 1);
-        character[10, 18] = spawnCharacter(characterType.Warrior, 1);
-        character[10, 16] = spawnCharacter(characterType.Drone, 1);
-        character[8, 16] = spawnCharacter(characterType.Drone, 1);
-        character[12, 16] = spawnCharacter(characterType.Drone, 1);
+        character[5, 9] = spawnCharacter(characterType.Queen, 1);
+        character[6, 9] = spawnCharacter(characterType.Warrior, 1);
+        character[4, 9] = spawnCharacter(characterType.Warrior, 1);
+        character[5, 8] = spawnCharacter(characterType.Warrior, 1);
+        character[5, 6] = spawnCharacter(characterType.Drone, 1);
+        character[3, 6] = spawnCharacter(characterType.Drone, 1);
+        character[7, 6] = spawnCharacter(characterType.Drone, 1);
     }
 
     private Characters spawnCharacter(characterType type, int team) {
@@ -234,6 +232,7 @@ public class Map : MonoBehaviour {
         c.type = type;
         c.team = team;
         c.GetComponent<MeshRenderer>().material = teamMaterial[team];
+        c.SetHealth();
         return c;
     }
 
@@ -260,17 +259,16 @@ public class Map : MonoBehaviour {
     }
 
     private void SelectPiece(int x, int y) {
+        Removehighlightmoves();
         Characters c = character[x, y];
         if (c != null) {
             selected = c;
             StartMove = mouseOver;
             Debug.Log(selected.type);
         }
-
     }
-    private void Move(Characters c, int x, int y) {
 
-        //c.transform.position = GetTileCenter(x,y);
+    private void Move(Characters c, int x, int y) {
         character[x, y].currentX = x;
         character[x, y].currentY = y;
         character[x, y].transform.position = GetTileCenter(x, y);
