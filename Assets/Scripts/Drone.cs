@@ -46,8 +46,8 @@ public class Drone : Characters
     public override void attack(Characters opponent, Characters player) {
 
         opponent.health -= 10;
-        Debug.Log(opponent.team + " has been attacked"+"their health is "+ opponent.health);
-        hasAttcked = true;
+        Debug.Log(opponent.team + " has been attacked. " + "Their health is " + opponent.health);
+        hasAttacked = true;
     }
     public bool death(Characters[,] board, Characters opponent,int x2, int y2) {
         if (opponent.health < 1) {
@@ -61,30 +61,33 @@ public class Drone : Characters
     }
 
     public override List<Vector2Int> setMoves(int x, int y) {
-        if (x + 1 <=9) {
-            mV.Add(new Vector2Int(x + 1, y));//right
-        }
-        if (x - 1 >= 0) {
-            mV.Add(new Vector2Int(x - 1, y));//left
-        }
-        if (y + 1 <= 9) {
-            mV.Add(new Vector2Int(x, y + 1));//up
-        }
-        if (y - 1 >= 0) {
-            mV.Add(new Vector2Int(x, y - 1));//down
-        }
-        if (x + 1 <= 9 && y+1 <= 9) {
-            mV.Add(new Vector2Int(x + 1, y + 1));//diag up right
-        }
-        if (x - 1 >= 0 && y-1 >= 0) {
-            mV.Add(new Vector2Int(x - 1, y - 1));//diag down left
-        }
-        if (x + 1 <= 9 && y-1 >= 0) {
-            mV.Add(new Vector2Int(x + 1, y - 1));//diag down right
-        }
-        if (x - 1 >= 0 && y + 1 <= 9) {
-            mV.Add(new Vector2Int(x - 1, y + 1));//diag up left
-        }
+        //if (x + 1 <=9) {
+        //    mV.Add(new Vector2Int(x + 1, y));//right
+        //}
+        //if (x - 1 >= 0) {
+        //    mV.Add(new Vector2Int(x - 1, y));//left
+        //}
+        //if (y + 1 <= 9) {
+        //    mV.Add(new Vector2Int(x, y + 1));//up
+        //}
+        //if (y - 1 >= 0) {
+        //    mV.Add(new Vector2Int(x, y - 1));//down
+        //}
+        //if (x + 1 <= 9 && y+1 <= 9) {
+        //    mV.Add(new Vector2Int(x + 1, y + 1));//diag up right
+        //}
+        //if (x - 1 >= 0 && y-1 >= 0) {
+        //    mV.Add(new Vector2Int(x - 1, y - 1));//diag down left
+        //}
+        //if (x + 1 <= 9 && y-1 >= 0) {
+        //    mV.Add(new Vector2Int(x + 1, y - 1));//diag down right
+        //}
+        //if (x - 1 >= 0 && y + 1 <= 9) {
+        //    mV.Add(new Vector2Int(x - 1, y + 1));//diag up left
+        //}
+
+        mV = PatternGen.square(x, y, 2);
+
         return mV;
 
     }
