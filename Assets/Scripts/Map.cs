@@ -143,8 +143,8 @@ public class Map : MonoBehaviour {
                 Removehighlightmoves();
                 StartMove = Vector2Int.zero;
             }
-            else if (selected.hasAttcked == true || selected.hasKilled == true) {
-                    selected.hasAttcked = false;
+            else if (selected.hasAttacked == true || selected.hasKilled == true) {
+                    selected.hasAttacked = false;
                     selected.hasKilled = false;
                     selected = null;
                     Removehighlightmoves();

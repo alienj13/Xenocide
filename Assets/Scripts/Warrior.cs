@@ -46,7 +46,7 @@ public class Warrior : Characters
 
         opponent.health -= 5;
         Debug.Log(opponent.team + " has been attacked");
-        hasAttcked = true;
+        hasAttacked = true;
     }
     public bool death(Characters[,] board, Characters opponent, int x2, int y2) {
         if (opponent.health < 1) {
