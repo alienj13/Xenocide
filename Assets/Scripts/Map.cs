@@ -48,14 +48,14 @@ public class Map : MonoBehaviour {
                 tiles[hitPosition.x, hitPosition.y].layer = LayerMask.NameToLayer("Hover");
             }
             if (hover != hitPosition) {
-
-                if (MouseHighlight()) {
+                
+                   if (MouseHighlight()) {
                     tiles[hover.x, hover.y].layer = LayerMask.NameToLayer("Highlight");
                 }
                 else {
                     tiles[hover.x, hover.y].layer = LayerMask.NameToLayer("Tile");
                 }
-
+                
                 hover = hitPosition;
                 tiles[hitPosition.x, hitPosition.y].layer = LayerMask.NameToLayer("Hover");
             }
@@ -134,7 +134,7 @@ public class Map : MonoBehaviour {
                 return;
             }
 
-            if (selected.ValidMove(character, x1, y1, x2, y2, selected)) {
+            else if (selected.ValidMove(character, x1, y1, x2, y2, selected) ) {
                 character[x2, y2] = selected;
                 character[x1, y1] = null;
                 Move(selected, x2, y2);
@@ -143,13 +143,15 @@ public class Map : MonoBehaviour {
                 Removehighlightmoves();
                 StartMove = Vector2Int.zero;
             }
-            else if (!selected.ValidMove(character, x1, y1, x2, y2, selected) && selected.hasAttcked) {
-                selected.hasAttcked = false;
-                selected = null;
-                Removehighlightmoves();
-                StartMove = Vector2Int.zero;
-                IsTeam0Turn = !IsTeam0Turn;
+            else if (selected.hasAttcked == true || selected.hasKilled == true) {
+                    selected.hasAttcked = false;
+                    selected.hasKilled = false;
+                    selected = null;
+                    Removehighlightmoves();
+                    StartMove = Vector2Int.zero;
+                    IsTeam0Turn = !IsTeam0Turn;
             }
+            
             else {
                 Move(selected, x1, y1);
                 selected = null;

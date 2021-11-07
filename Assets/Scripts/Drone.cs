@@ -45,8 +45,8 @@ public class Drone : Characters
 
     public override void attack(Characters opponent, Characters player) {
 
-        opponent.health -= 5;
-        Debug.Log(opponent.team + " has been attacked");
+        opponent.health -= 10;
+        Debug.Log(opponent.team + " has been attacked"+"their health is "+ opponent.health);
         hasAttcked = true;
     }
     public bool death(Characters[,] board, Characters opponent,int x2, int y2) {
@@ -54,6 +54,7 @@ public class Drone : Characters
             Destroy(opponent.gameObject);
             Debug.Log("Opponent destroyed");
             board[x2,y2] = null;
+            hasKilled = true;
             return true;
         }
         return false;

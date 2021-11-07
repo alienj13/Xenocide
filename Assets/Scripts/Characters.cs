@@ -17,6 +17,7 @@ public abstract class Characters : MonoBehaviour {
     public characterType type;
     public int health;
     public bool hasAttcked;
+    public bool hasKilled;
 
     
 
