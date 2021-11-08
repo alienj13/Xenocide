@@ -77,7 +77,8 @@ public class Drone : Characters
         //if (x - 1 >= 0 && y + 1 <= 9) {
         //    moves.Add(new Vector2Int(x - 1, y + 1));//diag up left
         //}
-        moves = PatternGen.square(x, y, 3);
+
+        moves = PatternGen.diamond(x, y, 3);
 
         return moves;
 
