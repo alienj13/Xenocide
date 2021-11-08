@@ -53,30 +53,32 @@ public class Drone : Characters
     }
 
     public override List<Vector2Int> setMoves(int x, int y) {
-        if (x + 1 <= 9) {
-            moves.Add(new Vector2Int(x + 1, y));//right
-        }
-        if (x - 1 >= 0) {
-            moves.Add(new Vector2Int(x - 1, y));//left
-        }
-        if (y + 1 <= 9) {
-            moves.Add(new Vector2Int(x, y + 1));//up
-        }
-        if (y - 1 >= 0) {
-            moves.Add(new Vector2Int(x, y - 1));//down
-        }
-        if (x + 1 <= 9 && y + 1 <= 9) {
-            moves.Add(new Vector2Int(x + 1, y + 1));//diag up right
-        }
-        if (x - 1 >= 0 && y - 1 >= 0) {
-            moves.Add(new Vector2Int(x - 1, y - 1));//diag down left
-        }
-        if (x + 1 <= 9 && y - 1 >= 0) {
-            moves.Add(new Vector2Int(x + 1, y - 1));//diag down right
-        }
-        if (x - 1 >= 0 && y + 1 <= 9) {
-            moves.Add(new Vector2Int(x - 1, y + 1));//diag up left
-        }
+        //if (x + 1 <= 9) {
+        //    moves.Add(new Vector2Int(x + 1, y));//right
+        //}
+        //if (x - 1 >= 0) {
+        //    moves.Add(new Vector2Int(x - 1, y));//left
+        //}
+        //if (y + 1 <= 9) { 
+        //    moves.Add(new Vector2Int(x, y + 1));//up
+        //}
+        //if (y - 1 >= 0) {
+        //    moves.Add(new Vector2Int(x, y - 1));//down
+        //}
+        //if (x + 1 <= 9 && y + 1 <= 9) {
+        //    moves.Add(new Vector2Int(x + 1, y + 1));//diag up right
+        //}
+        //if (x - 1 >= 0 && y - 1 >= 0) {
+        //    moves.Add(new Vector2Int(x - 1, y - 1));//diag down left
+        //}
+        //if (x + 1 <= 9 && y - 1 >= 0) {
+        //    moves.Add(new Vector2Int(x + 1, y - 1));//diag down right
+        //}
+        //if (x - 1 >= 0 && y + 1 <= 9) {
+        //    moves.Add(new Vector2Int(x - 1, y + 1));//diag up left
+        //}
+        moves = PatternGen.square(x, y, 3);
+
         return moves;
 
     }
