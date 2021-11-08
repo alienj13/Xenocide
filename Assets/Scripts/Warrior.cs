@@ -12,29 +12,25 @@ public class Warrior : Characters
         moves.Clear();
         setMoves(this.currentX, this.currentY);
         Destination = new Vector2Int(x2, y2);
-        if (board[x2, y2] != null) {
-            if (board[x2, y2].team != c.team) {
-                if ((x2 == x1 + 2 || x2 == x1 - 2 || y2 == y1 + 2 || y2 == y1 - 2) || x2 == x1 + 1 || (x2 == x1 - 1 || y2 == y1 + 1 || y2 == y1 - 1)) {
-                    Characters opponent = board[x2, y2];
-                    attack(opponent, c);
-                    if (death(board, opponent, x2, y2) == true) {
-
-                        return true;
+        foreach (Vector2Int i in moves) {
+            if (Destination == i) {
+                if (board[x2, y2] != null) {
+                    if (board[x2, y2].team != c.team) {
+                        Characters opponent = board[x2, y2];
+                        attack(opponent, c);
+                        if (death(board, opponent, x2, y2) == true) {
+                            return true;
+                        }
+                        return false;
                     }
                     return false;
                 }
-            }
-            return false;
-        }
-        else if (board[x2, y2] == null) {
-            foreach (Vector2Int i in moves) {
-                if (Destination == i) {
+                else {
                     this.currentX = x2;
                     this.currentY = y2;
                     return true;
                 }
             }
-
         }
         return false;
     }

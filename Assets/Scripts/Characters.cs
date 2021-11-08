@@ -23,8 +23,6 @@ public abstract class Characters : MonoBehaviour {
     protected List<Vector2Int> moves = new List<Vector2Int>();
 
 
-
-
     public abstract bool ValidMove(Characters[,] board, int x1, int y1, int x2, int y2, Characters c);
     public abstract void attack(Characters opponent, Characters player);
     public abstract void SetAttributes();

@@ -5,7 +5,6 @@ using UnityEngine;
 public class Queen : Characters
 
 {
-    
     public override void SetAttributes() {
         health = 100;
         AttackPower = 10;
@@ -15,10 +14,7 @@ public class Queen : Characters
         return false;
     }
     public override void attack(Characters opponent, Characters player) {
-
         //no attack
-        
-        
     }
 
     public override List<Vector2Int> setMoves(int x, int y) {

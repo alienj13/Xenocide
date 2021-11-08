@@ -9,22 +9,22 @@ public class Map : MonoBehaviour {
     [SerializeField] private Material m;               //material of the tiles 
     [SerializeField] private GameObject[] prefabs;     //array of 3D models
     [SerializeField] private Material[] teamMaterial;  //the colour of player 1 or 2;
-    [SerializeField] private float tileSize = 1.0f;
-    [SerializeField] private float yoffset = 0.2f;
-    [SerializeField] private Vector3 center = Vector3.zero;
+    [SerializeField] private float tileSize = 1.0f;    //math stuff
+    [SerializeField] private float yoffset = 0.2f;     //math stuff
+    [SerializeField] private Vector3 center = Vector3.zero; //math stuff
     List<Vector2Int> HighlightMoves = new List<Vector2Int>();//list to hold all the possible moves 
 
     private Characters[,] character;    //array to hold all characters on the board
     private Characters selected;        //which char is selected 
     private Characters Player1Queen;    //access to player 1 queens health
     private Characters Player2Queen;    //access to player 1 queens health
-    private const int XCount = 10;      //size of the tilemap
-    private const int YCount = 10;
-    private GameObject[,] tiles;
+    private const int XCount = 10;      // X size of the tilemap
+    private const int YCount = 10;      // Y size of the tilemap
+    private GameObject[,] tiles;        // array of all tiles
     private Camera c;                   //a variable to control the camera 
-    private Vector2Int hover;           //co ordinates for where the mouse is
-    private Vector3 bounds;
-    private Vector2Int mouseOver;
+    private Vector2Int hover;           //co ordinates for where the mouse is relative to the camera
+    private Vector3 bounds;             // more math stuff
+    private Vector2Int mouseOver;       //mouse position
     private Vector2Int StartMove;       //startingco-ordinates for player movemnet 
     private Vector2Int EndMove;         //movement destination
     private bool IsTeam0Turn;           //player turns
@@ -155,6 +155,8 @@ public class Map : MonoBehaviour {
 
         }
     }
+
+
     //use single tile creator to create a grid of tiles
     private void generateTiles(float size, int xcount, int ycount) {//creates a grid of 20x20 tiles
         yoffset += transform.position.y;
@@ -166,6 +168,7 @@ public class Map : MonoBehaviour {
             }
         }
     }
+
 
     //create a single tile using 2 triangles
     private GameObject CreateSingleTile(float size, int x, int y) {//creates a single tile
@@ -188,6 +191,7 @@ public class Map : MonoBehaviour {
         return obj;
     }
 
+
     //Get co ords of a particular tile
     private Vector2Int GetTileIndex(GameObject hitInfo) {
         for (int x = 0; x < XCount; x++) {
@@ -200,10 +204,11 @@ public class Map : MonoBehaviour {
         return -Vector2Int.one;    //out of bounds 
     }
 
+
     //uses the single character spawner to
     //spawns all the characters and places them in positions of the array
     private void Spawnall() {
-        character = new Characters[XCount, YCount];    
+        character = new Characters[XCount, YCount];
         character[5, 0] = spawnCharacter(characterType.Queen, 0);
         Player1Queen = character[5, 0];
         character[6, 0] = spawnCharacter(characterType.Warrior, 0);
@@ -221,10 +226,12 @@ public class Map : MonoBehaviour {
         character[5, 6] = spawnCharacter(characterType.Drone, 1);
         character[3, 6] = spawnCharacter(characterType.Drone, 1);
         character[7, 6] = spawnCharacter(characterType.Drone, 1);
-        
+    
     }
+
+
     //spawns a single 3D character, assigns their team and type
-    private Characters spawnCharacter(characterType type, int team) {
+     private Characters spawnCharacter( characterType type, int team) {
         Characters c = Instantiate(prefabs[(int)type - 1], transform).GetComponent<Characters>();
         c.type = type;
         c.team = team;
@@ -232,6 +239,7 @@ public class Map : MonoBehaviour {
         c.SetAttributes();
         return c;
     }
+
 
     //uses the single position function to position all characters
     private void allPosition() {
@@ -243,6 +251,8 @@ public class Map : MonoBehaviour {
             }
         }
     }
+
+
     //places a character in a particular position on the board
     private void singlePosition(int x, int y, bool force = false) {
         character[x, y].SetX(x);
@@ -250,10 +260,13 @@ public class Map : MonoBehaviour {
         character[x, y].transform.position = GetTileCenter(x, y);
 
     }
+
+
     //get the middle of the tile, useful for character positioning
     private Vector3 GetTileCenter(int x, int y) {
         return new Vector3(x * tileSize, 1, y * tileSize) - bounds + new Vector3(tileSize / 2, 0, tileSize / 2);
     }
+
 
     //selects a particular character
     private void SelectPiece(int x, int y) {
@@ -265,12 +278,15 @@ public class Map : MonoBehaviour {
             Debug.Log(selected.type);
         }
     }
+
+
     //moves the position of the character
     private void Move(Characters c, int x, int y) {
         character[x, y].SetX(x);
         character[x, y].SetY(y);
         character[x, y].transform.position = GetTileCenter(x, y);
     }
+
 
     //when a character is selected, all their possibe moves are highlighted in blue
     private void highlightmoves() {
@@ -279,6 +295,7 @@ public class Map : MonoBehaviour {
         }
     }
 
+
     //removes all the highlights
     private void Removehighlightmoves() {
         foreach (Vector2Int i in HighlightMoves) {
@@ -286,6 +303,8 @@ public class Map : MonoBehaviour {
         }
         HighlightMoves.Clear();
     }
+
+
     //checks if the mouse is hovering over a possible move 
     private bool MouseHighlight() {
         foreach (Vector2Int i in HighlightMoves) {
