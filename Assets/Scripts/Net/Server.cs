@@ -103,8 +103,6 @@ public class Server : MonoBehaviour
         }
     }
 
-    
-
     public void SendToClient(NetworkConnection Connection, NetMessage msg) {
         DataStreamWriter writer;
         driver.BeginSend(Connection, out writer);

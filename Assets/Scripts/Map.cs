@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Networking.Transport;
 using UnityEngine;
 
 public class Map : MonoBehaviour {
@@ -14,6 +15,8 @@ public class Map : MonoBehaviour {
     [SerializeField] private Vector3 center = Vector3.zero; //math stuff
     [SerializeField] private GameObject victory;
     List<Vector2Int> HighlightMoves = new List<Vector2Int>();//list to hold all the possible moves 
+    [SerializeField] private Camera cam0;
+    [SerializeField] private Camera cam1;
 
     private Characters[,] character;    //array to hold all characters on the board
     private Characters selected;        //which char is selected 
@@ -30,19 +33,35 @@ public class Map : MonoBehaviour {
     private Vector2Int EndMove;         //movement destination
     private bool IsTeam0Turn;           //player turns
 
+    private int playerCount = -1;
+    private int currentTeam = -1;
+   
+
     //calls our functions 
     private void Awake() {
         IsTeam0Turn = true;
         generateTiles(tileSize, XCount, YCount);
         Spawnall();
         allPosition();
+        RegisterEvents();
     }
 
     //calls function every frame
     private void Update() {
-        if (!c) {
+        if (currentTeam == 0) {
+            cam0.enabled = true;
+            cam1.enabled = false;
+            //Camera.main.enabled = false;
+            c = cam0;
+        }
+        else if (currentTeam == 1) {
+            cam0.enabled = false;
+            cam1.enabled = true;
+            //Camera.main.enabled = false;
+            c = cam1;
+        }
+        else {
             c = Camera.main;
-            return;
         }
         //changes tiles depending on where mouse is positioned to highlight tiles
         RaycastHit info;
@@ -75,7 +94,8 @@ public class Map : MonoBehaviour {
           //press left mouse button down 
             if (Input.GetMouseButtonDown(0)) {
                 if (character[hitPosition.x, hitPosition.y] != null ) {
-                    if ((character[hitPosition.x, hitPosition.y].team == 0 && IsTeam0Turn) || (character[hitPosition.x, hitPosition.y].team == 1 && !IsTeam0Turn)) {
+                    if ((character[hitPosition.x, hitPosition.y].team == 0 && IsTeam0Turn && currentTeam==0) ||
+                        (character[hitPosition.x, hitPosition.y].team == 1 && !IsTeam0Turn && currentTeam == 1)) {
                         SelectPiece(x, y);
                         HighlightMoves = selected.setMoves(selected.GetX(),selected.GetY());
                         highlightmoves();
@@ -87,7 +107,8 @@ public class Map : MonoBehaviour {
             if (Input.GetMouseButtonUp(0)) {
                 Removehighlightmoves();
                 attemptMove((int)StartMove.x, (int)StartMove.y, x, y);
-             
+               
+                    Debug.Log(" x:" + x + " Y:" + y + " StartMove.x:" + StartMove.x + " StartMove.y:" + StartMove.y);
             }
         }
         else { 
@@ -109,11 +130,21 @@ public class Map : MonoBehaviour {
     
     //try to move, checks if the move is valid, turn changes here 
     private void attemptMove(int x1, int y1, int x2, int y2) {
+      
+
         StartMove = new Vector2Int(x1, y1);
         EndMove = new Vector2Int(x2, y2);
         selected = character[x1, y1];
 
         if (selected != null) {
+            NetMakeMove mm = new NetMakeMove();
+            mm.currentX = x1;
+            mm.currentY = y1;
+            mm.TargetX = x2;
+            mm.TargetY = y2;
+            mm.team = currentTeam;
+            Client.Instance.SendToServer(mm);
+
             if (StartMove == EndMove) {
                 Move(selected, x1, y1);
                 selected = null;
@@ -124,8 +155,11 @@ public class Map : MonoBehaviour {
 
             else if (selected.ValidMove(character, x1, y1, x2, y2, selected) ) {
                 character[x2, y2] = selected;
-                character[x1, y1] = null;
+               
                 Move(selected, x2, y2);
+               
+                character[x1, y1] = null;
+
                 if (Player1Queen.GetHealth() < 1) {
                     Debug.Log("Player 2 wins");
                     Victory();
@@ -277,6 +311,7 @@ public class Map : MonoBehaviour {
         Removehighlightmoves();
         Characters c = character[x, y];
         if (c != null) {
+         
             selected = c;
             StartMove = mouseOver;
             Debug.Log(selected.type);
@@ -344,5 +379,88 @@ public class Map : MonoBehaviour {
     public void Victory() {
         victory.SetActive(true);
 
+    }
+
+
+    //multiplayer
+    private void RegisterEvents() { 
+        NetUtility.S_WELCOME += OnWelcomeServer;
+        NetUtility.C_WELCOME += OnWelcomeClient;
+        NetUtility.C_START_GAME += OnStartGame;
+        NetUtility.S_MAKE_MOVE += OnMakeMoveServer;
+        NetUtility.C_MAKE_MOVE+= OnMakeMoveclient;
+    }
+
+    
+
+    private void UnRegisterEvents() {
+        NetUtility.S_WELCOME -= OnWelcomeServer;
+        NetUtility.C_WELCOME -= OnWelcomeClient;
+        NetUtility.C_START_GAME -= OnStartGame;
+        NetUtility.S_MAKE_MOVE -= OnMakeMoveServer;
+        NetUtility.C_MAKE_MOVE -= OnMakeMoveclient;
+    }
+
+    //server
+    private void OnMakeMoveServer(NetMessage msg, NetworkConnection cnn) {
+        NetMakeMove mm = msg as NetMakeMove;
+
+        Server.Instance.Broadcast(mm);
+    }
+    
+    private void OnWelcomeServer(NetMessage msg, NetworkConnection cnn) {
+        NetWelcome nw = msg as NetWelcome;
+
+        nw.AssignedTeam = ++playerCount;
+        Server.Instance.SendToClient(cnn, nw);
+
+        if (playerCount == 1) {
+            Server.Instance.Broadcast(new NetStartGame());
+           }
+    }
+
+    private void OnWelcomeClient(NetMessage msg) {
+        NetWelcome nw = msg as NetWelcome;
+        currentTeam = nw.AssignedTeam;
+        Debug.Log($"my assigned team is  { nw.AssignedTeam}");
+    }
+
+    private void OnMakeMoveclient(NetMessage msg) {
+        NetMakeMove mm = msg as NetMakeMove;
+        
+        if (mm.team != currentTeam) {
+
+            Characters target = character[mm.currentX, mm.currentY];
+            //HighlightMoves = target.setMoves(target.GetX(),target.GetY());
+           // attemptMove(mm.currentX,mm.currentY,mm.TargetX,mm.TargetY);
+            if (target.ValidMove(character, mm.currentX, mm.currentY, mm.TargetX, mm.TargetY, target)) {
+                character[mm.TargetX, mm.TargetY] = target;
+
+                Move(target, mm.TargetX, mm.TargetY);
+
+                character[mm.currentX, mm.currentY] = null;
+
+                if (Player1Queen.GetHealth() < 1) {
+                    Debug.Log("Player 2 wins");
+                    Victory();
+                }
+                if (Player2Queen.GetHealth() < 1) {
+                    Debug.Log("Player 1 wins");
+                    Victory();
+                }
+                IsTeam0Turn = !IsTeam0Turn;
+                target = null;
+                selected = null;
+                Removehighlightmoves();
+                StartMove = Vector2Int.zero;
+            }
+
+        }
+    }
+
+        private void OnStartGame(NetMessage msg) {
+        UI.Instance.Waiting.SetActive(false);
+        UI.Instance.OnlineMenu.SetActive(false);
+       // cam.SetActive(true);
     }
 }

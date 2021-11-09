@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class UI : MonoBehaviour
 {
-    [SerializeField] private GameObject startMenu;
-    [SerializeField] private GameObject OnlineMenu;
-    [SerializeField] private GameObject Waiting;
+    [SerializeField] public GameObject startMenu;
+    [SerializeField] public GameObject OnlineMenu;
+    [SerializeField] public GameObject Waiting;
     public static UI Instance { set; get; }
 
     public Server server;

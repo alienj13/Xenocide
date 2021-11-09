@@ -69,11 +69,11 @@ public class Client : MonoBehaviour
         NetworkEvent.Type cmd;
             while ((cmd = connection.PopEvent(driver, out stream)) != NetworkEvent.Type.Empty) {
 
-                if (cmd == NetworkEvent.Type.Data) {
-                //SendToServer(new NetWelcome());
+                if (cmd == NetworkEvent.Type.Connect) {
+                SendToServer(new NetWelcome());
                 Debug.Log("we're connected");
                 }
-                else if (cmd == NetworkEvent.Type.Disconnect) {
+                else if (cmd == NetworkEvent.Type.Data) {
                     NetUtility.OnData(stream, default(NetworkConnection));
                 }
                 else if (cmd == NetworkEvent.Type.Disconnect) {
@@ -87,10 +87,10 @@ public class Client : MonoBehaviour
             }
     }
 
-    private void SendToServer(NetMessage msg) {
+    public void SendToServer(NetMessage msg) {
         DataStreamWriter writer;
         driver.BeginSend(connection, out writer);
-        //msg.Serialize(ref writer);
+        msg.Serialize(ref writer);
         driver.EndSend(writer);
     }
 
