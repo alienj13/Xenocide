@@ -12,6 +12,7 @@ public class Map : MonoBehaviour {
     [SerializeField] private float tileSize = 1.0f;    //math stuff
     [SerializeField] private float yoffset = 0.2f;     //math stuff
     [SerializeField] private Vector3 center = Vector3.zero; //math stuff
+    [SerializeField] private GameObject victory;
     List<Vector2Int> HighlightMoves = new List<Vector2Int>();//list to hold all the possible moves 
 
     private Characters[,] character;    //array to hold all characters on the board
@@ -125,18 +126,21 @@ public class Map : MonoBehaviour {
                 character[x2, y2] = selected;
                 character[x1, y1] = null;
                 Move(selected, x2, y2);
+                if (Player1Queen.GetHealth() < 1) {
+                    Debug.Log("Player 2 wins");
+                    Victory();
+                }
+                if (Player2Queen.GetHealth() < 1) {
+                    Debug.Log("Player 1 wins");
+                    Victory();
+                }
                 IsTeam0Turn = !IsTeam0Turn;
                 selected = null;
                 Removehighlightmoves();
                 StartMove = Vector2Int.zero;
             }
             else if (selected.HasAttcked == true || selected.HasKilled == true) {
-                    if (Player1Queen.GetHealth()<1) {
-                    Debug.Log("Player 2 wins");
-                }
-                if (Player2Queen.GetHealth() < 1) {
-                    Debug.Log("Player 1 wins");
-                }
+                   
                 selected.HasAttcked = false;
                     selected.HasKilled = false;
                     selected = null;
@@ -313,5 +317,32 @@ public class Map : MonoBehaviour {
             }
         }
         return false;
+    }
+    public void Exit() {
+        Application.Quit();
+    }
+    public void Resetmap() {
+
+        victory.SetActive(false);
+
+        
+        selected = null;
+
+        for (int x = 0; x < XCount; x++) {
+            for (int y = 0; y < YCount; y++) {
+                if (character[x, y] != null) {
+                    Destroy(character[x, y].gameObject);
+                }
+                character[x, y] = null;
+            }
+        }
+        IsTeam0Turn = true;
+        
+        Spawnall();
+        allPosition();
+    }
+    public void Victory() {
+        victory.SetActive(true);
+
     }
 }
