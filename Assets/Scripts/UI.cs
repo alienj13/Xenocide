@@ -31,7 +31,7 @@ public class UI : MonoBehaviour
 
     public void HostOnline() {
         server.initialize(8007);
-        client.initialize("127.0.0.1", 8007);
+        //client.initialize("127.0.0.1", 8007);
         Waiting.SetActive(true);
         OnlineMenu.SetActive(false);
 

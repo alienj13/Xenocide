@@ -418,7 +418,7 @@ public class Map : MonoBehaviour {
             Server.Instance.Broadcast(new NetStartGame());
            }
     }
-
+    //client
     private void OnWelcomeClient(NetMessage msg) {
         NetWelcome nw = msg as NetWelcome;
         currentTeam = nw.AssignedTeam;
@@ -454,11 +454,21 @@ public class Map : MonoBehaviour {
                 Removehighlightmoves();
                 StartMove = Vector2Int.zero;
             }
+            else if (target.HasAttcked == true || target.HasKilled == true) {
+
+                target.HasAttcked = false;
+                target.HasKilled = false;
+                selected = null;
+                target = null;
+                Removehighlightmoves();
+                StartMove = Vector2Int.zero;
+                IsTeam0Turn = !IsTeam0Turn;
+            }
 
         }
     }
 
-        private void OnStartGame(NetMessage msg) {
+    private void OnStartGame(NetMessage msg) {
         UI.Instance.Waiting.SetActive(false);
         UI.Instance.OnlineMenu.SetActive(false);
        // cam.SetActive(true);
