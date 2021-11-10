@@ -82,6 +82,7 @@ public class Client : MonoBehaviour
                     connection = default(NetworkConnection);
                     connectionDropped?.Invoke();
                     ShutDown();
+                    break;
                 
                 }
             }

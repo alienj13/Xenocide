@@ -33,7 +33,7 @@ public class Map : MonoBehaviour {
     private Vector2Int EndMove;         //movement destination
     private bool IsTeam0Turn;           //player turns
 
-    private int playerCount = -1;
+    
     private int currentTeam = -1;
    
 
@@ -384,40 +384,27 @@ public class Map : MonoBehaviour {
 
     //multiplayer
     private void RegisterEvents() { 
-        NetUtility.S_WELCOME += OnWelcomeServer;
+        
         NetUtility.C_WELCOME += OnWelcomeClient;
         NetUtility.C_START_GAME += OnStartGame;
-        NetUtility.S_MAKE_MOVE += OnMakeMoveServer;
         NetUtility.C_MAKE_MOVE+= OnMakeMoveclient;
+        NetUtility.C_CLIENT_DISCONNECT += OnDisconnectclient;
     }
 
-    
+    private void OnDisconnectclient(NetMessage msg) {
+        UI.Instance.DisconnectedPlayer.SetActive(true);
+
+    }
 
     private void UnRegisterEvents() {
-        NetUtility.S_WELCOME -= OnWelcomeServer;
+        
         NetUtility.C_WELCOME -= OnWelcomeClient;
         NetUtility.C_START_GAME -= OnStartGame;
-        NetUtility.S_MAKE_MOVE -= OnMakeMoveServer;
         NetUtility.C_MAKE_MOVE -= OnMakeMoveclient;
     }
 
-    //server
-    private void OnMakeMoveServer(NetMessage msg, NetworkConnection cnn) {
-        NetMakeMove mm = msg as NetMakeMove;
-
-        Server.Instance.Broadcast(mm);
-    }
-    
-    private void OnWelcomeServer(NetMessage msg, NetworkConnection cnn) {
-        NetWelcome nw = msg as NetWelcome;
-
-        nw.AssignedTeam = ++playerCount;
-        Server.Instance.SendToClient(cnn, nw);
-
-        if (playerCount == 1) {
-            Server.Instance.Broadcast(new NetStartGame());
-           }
-    }
+  
+  
     //client
     private void OnWelcomeClient(NetMessage msg) {
         NetWelcome nw = msg as NetWelcome;
@@ -430,9 +417,7 @@ public class Map : MonoBehaviour {
         
         if (mm.team != currentTeam) {
 
-            Characters target = character[mm.currentX, mm.currentY];
-            //HighlightMoves = target.setMoves(target.GetX(),target.GetY());
-           // attemptMove(mm.currentX,mm.currentY,mm.TargetX,mm.TargetY);
+            Characters target = character[mm.currentX, mm.currentY];          
             if (target.ValidMove(character, mm.currentX, mm.currentY, mm.TargetX, mm.TargetY, target)) {
                 character[mm.TargetX, mm.TargetY] = target;
 

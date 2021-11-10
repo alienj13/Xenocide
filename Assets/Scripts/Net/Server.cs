@@ -7,10 +7,12 @@ using UnityEngine;
 
 public class Server : MonoBehaviour
 {
+    
     public static Server Instance { set; get; }
-
+    private int playerCount = -1;
     private void Awake() {
         Instance = this;
+        RegisterEvents();
     }
 
     public NetworkDriver driver;
@@ -44,6 +46,7 @@ public class Server : MonoBehaviour
             connections.Dispose();
             IsActive = false;
         }
+        UnRegisterEvents();
     }
 
     public void OnDestroy() {
@@ -81,7 +84,11 @@ public class Server : MonoBehaviour
                     Debug.Log("Client disconnected from server");
                     connections[i] = default(NetworkConnection);
                     connectionDropped?.Invoke();
-                    ShutDown();
+                   
+                        Broadcast(new NetDisconnect());
+                    
+                    //ShutDown();
+                    break;
                 }
             }
         }
@@ -118,4 +125,31 @@ public class Server : MonoBehaviour
             }
         }
     }
-}
+
+    private void OnMakeMoveServer(NetMessage msg, NetworkConnection cnn) {
+        NetMakeMove mm = msg as NetMakeMove;
+
+       Broadcast(mm);
+    }
+
+    private void OnWelcomeServer(NetMessage msg, NetworkConnection cnn) {
+        NetWelcome nw = msg as NetWelcome;
+
+        nw.AssignedTeam = ++playerCount;
+      SendToClient(cnn, nw);
+
+        if (playerCount == 1) {
+            Broadcast(new NetStartGame());
+        }
+    }
+    private void RegisterEvents() {
+        NetUtility.S_WELCOME += OnWelcomeServer;
+        NetUtility.S_MAKE_MOVE += OnMakeMoveServer;
+    }
+
+    private void UnRegisterEvents() {
+        NetUtility.S_MAKE_MOVE -= OnMakeMoveServer;
+        NetUtility.S_WELCOME -= OnWelcomeServer;
+    }
+
+    }

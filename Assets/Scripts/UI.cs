@@ -8,6 +8,7 @@ public class UI : MonoBehaviour
     [SerializeField] public GameObject startMenu;
     [SerializeField] public GameObject OnlineMenu;
     [SerializeField] public GameObject Waiting;
+    public GameObject DisconnectedPlayer;
     public static UI Instance { set; get; }
 
     public Server server;
@@ -27,11 +28,12 @@ public class UI : MonoBehaviour
     public void back() {
         startMenu.SetActive(true);
         OnlineMenu.SetActive(false);
+        client.ShutDown();
     }
 
     public void HostOnline() {
         server.initialize(8007);
-        //client.initialize("127.0.0.1", 8007);
+        client.initialize("127.0.0.1", 8007);
         Waiting.SetActive(true);
         OnlineMenu.SetActive(false);
 
@@ -47,6 +49,13 @@ public class UI : MonoBehaviour
         Waiting.SetActive(false);
         server.ShutDown();
         client.ShutDown();
+    }
+
+    public void ExitFromDisconnect() {
+        DisconnectedPlayer.SetActive(false);
+        startMenu.SetActive(true);
+        client.ShutDown();
+
     }
 
 }
