@@ -17,9 +17,10 @@ public class Client : MonoBehaviour
     private NetworkConnection connection;
     private bool IsActive = false;
     public Action connectionDropped;
+    public string PlayerName;
 
 
-    public void initialize(string ip ,ushort port) {
+    public void initialize(string ip ,ushort port,string name) {
         driver = NetworkDriver.Create();
         NetworkEndPoint endpoint = NetworkEndPoint.Parse(ip, port);
 
@@ -28,6 +29,9 @@ public class Client : MonoBehaviour
         Debug.Log("Attempting to connect to server on " + endpoint.Address);
         IsActive = true;
         RegisterToEvent();
+
+        PlayerName = name;
+
     }
 
     public void ShutDown() {
@@ -53,6 +57,7 @@ public class Client : MonoBehaviour
         CheckAlive();
         
         UpdateMessagePump();
+        
     }
 
     private void CheckAlive() {
@@ -97,12 +102,18 @@ public class Client : MonoBehaviour
 
     private void RegisterToEvent() { 
         NetUtility.C_KEEP_ALIVE += OnKeepAlive;
+        
     }
+
+   
+
     private void UnRegisterToEvent() {
         NetUtility.C_KEEP_ALIVE -= OnKeepAlive;
     }
 
     private void OnKeepAlive(NetMessage nm) {
         SendToServer(nm);
+        
+
     }
 }

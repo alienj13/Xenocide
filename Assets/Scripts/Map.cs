@@ -14,10 +14,10 @@ public class Map : MonoBehaviour {
     [SerializeField] private float yoffset = 0.2f;     //math stuff
     [SerializeField] private Vector3 center = Vector3.zero; //math stuff
     [SerializeField] private GameObject victory;
-    List<Vector2Int> HighlightMoves = new List<Vector2Int>();//list to hold all the possible moves 
+    
     [SerializeField] private Camera cam0;
     [SerializeField] private Camera cam1;
-
+    List<Vector2Int> HighlightMoves = new List<Vector2Int>();//list to hold all the possible moves 
     private Characters[,] character;    //array to hold all characters on the board
     private Characters selected;        //which char is selected 
     private Characters Player1Queen;    //access to player 1 queens health
@@ -35,6 +35,7 @@ public class Map : MonoBehaviour {
 
     
     private int currentTeam = -1;
+    private string opponent;
    
 
     //calls our functions 
@@ -137,6 +138,8 @@ public class Map : MonoBehaviour {
         selected = character[x1, y1];
 
         if (selected != null) {
+            NetUserName un = new NetUserName();
+            Client.Instance.SendToServer(un);
             NetMakeMove mm = new NetMakeMove();
             mm.currentX = x1;
             mm.currentY = y1;
@@ -389,6 +392,7 @@ public class Map : MonoBehaviour {
         NetUtility.C_START_GAME += OnStartGame;
         NetUtility.C_MAKE_MOVE+= OnMakeMoveclient;
         NetUtility.C_CLIENT_DISCONNECT += OnDisconnectclient;
+        NetUtility.C_USERNAME += OnUserNameClient;
     }
 
     private void OnDisconnectclient(NetMessage msg) {
@@ -403,13 +407,18 @@ public class Map : MonoBehaviour {
         NetUtility.C_MAKE_MOVE -= OnMakeMoveclient;
     }
 
-  
-  
+    private void OnUserNameClient(NetMessage msg) {
+
+    }
+
     //client
     private void OnWelcomeClient(NetMessage msg) {
         NetWelcome nw = msg as NetWelcome;
         currentTeam = nw.AssignedTeam;
-        Debug.Log($"my assigned team is  { nw.AssignedTeam}");
+        Debug.Log($"my assigned team is  { nw.AssignedTeam} ");
+      
+        
+        
     }
 
     private void OnMakeMoveclient(NetMessage msg) {
@@ -454,8 +463,12 @@ public class Map : MonoBehaviour {
     }
 
     private void OnStartGame(NetMessage msg) {
+      
         UI.Instance.Waiting.SetActive(false);
         UI.Instance.OnlineMenu.SetActive(false);
-       // cam.SetActive(true);
+        
+      
     }
+
+
 }

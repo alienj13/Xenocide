@@ -9,7 +9,7 @@ public class Server : MonoBehaviour
 {
     
     public static Server Instance { set; get; }
-    private int playerCount = -1;
+    
     private void Awake() {
         Instance = this;
         RegisterEvents();
@@ -17,11 +17,15 @@ public class Server : MonoBehaviour
 
     public NetworkDriver driver;
     private NativeList<NetworkConnection> connections;
+    private NativeList<NetworkConnection> room;
     private bool IsActive = false;
     private const float KeepAliveTickRate = 20.0f;
     private float LastKeepAlive;
-
+    private int playerCount = -1;
     public Action connectionDropped;
+    private string player0;
+    private FixedString128Bytes player1;
+   
 
     public void initialize(ushort port) {
         driver = NetworkDriver.Create();
@@ -37,7 +41,9 @@ public class Server : MonoBehaviour
 
         }
         connections = new NativeList<NetworkConnection>(2, Allocator.Persistent);
+        room = new NativeList<NetworkConnection>(2, Allocator.Persistent);
         IsActive = true;
+  
     }
 
     public void ShutDown() {
@@ -46,7 +52,7 @@ public class Server : MonoBehaviour
             connections.Dispose();
             IsActive = false;
         }
-        UnRegisterEvents();
+       // UnRegisterEvents();
     }
 
     public void OnDestroy() {
@@ -134,17 +140,35 @@ public class Server : MonoBehaviour
 
     private void OnWelcomeServer(NetMessage msg, NetworkConnection cnn) {
         NetWelcome nw = msg as NetWelcome;
+        room.Add(cnn);
+       // nw.name = "k";
+        //player1 = nw.name;
+       // Debug.Log(player1);
+        for (int i = 0; i< room.Length;i++) { 
+            if(cnn == room[i]) {
+                nw.AssignedTeam = i;
+                
+            }
+        }
 
-        nw.AssignedTeam = ++playerCount;
-      SendToClient(cnn, nw);
-
+        ++playerCount;
+        SendToClient(cnn, nw);
         if (playerCount == 1) {
-            Broadcast(new NetStartGame());
+            if (room[0] !=null && room[1] != null ) {
+            NetStartGame ng = new NetStartGame();
+            SendToClient(room[0],ng);
+            SendToClient(room[1], ng);
+            }
         }
     }
     private void RegisterEvents() {
         NetUtility.S_WELCOME += OnWelcomeServer;
         NetUtility.S_MAKE_MOVE += OnMakeMoveServer;
+        NetUtility.S_USERNAME += OnUserNameServer;
+    }
+
+    private void OnUserNameServer(NetMessage msg, NetworkConnection cnn) {
+        Debug.Log("username");
     }
 
     private void UnRegisterEvents() {
