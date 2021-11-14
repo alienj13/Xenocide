@@ -23,13 +23,10 @@ public class Client : MonoBehaviour
     public void initialize(string ip ,ushort port,string name) {
         driver = NetworkDriver.Create();
         NetworkEndPoint endpoint = NetworkEndPoint.Parse(ip, port);
-
         connection = driver.Connect(endpoint);
-
         Debug.Log("Attempting to connect to server on " + endpoint.Address);
         IsActive = true;
         RegisterToEvent();
-
         PlayerName = name;
 
     }

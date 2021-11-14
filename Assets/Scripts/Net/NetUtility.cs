@@ -8,7 +8,7 @@ public enum OpCode {
     WELCOME = 2,
     START_GAME = 3,
     MAKE_MOVE = 4,
-    REMATCH = 5,
+    //REMATCH = 5,
     CLIENT_DISCONNECT  = 6,
     USERNAME = 7
 
@@ -18,7 +18,7 @@ public static class NetUtility
     
 {
 
-    public static void OnData(DataStreamReader stream,NetworkConnection cnn, Server server = null) {
+    public static void OnData(DataStreamReader stream,NetworkConnection cnn ) {
         NetMessage msg = null;
         var opCode = (OpCode)stream.ReadByte();
 
@@ -33,16 +33,10 @@ public static class NetUtility
                 Debug.Log("message recieved had no opcode");
                 break;
         }
-
-        if (server != null) {
-            msg.RecievedOnServer(cnn);
-        }
-        else {
+  
             msg.RecievedOnClient();
-        }
+        
     }
-
-
     public static Action<NetMessage> C_KEEP_ALIVE;
     public static Action<NetMessage> C_WELCOME;
     public static Action<NetMessage> C_START_GAME;

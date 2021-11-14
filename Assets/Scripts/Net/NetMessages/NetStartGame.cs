@@ -5,25 +5,18 @@ using UnityEngine;
 
 public class NetStartGame : NetMessage
 {
-
-    //public string opponent { set; get; }
     public NetStartGame() {
         Code = OpCode.START_GAME;
-
     }
     public NetStartGame(DataStreamReader reader) {
         Code = OpCode.START_GAME;
         Deserialize(reader);
-
-
     }
     public override void Serialize(ref DataStreamWriter writer) {
         writer.WriteByte((byte)Code);
-        //writer.WriteFixedString32(opponent);
-
     }
     public override void Deserialize(DataStreamReader reader) {
-      //  opponent= reader.ToString();
+      
     }
 
 

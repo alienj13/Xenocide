@@ -1,12 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections;
 using Unity.Networking.Transport;
 using UnityEngine;
 
 public class NetUserName : NetMessage {
 
     
-
+    public FixedString128Bytes PlayerName;
     public NetUserName() {
         Code = OpCode.USERNAME;
 
@@ -15,12 +17,15 @@ public class NetUserName : NetMessage {
         Code = OpCode.USERNAME;
         Deserialize(reader);
 
+
     }
     public override void Serialize(ref DataStreamWriter writer) {
         writer.WriteByte((byte)Code);
+        writer.WriteFixedString128(PlayerName);
+    
     }
     public override void Deserialize(DataStreamReader reader) {
-       
+        PlayerName = reader.ReadFixedString128();
     }
 
 

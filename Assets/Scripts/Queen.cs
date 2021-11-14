@@ -14,7 +14,8 @@ public class Queen : Characters
         return false;
     }
     public override void attack(Characters opponent, Characters player) {
-        //no attack
+        opponent.HealthLoss(AttackPower);
+        HasAttcked = true;
     }
 
     public override List<Vector2Int> setMoves(int x, int y) {

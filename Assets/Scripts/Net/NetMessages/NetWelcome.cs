@@ -7,7 +7,7 @@ using UnityEngine;
 public class NetWelcome : NetMessage
 {
    public int AssignedTeam { set; get; }
-  // public FixedString128Bytes name { set; get; }
+  
 
     public NetWelcome() {
         Code = OpCode.WELCOME;
@@ -22,15 +22,12 @@ public class NetWelcome : NetMessage
     public override void Serialize(ref DataStreamWriter writer) {
         writer.WriteByte((byte)Code);
         writer.WriteInt(AssignedTeam);
-        //writer.WriteFixedString128(name);
+      
       
        
     }
     public override void Deserialize(DataStreamReader reader) {
         AssignedTeam = reader.ReadInt();
-       // name = reader.ReadFixedString128();
-     
-     
     }
 
 
