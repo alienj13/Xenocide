@@ -34,15 +34,17 @@ public class Map : MonoBehaviour {
     private bool IsTeam0Turn;           //player turns
     private int currentTeam = -1;       //the players team
     private FixedString128Bytes opponent;  //players opponent
-   
+    private float speed = 20;
 
     //calls our functions 
     private void Awake() {
         IsTeam0Turn = true;
         GenerateTiles(tileSize, XCount, YCount);
         RegisterEvents();
-        c = Camera.main;
        
+        //SpawnAll();
+        //AllPosition();
+
     }
 
     //calls function every frame
@@ -60,6 +62,26 @@ public class Map : MonoBehaviour {
         else {
             c = Camera.main;
         }
+
+        if (Input.GetKey(KeyCode.D)) {
+            c.transform.Translate(new Vector3(speed * Time.deltaTime, 0, 0));
+        }
+        if (Input.GetKey(KeyCode.A)) {
+            c.transform.Translate(new Vector3(-speed * Time.deltaTime, 0, 0));
+        }
+        if (Input.GetKey(KeyCode.S)) {
+            c.transform.Translate(new Vector3(0,-0.15f, -speed * Time.deltaTime));
+        }
+        if (Input.GetKey(KeyCode.W)) {
+            c.transform.Translate(new Vector3(0,0.15f, speed * Time.deltaTime));
+        }
+        if (Input.GetAxis("Mouse ScrollWheel") > 0f) { 
+            c.transform.Translate(new Vector3(0, 0, speed * Time.deltaTime*5));
+        }
+        if (Input.GetAxis("Mouse ScrollWheel") < 0f) {
+            c.transform.Translate(new Vector3(0, 0, -speed * Time.deltaTime * 5));
+        }
+
         //changes tiles depending on where mouse is positioned to highlight tiles
         RaycastHit info;
         Ray ray = c.ScreenPointToRay(Input.mousePosition);
@@ -325,7 +347,7 @@ public class Map : MonoBehaviour {
         character[6, 9] = SpawnCharacter(characterType.Warrior, 1);
         character[4, 9] = SpawnCharacter(characterType.Warrior, 1);
         character[5, 8] = SpawnCharacter(characterType.Warrior, 1);
-        character[5, 6] = SpawnCharacter(characterType.Drone, 1);
+       character[5, 6] = SpawnCharacter(characterType.Drone, 1);
         character[3, 6] = SpawnCharacter(characterType.Drone, 1);
         character[7, 6] = SpawnCharacter(characterType.Drone, 1);
     
@@ -334,11 +356,19 @@ public class Map : MonoBehaviour {
 
     //spawns a single 3D character, assigns their team and type
     public Characters SpawnCharacter( characterType type, int team) {
-        Characters c = Instantiate(prefabs[(int)type - 1], transform).GetComponent<Characters>();
+        Characters c;
+        if (team == 0 && type == characterType.Drone) {
+            c = Instantiate(prefabs[(int)type - 1], transform.position,
+                transform.rotation * Quaternion.Euler(0f, 180f, 0f)).GetComponent<Characters>();
+        }
+        else {
+             c = Instantiate(prefabs[(int)type - 1], transform).GetComponent<Characters>();
+        }
         c.type = type;
         c.team = team;
-        c.GetComponent<MeshRenderer>().material = teamMaterial[team];
+        c.GetComponent<MeshRenderer>().material = teamMaterial[team];     
         c.SetAttributes();
+        
         return c;
     }
 
@@ -385,6 +415,39 @@ public class Map : MonoBehaviour {
 
     //moves the position of the character
     public void Move(Characters c, int x, int y) {
+        if (x > c.GetX() && y == c.GetY()) {
+            c.transform.rotation= Quaternion.Euler(0f, 270f, 0f);
+            Debug.Log("right");
+
+        }
+        else if (x < c.GetX() && y == c.GetY()) {
+            c.transform.rotation = Quaternion.Euler(0f, 90f, 0f);
+            Debug.Log("left");
+        }
+        else if (y > c.GetY() && x == c.GetX()) {
+            c.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
+            Debug.Log("up");
+        }
+        else if (y < c.GetY() && x == c.GetX()) {
+            c.transform.rotation = Quaternion.Euler(0f, 360f, 0f);
+            Debug.Log("down");
+        }
+        else if (x > c.GetX() && y >c.GetY()) {
+            c.transform.rotation = Quaternion.Euler(0f, 225f, 0f);
+            Debug.Log("upper right");
+        }
+        else if (x < c.GetX() && y > c.GetY()) {
+            c.transform.rotation = Quaternion.Euler(0f, 135f, 0f);
+            Debug.Log("upper left");
+        }
+        else if (x > c.GetX() && y < c.GetY()) {
+            c.transform.rotation = Quaternion.Euler(0f, 315f, 0f);
+            Debug.Log("screw you team!!! ");
+        }
+        else if (x > c.GetX() && y > c.GetY()) {
+            c.transform.rotation = Quaternion.Euler(0f, 45f, 0f);
+            Debug.Log("lower left");
+        }
         character[x, y].SetX(x);
         character[x, y].SetY(y);
         character[x, y].transform.position = GetTileCenter(x, y);
