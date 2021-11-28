@@ -96,6 +96,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   team: 0
-  type: 0
+  type: 1
   HasAttcked: 0
   HasKilled: 0

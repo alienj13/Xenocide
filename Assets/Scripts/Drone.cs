@@ -26,8 +26,6 @@ public class Drone : Characters
                     return false;
                 }
                 else {
-                   // this.currentX = x2;
-                    //this.currentY = y2;
                     return true;
                 }
             }

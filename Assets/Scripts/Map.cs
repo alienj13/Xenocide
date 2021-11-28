@@ -7,19 +7,20 @@ using UnityEngine;
 
 public class Map : MonoBehaviour {
 
+    public static Map Instance { set; get; }
+
     [SerializeField] private Material m;               //material of the tiles 
     [SerializeField] private GameObject[] prefabs;     //array of 3D models
     [SerializeField] private Material[] teamMaterial;  //the colour of player 1 or 2;
     [SerializeField] private float tileSize = 1.0f;    
     [SerializeField] private float yoffset = 0.2f;     
     [SerializeField] private Vector3 center = Vector3.zero; 
-    [SerializeField] private GameObject victory; //victory ui
+   // [SerializeField] private GameObject victory; //victory ui
     [SerializeField] private Camera cam0;  //camera for player assigned to team 0
     [SerializeField] private Camera cam1;  //camera for player assigned to team 0
 
     List<Vector2Int> HighlightMoves = new List<Vector2Int>();//list to hold all the possible moves 
     private Characters[,] character;    //array to hold all characters on the board
-    private Characters selected;        //which char is selected 
     private Characters Player0Queen;    //access to player 1 queens health
     private Characters Player1Queen;    //access to player 1 queens health
     private const int XCount = 10;      // X size of the tilemap
@@ -35,6 +36,7 @@ public class Map : MonoBehaviour {
     private int currentTeam = -1;       //the players team
     private FixedString128Bytes opponent;  //players opponent
     private float speed = 20;
+    
 
     //calls our functions 
     private void Awake() {
@@ -85,7 +87,7 @@ public class Map : MonoBehaviour {
         //changes tiles depending on where mouse is positioned to highlight tiles
         RaycastHit info;
         Ray ray = c.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out info, 100, LayerMask.GetMask("Tile", "Hover","Highlight"))) {
+        if (Physics.Raycast(ray, out info, 100, LayerMask.GetMask("Tile", "Hover","Highlight","EnemyTile"))) {
             Vector2Int hitPosition = GetTileIndex(info.transform.gameObject);
             if (hover == -Vector2Int.one) {
                 hover = hitPosition;
@@ -94,7 +96,12 @@ public class Map : MonoBehaviour {
             if (hover != hitPosition) {
                 
                    if (MouseHighlight()) {
-                    tiles[hover.x, hover.y].layer = LayerMask.NameToLayer("Highlight");
+                    if (character[hover.x, hover.y] != null && character[hover.x, hover.y].team != currentTeam) {
+                        tiles[hover.x, hover.y].layer = LayerMask.NameToLayer("EnemyTile");
+                    }
+                    else {
+                        tiles[hover.x, hover.y].layer = LayerMask.NameToLayer("Highlight");
+                    }
                 }
                 else {
                     tiles[hover.x, hover.y].layer = LayerMask.NameToLayer("Tile");
@@ -116,7 +123,7 @@ public class Map : MonoBehaviour {
                     if ((character[hitPosition.x, hitPosition.y].team == 0 && IsTeam0Turn && currentTeam==0) ||
                         (character[hitPosition.x, hitPosition.y].team == 1 && !IsTeam0Turn && currentTeam == 1)) {
                         SelectPiece(x, y);
-                        HighlightMoves = selected.setMoves(selected.GetX(),selected.GetY());
+                        HighlightMoves = Client.Instance.getSelected().setMoves(Client.Instance.getSelected().GetX(), Client.Instance.getSelected().GetY());
                         HighlightMovesMethod();
                     }
                 }
@@ -130,7 +137,12 @@ public class Map : MonoBehaviour {
         else { 
             if (hover != -Vector2Int.one) {
                 if (MouseHighlight()) {
-                    tiles[hover.x, hover.y].layer = LayerMask.NameToLayer("Highlight");
+                    if (character[hover.x, hover.y] != null && character[hover.x, hover.y].team != currentTeam) {
+                        tiles[hover.x, hover.y].layer = LayerMask.NameToLayer("EnemyTile");
+                    }
+                    else {
+                        tiles[hover.x, hover.y].layer = LayerMask.NameToLayer("Highlight");
+                    }
                 }
                 else {
                     tiles[hover.x, hover.y].layer = LayerMask.NameToLayer("Tile");
@@ -150,33 +162,36 @@ public class Map : MonoBehaviour {
     public void AttemptMove(int x1, int y1, int x2, int y2) {
         StartMove = new Vector2Int(x1, y1);
         EndMove = new Vector2Int(x2, y2);
-        selected = character[x1, y1];
+        Client.Instance.selectedPiece = character[x1, y1];
         characterType other = characterType.Warrior;
+
         if (character[x2,y2] != null) { 
          other = character[x2, y2].type;
     }
-        if (selected != null) {
+        if (Client.Instance.getSelected() != null) {
 
             ToMakeMoveClient(x1, y1, x2, y2);
 
             if (StartMove == EndMove) {
-                Move(selected, x1, y1);
-                selected = null;
+                Debug.Log("1");
+                Move(Client.Instance.getSelected(), x1, y1);
+                Client.Instance.setSelected(null);
                 RemoveHighlightMoves();
                 StartMove = Vector2Int.zero;
                 return;
             }
 
-            else if (selected.ValidMove(character, x1, y1, x2, y2, selected) ) {
-                if (selected.HasKilled) {
-                    KilledStatus(selected, other);
+            else if (Client.Instance.getSelected().ValidMove(character, x1, y1, x2, y2, Client.Instance.getSelected())) {
+                if (Client.Instance.getSelected().HasKilled) {
+                    KilledStatus(Client.Instance.getSelected(), other);
                 }
-                character[x2, y2] = selected;
-                Move(selected, x2, y2);
+                character[x2, y2] = Client.Instance.getSelected();
+                Debug.Log("2");
+                Move(Client.Instance.getSelected(), x2, y2);
                 
                 character[x1, y1] = null;
-                selected.HasKilled = false;
-                selected.HasAttcked = false;
+                Client.Instance.getSelected().HasKilled = false;
+                Client.Instance.getSelected().HasAttcked = false;
                 if (Player0Queen.GetHealth() < 1) {
 
                     if (currentTeam == 0) {
@@ -201,25 +216,26 @@ public class Map : MonoBehaviour {
 
                 }
                 IsTeam0Turn = !IsTeam0Turn;
-                selected = null;
+                Client.Instance.setSelected(null);
                 RemoveHighlightMoves();
                 StartMove = Vector2Int.zero;
                 
             }
 
-            else if (selected.HasAttcked == true || selected.HasKilled == true) {
-                AttackStatus(selected,other);
-                selected.HasAttcked = false;
-                selected.HasKilled = false;
-                selected = null;
+            else if (Client.Instance.getSelected().HasAttcked == true || Client.Instance.getSelected().HasKilled == true) {
+                AttackStatus(Client.Instance.getSelected(), other);
+                Client.Instance.getSelected().HasAttcked = false;
+                Client.Instance.getSelected().HasKilled = false;
+                Client.Instance.setSelected(null);
                 RemoveHighlightMoves();
                 StartMove = Vector2Int.zero;
                 IsTeam0Turn = !IsTeam0Turn;
             }
             
             else {
-                Move(selected, x1, y1);
-                selected = null;
+                Debug.Log("3");
+                Move(Client.Instance.getSelected(), x1, y1);
+                Client.Instance.setSelected(null);
                 RemoveHighlightMoves();
                 StartMove = Vector2Int.zero;
                 return;
@@ -347,7 +363,7 @@ public class Map : MonoBehaviour {
         character[6, 9] = SpawnCharacter(characterType.Warrior, 1);
         character[4, 9] = SpawnCharacter(characterType.Warrior, 1);
         character[5, 8] = SpawnCharacter(characterType.Warrior, 1);
-       character[5, 6] = SpawnCharacter(characterType.Drone, 1);
+        character[5, 4] = SpawnCharacter(characterType.Drone, 1);
         character[3, 6] = SpawnCharacter(characterType.Drone, 1);
         character[7, 6] = SpawnCharacter(characterType.Drone, 1);
     
@@ -405,18 +421,19 @@ public class Map : MonoBehaviour {
         RemoveHighlightMoves();
         Characters c = character[x, y];
         if (c != null) {
-         
-            selected = c;
+            Client.Instance.selectedPiece = c;
             StartMove = mouseOver;
-            Debug.Log(selected.type);
+            Debug.Log(Client.Instance.getSelected().type);
         }
     }
 
 
     //moves the position of the character
     public void Move(Characters c, int x, int y) {
+
+
         if (x > c.GetX() && y == c.GetY()) {
-            c.transform.rotation= Quaternion.Euler(0f, 270f, 0f);
+            c.transform.rotation = Quaternion.Euler(0f, 270f, 0f);
             Debug.Log("right");
 
         }
@@ -432,7 +449,7 @@ public class Map : MonoBehaviour {
             c.transform.rotation = Quaternion.Euler(0f, 360f, 0f);
             Debug.Log("down");
         }
-        else if (x > c.GetX() && y >c.GetY()) {
+        else if (x > c.GetX() && y > c.GetY()) {
             c.transform.rotation = Quaternion.Euler(0f, 225f, 0f);
             Debug.Log("upper right");
         }
@@ -448,16 +465,26 @@ public class Map : MonoBehaviour {
             c.transform.rotation = Quaternion.Euler(0f, 45f, 0f);
             Debug.Log("lower left");
         }
+
+
         character[x, y].SetX(x);
         character[x, y].SetY(y);
-        character[x, y].transform.position = GetTileCenter(x, y);
+
+        character[x, y].transform.position = GetTileCenter(x,y);
+
+
     }
 
 
     //when a character is selected, all their possibe moves are highlighted in blue
     public void HighlightMovesMethod() {
         foreach (Vector2Int i in HighlightMoves) {
-            tiles[i.x, i.y].layer = LayerMask.NameToLayer("Highlight");
+            if (character[i.x, i.y] != null && character[i.x, i.y].team != currentTeam) {
+                tiles[i.x, i.y].layer = LayerMask.NameToLayer("EnemyTile");
+            }
+            else {
+                tiles[i.x, i.y].layer = LayerMask.NameToLayer("Highlight");
+            }
         }
     }
 
@@ -481,15 +508,15 @@ public class Map : MonoBehaviour {
         return false;
     }
     public void Exit() {
-        victory.SetActive(false);
+        UI.Instance.Victory.SetActive(false);
         UI.Instance.startMenu.SetActive(true);
         UI.Instance.turns.SetActive(false);
         UI.Instance.status.SetActive(false);
     }
     public void ResetMap() {
 
-        victory.SetActive(false);
-        selected = null;
+        UI.Instance.Victory.SetActive(false);
+        Client.Instance.setSelected(null);
 
         for (int x = 0; x < XCount; x++) {
             for (int y = 0; y < YCount; y++) {
@@ -505,7 +532,7 @@ public class Map : MonoBehaviour {
     }
     public void Victory(FixedString128Bytes winner, FixedString128Bytes looser) {
         UI.Instance.WinnerLoser.text = $"{winner} has won, {looser} has lost";
-        victory.SetActive(true);
+        UI.Instance.Victory.SetActive(true);
         UI.Instance.turns.SetActive(false);
         UI.Instance.status.SetActive(false);
     }
@@ -566,7 +593,7 @@ public class Map : MonoBehaviour {
         NetMakeMove mm = msg as NetMakeMove;
         
         if (mm.team != currentTeam) {
-            characterType other = characterType.Warrior;
+            characterType other = characterType.Warrior;// could not make null so i made it warrior as a placeholder
             if (character[mm.TargetX,mm.TargetY] != null) {
                 other = character[mm.TargetX, mm.TargetY].type;
             }
@@ -602,7 +629,7 @@ public class Map : MonoBehaviour {
                 }
                 IsTeam0Turn = !IsTeam0Turn;
                 target = null;
-                selected = null;
+                Client.Instance.setSelected(null);
                 RemoveHighlightMoves();
                 StartMove = Vector2Int.zero;
             }
@@ -611,7 +638,7 @@ public class Map : MonoBehaviour {
 
                target.HasAttcked = false;
                 target.HasKilled = false;
-                selected = null;
+                Client.Instance.setSelected(null);
                 target = null;
                 RemoveHighlightMoves();
                 StartMove = Vector2Int.zero;

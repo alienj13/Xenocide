@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections;
 using Unity.Networking.Transport;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class Client : MonoBehaviour
 {
@@ -18,7 +20,12 @@ public class Client : MonoBehaviour
     private bool IsActive = false;
     public Action connectionDropped;
     public string PlayerName;
-
+    public Characters selectedPiece;
+    private int currentTeam = -1;
+    public string Result;
+    public Map m;
+    private Vector3 bounds;
+    private FixedString128Bytes opponent;
 
     public void initialize(string ip ,ushort port,string name) {
         driver = NetworkDriver.Create();
@@ -113,4 +120,18 @@ public class Client : MonoBehaviour
         
 
     }
+
+
+    public Characters getSelected() {
+        return selectedPiece;
+    }
+
+    public void setSelected(Characters c) {
+        selectedPiece = c;
+    }
+
+    
+
 }
+
+
