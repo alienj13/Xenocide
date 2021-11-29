@@ -1,39 +1,72 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
+using Photon.Realtime;
+using ExitGames.Client.Photon;
+using System;
 
-public class MultiplayerGameController : GameController
+public class MultiplayerGameController : GameController, IOnEventCallback
 {
-    public override bool CanPerformMove()
+    private const byte SET_GAME_STATE_EVENT_CODE = 1;
+
+    private XPlayer localPlayer;
+    private NetworkManager networkManager;
+
+    public void SetMultiplayerDependencies(NetworkManager networkManager)
     {
-        throw new System.NotImplementedException();
+        this.networkManager = networkManager;
     }
 
-    public override void TryToStartCurrentGame()
+    private void OnEnable()
     {
-        throw new System.NotImplementedException();
+        PhotonNetwork.AddCallbackTarget(this);
+    }
+
+    private void OnDisable()
+    {
+        PhotonNetwork.RemoveCallbackTarget(this);
     }
 
     protected override void SetGameState(GameState state)
     {
-        throw new System.NotImplementedException();
+        object[] content = new object[] { (int)state };
+        RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
+
+        PhotonNetwork.RaiseEvent(SET_GAME_STATE_EVENT_CODE, content, raiseEventOptions, SendOptions.SendReliable);
     }
 
-    // Start is called before the first frame update
-    void Start()
+    public override void TryToStartCurrentGame()
     {
-        
+        if (networkManager.IsRoomFull())
+            SetGameState(GameState.Play);
+    }
+    public override bool CanPerformMove()
+    {
+        if (!IsGameInProgess() | !IsLocalPlayerTurn())
+            return false;
+        return true;
     }
 
-    // Update is called once per frame
-    void Update()
+    private bool IsLocalPlayerTurn()
     {
-        
+        return localPlayer == activePlayer;
     }
 
-    internal void SetMultiplayerDependencies(NetworkManager networkManager)
+    public void SetLocalPlayer(PlayerName team)
     {
-        throw new NotImplementedException();
+        localPlayer = (team == PlayerName.P1) ? player1 : player2;
+    }
+
+    public void OnEvent(EventData photonEvent)
+    {
+        byte eventCode = photonEvent.Code;
+        if (eventCode == SET_GAME_STATE_EVENT_CODE)
+        {
+            object[] data = (object[])photonEvent.CustomData;
+            GameState state = (GameState)data[0];
+
+            this.state = state;
+        }
     }
 }

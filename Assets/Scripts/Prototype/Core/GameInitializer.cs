@@ -14,48 +14,53 @@ public class GameInitializer : MonoBehaviour
     [Header("Scene references")]
     [SerializeField] private NetworkManager networkManager;
     [SerializeField] private UIManager UIManager;
-    [SerializeField] private Transform boardAnchor;
+    [SerializeField] private Transform fieldAnchor;
     [SerializeField] private CameraController cameraController;
+
+    [Header("Debugging")]
+    [SerializeField] private DebugButton debugButton;
 
     public void CreateMultiplayerField()
     {
         // TODO: Re-implement once we have Photon installed
         //if (!networkManager.IsRoomFull())
-        //    PhotonNetwork.Instantiate(multiplayerFieldPrefab.name, boardAnchor.position, boardAnchor.rotation);
+        //    PhotonNetwork.Instantiate(multiplayerFieldPrefab.name, fieldAnchor.position, fieldAnchor.rotation);
     }
 
     public void CreateSingleplayerField()
     {
-        Instantiate(singleplayerFieldPrefab, boardAnchor);
+        Instantiate(singleplayerFieldPrefab, fieldAnchor);
     }
 
     public void InitializeMultiplayerController()
     {
-        MultiplayerField board = FindObjectOfType<MultiplayerField>();
-        if (board)
+        MultiplayerField field = FindObjectOfType<MultiplayerField>();
+        if (field)
         {
             MultiplayerGameController controller = Instantiate(multiplayerGameControllerPrefab);
-            controller.SetDependencies(UIManager, board, cameraController);
+            controller.SetDependencies(UIManager, field, cameraController);
             controller.CreatePlayers();
 
             controller.SetMultiplayerDependencies(networkManager);
             networkManager.SetDependencies(controller);
 
-            board.SetDependencies(controller);
+            field.SetDependencies(controller);
         }
     }
 
     public void InitializeSingleplayerController()
     {
-        SingleplayerField board = FindObjectOfType<SingleplayerField>();
-        if (board)
+        SingleplayerField field = FindObjectOfType<SingleplayerField>();
+        if (field)
         {
             SingleplayerGameController controller = Instantiate(singleplayerGameControllerPrefab);
-            controller.SetDependencies(UIManager, board, cameraController);
+            controller.SetDependencies(UIManager, field, cameraController);
             controller.CreatePlayers();
 
-            board.SetDependencies(controller);
+            field.SetDependencies(controller);
             controller.StartNewGame();
+
+            debugButton.SetDependencies(controller, field);
         }
     }
 }

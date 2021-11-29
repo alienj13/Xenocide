@@ -10,7 +10,8 @@ public abstract class Field : MonoBehaviour
     public const int FIELD_HEIGHT = 21;
     public const int FIELD_SIZE = 21;
 
-    [SerializeField] private Transform bottomLeftSquareTransform;
+    [SerializeField] private Transform bottomLeftCornerTransform;
+    [SerializeField] private Transform bottomRightCornerTransform;
     [SerializeField] private float squareSize;
     private GameController gameController;
     private SquareSelectorCreator squareSelector;
@@ -24,7 +25,13 @@ public abstract class Field : MonoBehaviour
     protected virtual void Awake()
     {
         squareSelector = GetComponent<SquareSelectorCreator>();
+        SetSquareSize();
         CreateGrid();
+    }
+
+    private void SetSquareSize()
+    {
+        squareSize = Mathf.Abs(bottomLeftCornerTransform.position.x - bottomRightCornerTransform.position.x) / (FIELD_SIZE - 1);
     }
 
     public void SetDependencies(GameController gameController)
@@ -39,7 +46,7 @@ public abstract class Field : MonoBehaviour
 
     public Vector3 CalculatePositionFromCoords(Vector2Int coords)
     {
-        return bottomLeftSquareTransform.position + new Vector3(coords.x * squareSize, 0f, coords.y * squareSize);
+        return bottomLeftCornerTransform.position + new Vector3(coords.x * squareSize, 0f, coords.y * squareSize);
     }
 
     private Vector2Int CalculateCoordsFromPosition(Vector3 inputPosition)

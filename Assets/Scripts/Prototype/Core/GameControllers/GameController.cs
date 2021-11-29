@@ -13,7 +13,7 @@ public abstract class GameController : MonoBehaviour
     private CameraController cameraController;
 
     public enum GameState { Init, Play, Pause, Finished }
-    protected GameState state;
+    [SerializeField] public GameState state;
 
     private UnitCreator unitCreator;
 
@@ -48,7 +48,7 @@ public abstract class GameController : MonoBehaviour
     {
         SetGameState(GameState.Init);
 
-        //UIManager.OnGameStarted();
+        UIManager.OnGameStarted();
 
         CreatePiecesFromLayout(startingFieldLayout);
         activePlayer = player1;
@@ -150,7 +150,7 @@ public abstract class GameController : MonoBehaviour
     {
         Debug.Log("Game Ended.");
 
-        //UIManager.OnGameFinished(activePlayer.team.ToString());
+        UIManager.OnGameFinished(activePlayer.team.ToString());
         SetGameState(GameState.Finished);
     }
 
