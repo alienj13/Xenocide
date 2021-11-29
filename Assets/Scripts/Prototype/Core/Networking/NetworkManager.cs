@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,5 +15,10 @@ public class NetworkManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    internal void SetDependencies(MultiplayerGameController controller)
+    {
+        throw new NotImplementedException();
     }
 }

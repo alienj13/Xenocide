@@ -2,8 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MultiplayerField : MonoBehaviour
+public class MultiplayerField : Field
 {
+    public override void SelectedUnitMoved(Vector2 coords)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void SetSelectedUnit(Vector2 coords)
+    {
+        throw new System.NotImplementedException();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
