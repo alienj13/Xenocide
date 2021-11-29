@@ -89,7 +89,7 @@ public class UI : MonoBehaviour
     }
 
     public void HostOnline() {
-        client.initialize("127.0.0.1", 8007,Playername.text);
+        Client.Instance.initialize("127.0.0.1", 8007,Playername.text);
         Waiting.SetActive(true);
         OnlineMenu.SetActive(false);
     }
