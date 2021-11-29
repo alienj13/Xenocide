@@ -12,4 +12,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00e0f03c2f4a0014eb943b10a090647d, type: 3}
   m_Name: Test Layout - 01
   m_EditorClassIdentifier: 
-  fieldSquares: []
+  fieldSquares:
+  - position: {x: 0, y: 0}
+    unitType: 1
+    playerName: 0
+  - position: {x: 1, y: 0}
+    unitType: 2
+    playerName: 0
+  - position: {x: 0, y: 1}
+    unitType: 3
+    playerName: 0
+  - position: {x: 3, y: 3}
+    unitType: 0
+    playerName: 0
+  - position: {x: 20, y: 20}
+    unitType: 1
+    playerName: 1
+  - position: {x: 19, y: 20}
+    unitType: 2
+    playerName: 1
+  - position: {x: 20, y: 19}
+    unitType: 3
+    playerName: 1
+  - position: {x: 17, y: 17}
+    unitType: 0
+    playerName: 1
