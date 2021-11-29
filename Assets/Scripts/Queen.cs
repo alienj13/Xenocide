@@ -6,7 +6,7 @@ public class Queen : Characters
 
 {
     public override void SetAttributes() {
-        health = 100;
+        health = 20;
         AttackPower = 10;
     }
     public override bool ValidMove(Characters[,] board, int x1, int y1, int x2, int y2, Characters c) {
@@ -14,7 +14,8 @@ public class Queen : Characters
         return false;
     }
     public override void attack(Characters opponent, Characters player) {
-        //no attack
+        opponent.HealthLoss(AttackPower);
+        HasAttcked = true;
     }
 
     public override List<Vector2Int> setMoves(int x, int y) {
