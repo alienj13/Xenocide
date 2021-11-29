@@ -2,17 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InputReceiver : MonoBehaviour
+public abstract class InputReceiver : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    protected IInputHandler[] inputHandlers;
 
-    // Update is called once per frame
-    void Update()
+    public abstract void OnInputReceived();
+
+    private void Awake()
     {
-        
+        inputHandlers = GetComponents<IInputHandler>();
     }
 }
