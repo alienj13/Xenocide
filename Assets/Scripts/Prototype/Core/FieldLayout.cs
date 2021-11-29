@@ -1,18 +1,54 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FieldLayout : MonoBehaviour
+[CreateAssetMenu(menuName = "Scriptable Objects/Field/Layout")]
+public class FieldLayout : ScriptableObject
 {
-    // Start is called before the first frame update
-    void Start()
+    [Serializable]
+    private class FieldSquareSetup
     {
-        
+        public Vector2Int position;
+        public UnitType unitType;
+        public PlayerName playerName;
     }
 
-    // Update is called once per frame
-    void Update()
+    [SerializeField] private FieldSquareSetup[] fieldSquares;
+
+    public int GetUnitsCount()
     {
-        
+        return fieldSquares.Length;
+    }
+
+    public Vector2Int GetSquareCoordsAtIndex(int index)
+    {
+        if (index < 0 || index >= fieldSquares.Length)
+        {
+            Debug.LogError("Index of piece (" + index + ") is out of bound.");
+            return new Vector2Int(-1, -1);
+        }
+        Vector2Int unitPosition = fieldSquares[index].position;
+        return new Vector2Int(unitPosition.x, unitPosition.y);
+    }
+
+    public String GetSquareUnitNameAtIndex(int index)
+    {
+        if (index < 0 || index >= fieldSquares.Length)
+        {
+            Debug.LogError("Index of piece (" + index + ") is out of bound.");
+            return "";
+        }
+        return fieldSquares[index].unitType.ToString();
+    }
+
+    public PlayerName GetSquarePlayerNameAtIndex(int index)
+    {
+        if (index < 0 || index >= fieldSquares.Length)
+        {
+            Debug.LogError("Index of piece (" + index + ") is out of bound.");
+            return PlayerName.P1;
+        }
+        return fieldSquares[index].playerName;
     }
 }

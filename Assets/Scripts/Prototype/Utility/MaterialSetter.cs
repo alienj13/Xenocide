@@ -2,17 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(MeshRenderer))]
 public class MaterialSetter : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private MeshRenderer _meshRenderer;
+    private MeshRenderer meshRenderer
     {
-        
+        get
+        {
+            if (_meshRenderer == null)
+                _meshRenderer = GetComponent<MeshRenderer>();
+            return _meshRenderer;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SetSingleMaterial(Material material)
     {
-        
+        meshRenderer.material = material;
     }
 }
