@@ -2,17 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SingleplayerField : MonoBehaviour
+public class SingleplayerField : Field
 {
-    // Start is called before the first frame update
-    void Start()
+    public override void SelectedUnitMoved(Vector2 coords)
     {
-        
+        Vector2Int intCoords = new Vector2Int(Mathf.RoundToInt(coords.x), Mathf.RoundToInt(coords.y));
+        OnSelectedUnitMove(intCoords);
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void SetSelectedUnit(Vector2 coords)
     {
-        
+        Vector2Int intCoords = new Vector2Int(Mathf.RoundToInt(coords.x), Mathf.RoundToInt(coords.y));
+        OnSetSelectedUnit(intCoords);
     }
 }

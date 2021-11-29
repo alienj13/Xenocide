@@ -2,17 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SingleplayerGameController : MonoBehaviour
+public class SingleplayerGameController : GameController
 {
-    // Start is called before the first frame update
-    void Start()
+    protected override void SetGameState(GameState state)
     {
-        
+        this.state = state;
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void TryToStartCurrentGame()
     {
-        
+        SetGameState(GameState.Play);
+    }
+
+    public override bool CanPerformMove()
+    {
+        if (!IsGameInProgess())
+            return false;
+        return true;
+    }
+
+    protected override void ChangeActiveTeam()
+    {
+        base.ChangeActiveTeam();
+        //DelayGameOnTeamChange();
     }
 }
