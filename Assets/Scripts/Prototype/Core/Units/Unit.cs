@@ -12,7 +12,7 @@ public abstract class Unit : MonoBehaviour
 
     public Field field { protected get; set; }
     public Vector2Int occupiedSquare { get; set; }
-    public PlayerName team { get; set; }
+    public PlayerTeam team { get; set; }
     public bool hasMoved { get; private set; }
     public List<Vector2Int> availableMoves;
 
@@ -68,7 +68,7 @@ public abstract class Unit : MonoBehaviour
         availableMoves.Add(coords);
     }
 
-    public void SetData(Vector2Int coords, PlayerName team, Field field)
+    public void SetData(Vector2Int coords, PlayerTeam team, Field field)
     {
         this.occupiedSquare = coords;
         this.team = team;
@@ -103,7 +103,7 @@ public abstract class Unit : MonoBehaviour
         }
     }
 
-    protected Unit GetUnitInDirection<T>(PlayerName team, Vector2Int direction) where T : Unit
+    protected Unit GetUnitInDirection<T>(PlayerTeam team, Vector2Int direction) where T : Unit
     {
         for (int i = 1; i <= Field.FIELD_SIZE; i++)
         {

@@ -53,9 +53,9 @@ public class MultiplayerGameController : GameController, IOnEventCallback
         return localPlayer == activePlayer;
     }
 
-    public void SetLocalPlayer(PlayerName team)
+    public void SetLocalPlayer(PlayerTeam team)
     {
-        localPlayer = (team == PlayerName.P1) ? player1 : player2;
+        localPlayer = (team == PlayerTeam.P1) ? player1 : player2;
     }
 
     public void OnEvent(EventData photonEvent)

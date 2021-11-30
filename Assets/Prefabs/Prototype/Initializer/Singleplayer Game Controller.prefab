@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7562242011003220249}
-  - component: {fileID: 7045370976818772425}
   - component: {fileID: 3965878677903775616}
   m_Layer: 0
   m_Name: Singleplayer Game Controller
@@ -32,25 +31,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7045370976818772425
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7562242011003220248}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98d7aaa4765230b4b95a2541bc0e7229, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  unitPrefabs:
-  - {fileID: 5387734454352972018, guid: 182a7e0b7439ecb48a8d15889652b33b, type: 3}
-  - {fileID: 2834360063148242455, guid: 1880f6d4ad8b7c1498e3eea4de04a366, type: 3}
-  - {fileID: 6287846801813621524, guid: 8e0902d174fa78742aa7abf84edf6bd5, type: 3}
-  - {fileID: 7706333433906662180, guid: 7c762d7cfce7b8c408411633a3a463eb, type: 3}
-  player1Material: {fileID: 2100000, guid: 78c1f71a7524b1b4d9f1125ac15b3188, type: 2}
-  player2Material: {fileID: 2100000, guid: e19e5b8e9baa1ee44a8096837c4f60ab, type: 2}
 --- !u!114 &3965878677903775616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64,3 +44,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingFieldLayout: {fileID: 11400000, guid: 64b2b55db433cde4aa1457ab8678ad38, type: 2}
+  state: 0

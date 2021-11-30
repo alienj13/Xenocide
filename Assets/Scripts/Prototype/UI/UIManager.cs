@@ -89,9 +89,9 @@ public class UIManager : MonoBehaviour
         networkManager.SelectTeam(intTeam);
     }
 
-    public void RestrictTeamChoice(PlayerName occupiedTeam)
+    public void RestrictTeamChoice(PlayerTeam occupiedTeam)
     {
-        var buttonToDeactivate = (occupiedTeam == PlayerName.P1) ? player1TeamButton : player2TeamButton;
+        var buttonToDeactivate = (occupiedTeam == PlayerTeam.P1) ? player1TeamButton : player2TeamButton;
         buttonToDeactivate.interactable = false;
     }
 

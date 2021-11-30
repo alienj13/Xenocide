@@ -16,6 +16,7 @@ public class GameInitializer : MonoBehaviour
     [SerializeField] private UIManager UIManager;
     [SerializeField] private Transform fieldAnchor;
     [SerializeField] private CameraController cameraController;
+    [SerializeField] private UnitCreator unitCreator;
 
     [Header("Debugging")]
     [SerializeField] private DebugButton debugButton;
@@ -38,7 +39,7 @@ public class GameInitializer : MonoBehaviour
         if (field)
         {
             MultiplayerGameController controller = Instantiate(multiplayerGameControllerPrefab);
-            controller.SetDependencies(UIManager, field, cameraController);
+            controller.SetDependencies(UIManager, field, cameraController, unitCreator);
             controller.CreatePlayers();
 
             controller.SetMultiplayerDependencies(networkManager);
@@ -54,7 +55,7 @@ public class GameInitializer : MonoBehaviour
         if (field)
         {
             SingleplayerGameController controller = Instantiate(singleplayerGameControllerPrefab);
-            controller.SetDependencies(UIManager, field, cameraController);
+            controller.SetDependencies(UIManager, field, cameraController, unitCreator);
             controller.CreatePlayers();
 
             field.SetDependencies(controller);

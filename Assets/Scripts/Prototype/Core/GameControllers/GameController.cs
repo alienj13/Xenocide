@@ -4,18 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-[RequireComponent(typeof(UnitCreator))]
 public abstract class GameController : MonoBehaviour
 {
     [SerializeField] private FieldLayout startingFieldLayout;
     private Field field;
     private UIManager UIManager;
     private CameraController cameraController;
+    private UnitCreator unitCreator;
 
     public enum GameState { Init, Play, Pause, Finished }
     [SerializeField] public GameState state;
-
-    private UnitCreator unitCreator;
 
     protected XPlayer player1;
     protected XPlayer player2;
@@ -27,21 +25,21 @@ public abstract class GameController : MonoBehaviour
 
     private void Awake()
     {
-        unitCreator = GetComponent<UnitCreator>();
-
+        //unitCreator = GetComponent<UnitCreator>();
     }
 
-    public void SetDependencies(UIManager UIManager, Field field, CameraController cameraController)
+    public void SetDependencies(UIManager UIManager, Field field, CameraController cameraController, UnitCreator unitCreator)
     {
         this.UIManager = UIManager;
         this.field = field;
         this.cameraController = cameraController;
+        this.unitCreator = unitCreator;
     }
 
     public void CreatePlayers()
     {
-        player1 = new XPlayer(PlayerName.P1, field);
-        player2 = new XPlayer(PlayerName.P2, field);
+        player1 = new XPlayer(PlayerTeam.P1, field);
+        player2 = new XPlayer(PlayerTeam.P2, field);
     }
 
     public void StartNewGame()
@@ -57,7 +55,7 @@ public abstract class GameController : MonoBehaviour
         TryToStartCurrentGame();
     }
 
-    public void SetupCamera(PlayerName team)
+    public void SetupCamera(PlayerTeam team)
     {
         //cameraController.SetupCamera(team);
     }
@@ -91,14 +89,14 @@ public abstract class GameController : MonoBehaviour
         {
             Vector2Int squareCoords = layout.GetSquareCoordsAtIndex(i);
             string typeName = layout.GetSquareUnitNameAtIndex(i);
-            PlayerName team = layout.GetSquarePlayerNameAtIndex(i);
+            PlayerTeam team = layout.GetSquarePlayerNameAtIndex(i);
 
             Type type = Type.GetType(typeName);
             CreatePieceAndInitialize(squareCoords, team, type);
         }
     }
 
-    public void CreatePieceAndInitialize(Vector2Int squareCoords, PlayerName team, Type type)
+    public void CreatePieceAndInitialize(Vector2Int squareCoords, PlayerTeam team, Type type)
     {
         Unit newUnit = unitCreator.CreateUnit(type).GetComponent<Unit>();
         newUnit.SetData(squareCoords, team, field);
@@ -108,7 +106,7 @@ public abstract class GameController : MonoBehaviour
 
         field.SetUnitOnField(squareCoords, newUnit);
 
-        XPlayer currentPlayer = (team == PlayerName.P1) ? player1 : player2;
+        XPlayer currentPlayer = (team == PlayerTeam.P1) ? player1 : player2;
         currentPlayer.AddUnit(newUnit);
     }
 
@@ -117,7 +115,7 @@ public abstract class GameController : MonoBehaviour
         player.GenerateAllPosibleMoves();
     }
 
-    public bool IsTeamTurnActive(PlayerName team)
+    public bool IsTeamTurnActive(PlayerTeam team)
     {
         return activePlayer.team == team;
     }
@@ -141,7 +139,7 @@ public abstract class GameController : MonoBehaviour
 
     public void OnUnitRemoved(Unit unit)
     {
-        XPlayer unitOwner = (unit.team == PlayerName.P1) ? player1 : player2;
+        XPlayer unitOwner = (unit.team == PlayerTeam.P1) ? player1 : player2;
         unitOwner.RemoveUnit(unit);
         Destroy(unit.gameObject);
     }

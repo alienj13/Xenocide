@@ -89,10 +89,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable() { { TEAM, intTeam } });
         gameInitializer.InitializeMultiplayerController();
-        gameController.SetLocalPlayer((PlayerName)intTeam);
+        gameController.SetLocalPlayer((PlayerTeam)intTeam);
 
         gameController.StartNewGame();
-        gameController.SetupCamera((PlayerName)intTeam);
+        gameController.SetupCamera((PlayerTeam)intTeam);
         Debug.LogError(intTeam);
     }
 

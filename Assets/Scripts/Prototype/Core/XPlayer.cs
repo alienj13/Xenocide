@@ -6,11 +6,11 @@ using UnityEngine;
 
 public class XPlayer
 {
-    public PlayerName team { get; set; }
+    public PlayerTeam team { get; set; }
     public Field field { get; set; }
     public List<Unit> activeUnits { get; private set; }
 
-    public XPlayer(PlayerName team, Field field)
+    public XPlayer(PlayerTeam team, Field field)
     {
         this.team = team;
         this.field = field;

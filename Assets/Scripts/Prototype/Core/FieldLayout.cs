@@ -11,7 +11,7 @@ public class FieldLayout : ScriptableObject
     {
         public Vector2Int position;
         public UnitType unitType;
-        public PlayerName playerName;
+        public PlayerTeam playerName;
     }
 
     [SerializeField] private FieldSquareSetup[] fieldSquares;
@@ -42,12 +42,12 @@ public class FieldLayout : ScriptableObject
         return fieldSquares[index].unitType.ToString();
     }
 
-    public PlayerName GetSquarePlayerNameAtIndex(int index)
+    public PlayerTeam GetSquarePlayerNameAtIndex(int index)
     {
         if (index < 0 || index >= fieldSquares.Length)
         {
             Debug.LogError("Index of piece (" + index + ") is out of bound.");
-            return PlayerName.P1;
+            return PlayerTeam.P1;
         }
         return fieldSquares[index].playerName;
     }
