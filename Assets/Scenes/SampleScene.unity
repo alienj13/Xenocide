@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.43688354, g: 0.48453647, b: 0.564795, a: 1}
+  m_IndirectSpecularColor: {r: 0.43677387, g: 0.48439556, b: 0.5646495, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1559,7 +1559,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.00012207031, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &358681190
@@ -1810,7 +1810,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.00012207031, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &438359207
@@ -2770,13 +2770,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 705507993}
-  m_LocalRotation: {x: -0.6268371, y: -0.2749955, z: 0.25198692, w: -0.6840727}
+  m_LocalRotation: {x: -0.6068793, y: -0.37852865, z: 0.40168485, w: -0.57189417}
   m_LocalPosition: {x: 12.9, y: 38.4, z: -24.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 85, y: -316.2, z: 0}
+  m_LocalEulerAnglesHint: {x: 93.4, y: -293, z: 0}
 --- !u!114 &705507996
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4688,7 +4688,6 @@ MonoBehaviour:
   PlayerName: 
   selectedPiece: {fileID: 0}
   Result: 
-  m: {fileID: 0}
 --- !u!114 &1054702151
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4723,8 +4722,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1095984551}
-  - component: {fileID: 1095984550}
   - component: {fileID: 1095984552}
+  - component: {fileID: 1095984550}
   m_Layer: 0
   m_Name: Map
   m_TagString: Untagged
@@ -4786,7 +4785,6 @@ MonoBehaviour:
   PlayerName: 
   selectedPiece: {fileID: 0}
   Result: 
-  m: {fileID: 0}
 --- !u!1 &1110497874
 GameObject:
   m_ObjectHideFlags: 0
@@ -7904,6 +7902,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: dc7cf29e1bbe9244793bbbbf8ce9ba70, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: dc7cf29e1bbe9244793bbbbf8ce9ba70, type: 3}
+      propertyPath: m_CastShadows
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: dc7cf29e1bbe9244793bbbbf8ce9ba70, type: 3}
+      propertyPath: m_StaticShadowCaster
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: dc7cf29e1bbe9244793bbbbf8ce9ba70, type: 3}

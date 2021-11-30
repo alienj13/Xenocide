@@ -10,9 +10,7 @@ public class Client : MonoBehaviour
 {
     public static Client Instance { set; get; }
 
-  
-
-
+ 
     public NetworkDriver driver;
     private NetworkConnection connection;
     private bool IsActive = false;
@@ -31,7 +29,10 @@ public class Client : MonoBehaviour
     List<Vector2Int> HighlightMoves = new List<Vector2Int>();
     private void Awake() {
         Instance = this;
+       
         IsTeam0Turn = true;
+        //Map.Instance.SpawnAll();
+        //Map.Instance.AllPosition();
     }
     public void initialize(string ip ,ushort port,string name) {
         driver = NetworkDriver.Create();
@@ -79,7 +80,9 @@ public class Client : MonoBehaviour
     }
 
     public void SetQueen0(Characters q) {
+        Debug.Log("set queen 0");
         Player0Queen = q;
+        Debug.Log(Player0Queen);
     }
     public void SetQueen1(Characters q) {
        Player1Queen = q;
@@ -142,15 +145,12 @@ public class Client : MonoBehaviour
 
     }
 
-   
-
+  
     private void UnRegisterToEvent() {
         NetUtility.C_KEEP_ALIVE -= OnKeepAlive;
     }
 
     
-
-
     public Characters getSelected() {
         return selectedPiece;
     }
@@ -311,30 +311,35 @@ public class Client : MonoBehaviour
                 Map.Instance.SetCharacters(x1, y1, null);
                 selectedPiece.HasKilled = false;
                 selectedPiece.HasAttcked = false;
-                if (Player0Queen.GetHealth() < 1) {
+               
+                    if (Player0Queen.GetHealth() < 1) {
 
-                    if (currentTeam == 0) {
-                        Map.Instance.Victory(opponent, PlayerName);
+                        if (currentTeam == 0) {
+                            Map.Instance.Victory(opponent, PlayerName);
+                        }
+
+                        else {
+                            Map.Instance.Victory(PlayerName, opponent);
+                        }
                     }
+                
+                
+                
+                    if (Player1Queen.GetHealth() < 1) {
 
-                    else {
-                        Map.Instance.Victory(PlayerName, opponent);
+                        if (currentTeam == 1) {
+
+                            Map.Instance.Victory(opponent, PlayerName);
+                        }
+
+                        else {
+                            Map.Instance.Victory(PlayerName, opponent);
+                        }
+
                     }
-                }
-
-                if (Player1Queen.GetHealth() < 1) {
-
-                    if (currentTeam == 1) {
-
-                        Map.Instance.Victory(opponent, PlayerName);
-                    }
-
-                    else {
-                        Map.Instance.Victory(PlayerName, opponent);
-                    }
-
-                }
+                
                 IsTeam0Turn = !IsTeam0Turn;
+                
                 selectedPiece = null;
                 Map.Instance.RemoveHighlightMoves();
                 StartMove = Vector2Int.zero;

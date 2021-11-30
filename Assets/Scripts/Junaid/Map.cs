@@ -16,12 +16,12 @@ public class Map : MonoBehaviour {
     [SerializeField] private float yoffset = 0.2f;     
     [SerializeField] private Vector3 center = Vector3.zero; 
     [SerializeField] private Camera cam0;  //camera for player assigned to team 0
-    [SerializeField] private Camera cam1;  //camera for player assigned to team 0
+    [SerializeField] private Camera cam1;  //camera for player assigned to team 1
 
     List<Vector2Int> HighlightMoves = new List<Vector2Int>();//list to hold all the possible moves 
     private Characters[,] character;    //array to hold all characters on the board
-    private const int XCount = 10;      // X size of the tilemap
-    private const int YCount = 10;      // Y size of the tilemap
+    private const int XCount = 20;      // X size of the tilemap
+    private const int YCount = 20;      // Y size of the tilemap
     private GameObject[,] tiles;        // array of all tiles
     private Camera c;                   //a variable to control the camera 
     private Vector2Int hover;           //co ordinates for where the mouse is relative to the camera
@@ -31,9 +31,9 @@ public class Map : MonoBehaviour {
     
 
     //calls our functions 
-    private void Awake() {
+    public void Awake() {
         Instance = this;
-        //IsTeam0Turn = true;
+      
         GenerateTiles(tileSize, XCount, YCount);
         //SpawnAll();
         //AllPosition();
@@ -208,24 +208,36 @@ public class Map : MonoBehaviour {
         character = new Characters[XCount, YCount];
         character[5, 0] = SpawnCharacter(characterType.Queen, 0);
         //Player0Queen = character[5, 0];
-        Client.Instance.SetQueen0(character[5, 0]);
+        
         character[6, 0] = SpawnCharacter(characterType.Warrior, 0);
         character[4, 0] = SpawnCharacter(characterType.Warrior, 0);
         character[5, 1] = SpawnCharacter(characterType.Warrior, 0);
         character[5, 3] = SpawnCharacter(characterType.Drone, 0);
         character[3, 3] = SpawnCharacter(characterType.Drone, 0);
         character[7, 3] = SpawnCharacter(characterType.Drone, 0);
-
+        /*
+        for (int i = 1;i<10;i++) {
+            for (int j = 1; j <5; j++){
+                character[i, j] = SpawnCharacter(characterType.Drone, 0);
+            }
+        }
+        for (int i = 1; i < 10; i++) {
+            for (int j = 6; j < 9; j++) {
+                character[i, j] = SpawnCharacter(characterType.Drone, 1);
+            }
+        }*/
         character[5, 9] = SpawnCharacter(characterType.Queen, 1);
         //Player1Queen = character[5, 9];
         Client.Instance.SetQueen1(character[5, 9]);
         character[6, 9] = SpawnCharacter(characterType.Warrior, 1);
-        character[4, 9] = SpawnCharacter(characterType.Warrior, 1);
+       character[4, 9] = SpawnCharacter(characterType.Warrior, 1);
         character[5, 8] = SpawnCharacter(characterType.Warrior, 1);
         character[5, 4] = SpawnCharacter(characterType.Drone, 1);
         character[3, 6] = SpawnCharacter(characterType.Drone, 1);
         character[7, 6] = SpawnCharacter(characterType.Drone, 1);
-    
+
+        Client.Instance.SetQueen0(character[5, 0]);
+
     }
 
 
