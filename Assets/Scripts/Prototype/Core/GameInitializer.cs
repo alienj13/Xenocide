@@ -21,6 +21,12 @@ public class GameInitializer : MonoBehaviour
     [Header("Debugging")]
     [SerializeField] private DebugButton debugButton;
 
+    public void Awake()
+    {
+        // TODO: remove this when done testing
+        debugButton.gameObject.SetActive(true);
+    }
+
     public void CreateMultiplayerField()
     {
         // TODO: Re-implement once we have Photon installed

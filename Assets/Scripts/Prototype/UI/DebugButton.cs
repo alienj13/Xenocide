@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class DebugButton : MonoBehaviour
 {
-    private GameController gameController;
+    [SerializeField] private GameController gameController;
+    [SerializeField] private CameraController cameraController;
     private Field field;
 
     public void SetDependencies(GameController gameController, Field field)
@@ -16,6 +17,8 @@ public class DebugButton : MonoBehaviour
     public void DebugTime()
     {
         Debug.Log("DEBUG!");
-        Debug.Log(gameController.activePlayer.team.ToString());
+        Debug.Log("Game Controller - active player: " + gameController.activePlayer.team.ToString());
+        Debug.Log("Camera Controller - active player: " + cameraController.activePlayer.team.ToString());
+        Debug.Log(cameraController.c.ToString());
     }
 }

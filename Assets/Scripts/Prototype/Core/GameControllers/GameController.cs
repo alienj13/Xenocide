@@ -57,6 +57,7 @@ public abstract class GameController : MonoBehaviour
 
     public void SetupCamera(PlayerTeam team)
     {
+        // TODO: Implement this when doing multiplayer
         //cameraController.SetupCamera(team);
     }
 
@@ -174,6 +175,11 @@ public abstract class GameController : MonoBehaviour
         // TODO: Implement this
         //cameraController.UpdateCameraOnTeamChange();
         SetGameState(GameState.Play);
+    }
+
+    public void UpdateCameraOnTeamChange(XPlayer activePlayer)
+    {
+        cameraController.SetActivePlayer(activePlayer);
     }
     #endregion
 }

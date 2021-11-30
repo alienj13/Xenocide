@@ -12,6 +12,7 @@ public class SingleplayerGameController : GameController
     public override void TryToStartCurrentGame()
     {
         SetGameState(GameState.Play);
+        UpdateCameraOnTeamChange(activePlayer);
     }
 
     public override bool CanPerformMove()
@@ -25,5 +26,6 @@ public class SingleplayerGameController : GameController
     {
         base.ChangeActiveTeam();
         //DelayGameOnTeamChange();
+        UpdateCameraOnTeamChange(activePlayer);
     }
 }
