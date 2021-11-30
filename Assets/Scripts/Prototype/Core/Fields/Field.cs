@@ -52,13 +52,16 @@ public abstract class Field : MonoBehaviour
     private Vector2Int CalculateCoordsFromPosition(Vector3 inputPosition)
     {
         // Debug:
-        Debug.Log("V3x: " + inputPosition.x);
-        Debug.Log("Flx: " + inputPosition.x / squareSize + 0.5f);
-        Debug.Log("FtI: " + Mathf.FloorToInt(inputPosition.x / squareSize + 0.5f));
-        Debug.Log("FWI: " + Mathf.FloorToInt((float)FIELD_WIDTH / 2));
+        //Debug.Log("V3x: " + inputPosition.x);
+        //Debug.Log("Flx: " + inputPosition.x / squareSize + 0.5f);
+        //Debug.Log("FtI: " + Mathf.FloorToInt(inputPosition.x / squareSize + 0.5f));
+        //Debug.Log("FWI: " + Mathf.FloorToInt((float)FIELD_WIDTH / 2));
 
+        // Legacy
         //int x = Mathf.FloorToInt(transform.InverseTransformPoint(inputPosition).x / squareSize) + FIELD_WIDTH / 2;
         //int y = Mathf.FloorToInt(transform.InverseTransformPoint(inputPosition).z / squareSize) + FIELD_HEIGHT / 2;
+        
+        // Current version. Note: BAD SOLUTION. DO NOT FIX.
         int x = Mathf.FloorToInt(inputPosition.x / squareSize + 0.5f) + Mathf.FloorToInt((float)FIELD_WIDTH / 2);
         int y = Mathf.FloorToInt(inputPosition.z / squareSize + 0.5f) + Mathf.FloorToInt((float)FIELD_HEIGHT / 2);
 
@@ -70,9 +73,10 @@ public abstract class Field : MonoBehaviour
         if (!gameController || !gameController.CanPerformMove())
             return;
 
-        //Debug.Log(inputPosition.x + ";" + inputPosition.z);
         Vector2Int coords = CalculateCoordsFromPosition(inputPosition);
-        Debug.Log(coords);
+        // Debug:
+        //Debug.Log(inputPosition.x + ";" + inputPosition.z);
+        //Debug.Log(coords);
         Unit unit = GetUnitOnSquare(coords);
 
         if (selectedUnit)
