@@ -12,7 +12,8 @@ public abstract class Unit : MonoBehaviour
 
     public Field field { protected get; set; }
     public Vector2Int occupiedSquare { get; set; }
-    public PlayerTeam team { get; set; }
+    // team was changed from prop to field. No idea if that would break anything though.
+    [SerializeField] public PlayerTeam team;
     public bool hasMoved { get; private set; }
     public List<Vector2Int> availableMoves;
 

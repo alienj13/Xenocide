@@ -55,12 +55,6 @@ public abstract class GameController : MonoBehaviour
         TryToStartCurrentGame();
     }
 
-    public void SetupCamera(PlayerTeam team)
-    {
-        // TODO: Implement this when doing multiplayer
-        //cameraController.SetupCamera(team);
-    }
-
     public void RestartGame()
     {
         Debug.Log("Game restarting.");
@@ -179,7 +173,18 @@ public abstract class GameController : MonoBehaviour
 
     public void UpdateCameraOnTeamChange(XPlayer activePlayer)
     {
-        cameraController.SetActivePlayer(activePlayer);
+        cameraController.SetActivePlayerCamera(activePlayer);
+    }
+
+    public void SetupCamera(PlayerTeam team)
+    {
+        // TODO: Implement this when doing multiplayer
+        cameraController.SetLocalPlayerCamera(team);
+    }
+
+    public void SetCameraActive(bool activation)
+    {
+        cameraController.setActive(activation);
     }
     #endregion
 }

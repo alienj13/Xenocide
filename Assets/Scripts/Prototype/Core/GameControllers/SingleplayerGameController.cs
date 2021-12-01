@@ -12,6 +12,7 @@ public class SingleplayerGameController : GameController
     public override void TryToStartCurrentGame()
     {
         SetGameState(GameState.Play);
+        SetCameraActive(true);
         UpdateCameraOnTeamChange(activePlayer);
     }
 

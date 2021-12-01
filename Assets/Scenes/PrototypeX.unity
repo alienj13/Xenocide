@@ -203,7 +203,7 @@ MonoBehaviour:
   singleplayerGameControllerPrefab: {fileID: 3965878677903775616, guid: 0c5e0adec1ff1e643a50dc62ad278818, type: 3}
   multiplayerGameControllerPrefab: {fileID: 3555305057606905602, guid: f627dbb0fd1440741867292e9b55c6ef, type: 3}
   singleplayerFieldPrefab: {fileID: 6239445800111378163, guid: dcfd35af6c2dcf246a290acf70946a14, type: 3}
-  multiplayerFieldPrefab: {fileID: 0}
+  multiplayerFieldPrefab: {fileID: 2037466713962704827, guid: 9dc9773764c7bef4a8e558dbc5c11c83, type: 3}
   networkManager: {fileID: 165819181}
   UIManager: {fileID: 4777811078889831759}
   fieldAnchor: {fileID: 1303992746}
@@ -485,6 +485,7 @@ MonoBehaviour:
   cam1: {fileID: 758676155}
   cam2: {fileID: 1421770929}
   c: {fileID: 0}
+  gameController: {fileID: 0}
 --- !u!1 &758676151
 GameObject:
   m_ObjectHideFlags: 0
@@ -2438,7 +2439,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   clickEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4777811078889831759}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: SelectTeam
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &4777811078671654000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2645,7 +2658,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Black
+  m_text: P2
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3454,7 +3467,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   clickEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4777811078889831759}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: SelectTeam
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &4777811079027792560
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3604,7 +3629,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   clickEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4777811078889831759}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: OnConnect
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &4777811079050726657
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4859,7 +4896,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: White
+  m_text: P1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

@@ -17,8 +17,13 @@ public class DebugButton : MonoBehaviour
     public void DebugTime()
     {
         Debug.Log("DEBUG!");
+
         Debug.Log("Game Controller - active player: " + gameController.activePlayer.team.ToString());
-        Debug.Log("Camera Controller - active player: " + cameraController.activePlayer.team.ToString());
-        Debug.Log(cameraController.c.ToString());
+
+        //Debug.Log("Camera Controller - active player: " + cameraController.activePlayer.team.ToString());
+        //Debug.Log("Camera Controller - current camera: " + cameraController.c.ToString());
+        //Debug.Log("Camera Controller - multiplayer instance? " + (cameraController.gameController is MultiplayerGameController));
+
+        Debug.Log(field.transform.position);
     }
 }

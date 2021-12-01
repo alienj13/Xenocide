@@ -1,4 +1,4 @@
 public enum PlayerTeam
 {
-    P1, P2
+    Neutral, P1, P2
 }

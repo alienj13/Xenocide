@@ -5,16 +5,72 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     // [.] Imported from Junaid
+    [Header("Cameras")]
     [SerializeField] private Camera cam1;  //camera for player assigned to P1
     [SerializeField] private Camera cam2;  //camera for player assigned to P2
     public Camera c;
 
+    [Header("Game Controller")]
+    [SerializeField] public GameController gameController;
+
     public XPlayer activePlayer;
+    private bool active = false;
 
     private float speed = 20;
 
+    private void Awake()
+    {
+        Camera.main.enabled = true;
+        c = Camera.main;
+    }
+
+    public void SetDependencies(GameController gameController)
+    {
+        this.gameController = gameController;
+    }
+
     private void Update()
     {
+        if (c != null && active)
+        {
+            if (Input.GetKey(KeyCode.D))
+            {
+                c.transform.Translate(new Vector3(speed * Time.deltaTime, 0, 0));
+            }
+            if (Input.GetKey(KeyCode.A))
+            {
+                c.transform.Translate(new Vector3(-speed * Time.deltaTime, 0, 0));
+            }
+            if (Input.GetKey(KeyCode.S))
+            {
+                c.transform.Translate(new Vector3(0, -0.15f, -speed * Time.deltaTime));
+            }
+            if (Input.GetKey(KeyCode.W))
+            {
+                c.transform.Translate(new Vector3(0, 0.15f, speed * Time.deltaTime));
+            }
+            if (Input.GetAxis("Mouse ScrollWheel") > 0f)
+            {
+                c.transform.Translate(new Vector3(0, 0, speed * Time.deltaTime * 5));
+            }
+            if (Input.GetAxis("Mouse ScrollWheel") < 0f)
+            {
+                c.transform.Translate(new Vector3(0, 0, -speed * Time.deltaTime * 5));
+            }
+        }
+
+        
+    }
+
+    public void SetActivePlayer(XPlayer activePlayer)
+    {
+        this.activePlayer = activePlayer;
+    }
+
+    // Singleplayer implementation
+    public void SetActivePlayerCamera(XPlayer activePlayer)
+    {
+        this.activePlayer = activePlayer;
         if (activePlayer != null)
         {
             Camera.main.enabled = false;
@@ -31,40 +87,28 @@ public class CameraController : MonoBehaviour
                 c = cam2;
             }
         }
-        else
-        {
-            Camera.main.enabled = true;
-            c = Camera.main;
-        }
+    }
 
-        if (Input.GetKey(KeyCode.D))
+    // Multiplayer implementation
+    public void SetLocalPlayerCamera(PlayerTeam team)
+    {
+        Camera.main.enabled = false;
+        if (team == PlayerTeam.P1)
         {
-            c.transform.Translate(new Vector3(speed * Time.deltaTime, 0, 0));
+            cam1.enabled = true;
+            cam2.enabled = false;
+            c = cam1;
         }
-        if (Input.GetKey(KeyCode.A))
+        else if (team == PlayerTeam.P2)
         {
-            c.transform.Translate(new Vector3(-speed * Time.deltaTime, 0, 0));
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            c.transform.Translate(new Vector3(0, -0.15f, -speed * Time.deltaTime));
-        }
-        if (Input.GetKey(KeyCode.W))
-        {
-            c.transform.Translate(new Vector3(0, 0.15f, speed * Time.deltaTime));
-        }
-        if (Input.GetAxis("Mouse ScrollWheel") > 0f)
-        {
-            c.transform.Translate(new Vector3(0, 0, speed * Time.deltaTime * 5));
-        }
-        if (Input.GetAxis("Mouse ScrollWheel") < 0f)
-        {
-            c.transform.Translate(new Vector3(0, 0, -speed * Time.deltaTime * 5));
+            cam1.enabled = false;
+            cam2.enabled = true;
+            c = cam2;
         }
     }
 
-    public void SetActivePlayer(XPlayer activePlayer)
+    public void setActive(bool activation)
     {
-        this.activePlayer = activePlayer;
+        this.active = activation;
     }
 }

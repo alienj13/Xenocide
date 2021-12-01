@@ -15,25 +15,25 @@ MonoBehaviour:
   fieldSquares:
   - position: {x: 0, y: 0}
     unitType: 1
-    playerName: 0
+    playerName: 1
   - position: {x: 1, y: 0}
     unitType: 2
-    playerName: 0
+    playerName: 1
   - position: {x: 0, y: 1}
     unitType: 3
-    playerName: 0
+    playerName: 1
   - position: {x: 3, y: 3}
     unitType: 0
-    playerName: 0
+    playerName: 1
   - position: {x: 20, y: 20}
     unitType: 1
-    playerName: 1
+    playerName: 2
   - position: {x: 19, y: 20}
     unitType: 2
-    playerName: 1
+    playerName: 2
   - position: {x: 20, y: 19}
     unitType: 3
-    playerName: 1
+    playerName: 2
   - position: {x: 17, y: 17}
     unitType: 0
-    playerName: 1
+    playerName: 2

@@ -93,7 +93,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
         gameController.StartNewGame();
         gameController.SetupCamera((PlayerTeam)intTeam);
-        Debug.LogError(intTeam);
+        // Debug:
+        Debug.Log("Team Selected: " + intTeam);
     }
 
     private void PrepareTeamSelectionOption()
@@ -104,6 +105,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             if (firstPlayer.CustomProperties.ContainsKey(TEAM))
             {
                 var occupiedTeam = firstPlayer.CustomProperties[TEAM];
+                UIManager.RestrictTeamChoice((PlayerTeam)occupiedTeam);
             }
         }
     }

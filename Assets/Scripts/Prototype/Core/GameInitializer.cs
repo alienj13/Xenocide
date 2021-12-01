@@ -29,9 +29,8 @@ public class GameInitializer : MonoBehaviour
 
     public void CreateMultiplayerField()
     {
-        // TODO: Re-implement once we have Photon installed
-        //if (!networkManager.IsRoomFull())
-        //    PhotonNetwork.Instantiate(multiplayerFieldPrefab.name, fieldAnchor.position, fieldAnchor.rotation);
+        if (!networkManager.IsRoomFull())
+            PhotonNetwork.Instantiate(multiplayerFieldPrefab.name, fieldAnchor.position, fieldAnchor.rotation);
     }
 
     public void CreateSingleplayerField()
@@ -52,6 +51,10 @@ public class GameInitializer : MonoBehaviour
             networkManager.SetDependencies(controller);
 
             field.SetDependencies(controller);
+            cameraController.SetDependencies(controller);
+
+            // Debug:
+            debugButton.SetDependencies(controller, field);
         }
     }
 
@@ -65,8 +68,11 @@ public class GameInitializer : MonoBehaviour
             controller.CreatePlayers();
 
             field.SetDependencies(controller);
+            cameraController.SetDependencies(controller);
+
             controller.StartNewGame();
 
+            // Debug:
             debugButton.SetDependencies(controller, field);
         }
     }
