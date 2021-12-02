@@ -38,3 +38,5 @@ sysinfo.txt
 *.unitypackage
 *.log
 *.log
+
+Logs/
