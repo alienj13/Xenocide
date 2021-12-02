@@ -35,7 +35,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.IsConnected)
         {
-            Debug.Log($"Connected to server. Looking for random room with level {playerLevel}");
+            // Debug:
+            Debug.LogError($"Connected to server. Looking for random room with level [ {playerLevel} ].");
 
             PhotonNetwork.JoinRandomRoom(new ExitGames.Client.Photon.Hashtable() { { LEVEL, playerLevel } }, MAX_PLAYERS);
         }
@@ -46,14 +47,17 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     #region Photon Callbacks
     public override void OnConnectedToMaster()
     {
-        Debug.Log($"Connected to server. Looking for random room with level {playerLevel}");
+        // Debug:
+        Debug.LogError($"Connected to server. Looking for random room with level [ {playerLevel} ].");
 
         PhotonNetwork.JoinRandomRoom(new ExitGames.Client.Photon.Hashtable() { { LEVEL, playerLevel } }, MAX_PLAYERS);
     }
 
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
-        Debug.Log($"Joining random room failed because of {message}. Creating new room with player level {playerLevel}.");
+        // Debug:
+        Debug.LogError($"Joining random room failed because of: {message}.");
+        Debug.LogError($"Creating new room with player level [ {playerLevel} ].");
 
         PhotonNetwork.CreateRoom(null, new RoomOptions
         {
@@ -65,7 +69,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
-        Debug.Log($"Player {PhotonNetwork.LocalPlayer.ActorNumber} has joined the room with level {(PlayerLevel)PhotonNetwork.CurrentRoom.CustomProperties[LEVEL]}.");
+        // Debug:
+        Debug.LogError($"Player {PhotonNetwork.LocalPlayer.ActorNumber} has joined the room with level [ {(PlayerLevel)PhotonNetwork.CurrentRoom.CustomProperties[LEVEL]} ].");
 
         gameInitializer.CreateMultiplayerField();
 
@@ -75,7 +80,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
-        Debug.Log($"Player {newPlayer.ActorNumber} has joined the room.");
+        // Debug:
+        Debug.LogError($"Player {newPlayer.ActorNumber} has joined the room.");
     }
     #endregion
 
@@ -93,8 +99,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
         gameController.StartNewGame();
         gameController.SetupCamera((PlayerTeam)intTeam);
+        gameController.SetCameraActive(true);
         // Debug:
-        Debug.Log("Team Selected: " + intTeam);
+        //Debug.LogError("Team Selected: " + intTeam);
     }
 
     private void PrepareTeamSelectionOption()
