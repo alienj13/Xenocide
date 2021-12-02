@@ -315,11 +315,11 @@ public class Client : MonoBehaviour
                     if (Player0Queen.GetHealth() < 1) {
 
                         if (currentTeam == 0) {
-                            Map.Instance.Victory(opponent, PlayerName);
+                            UI.Instance.VictoryScreen(opponent, PlayerName);
                         }
 
                         else {
-                            Map.Instance.Victory(PlayerName, opponent);
+                            UI.Instance.VictoryScreen(PlayerName, opponent);
                         }
                     }
                 
@@ -329,11 +329,11 @@ public class Client : MonoBehaviour
 
                         if (currentTeam == 1) {
 
-                            Map.Instance.Victory(opponent, PlayerName);
+                            UI.Instance.VictoryScreen(opponent, PlayerName);
                         }
 
                         else {
-                            Map.Instance.Victory(PlayerName, opponent);
+                            UI.Instance.VictoryScreen(PlayerName, opponent);
                         }
 
                     }
@@ -416,19 +416,19 @@ public class Client : MonoBehaviour
                 if (Player0Queen.GetHealth() < 1) {
                     if (currentTeam == 0) {
 
-                        Map.Instance.Victory(opponent, PlayerName);
+                        UI.Instance.VictoryScreen(opponent, PlayerName);
                     }
                     else {
-                        Map.Instance.Victory(PlayerName, opponent);
+                        UI.Instance.VictoryScreen(PlayerName, opponent);
                     }
                 }
                 if (Player1Queen.GetHealth() < 1) {
                     if (currentTeam == 1) {
 
-                        Map.Instance.Victory(opponent, PlayerName);
+                        UI.Instance.VictoryScreen(opponent, PlayerName);
                     }
                     else {
-                        Map.Instance.Victory(PlayerName, opponent);
+                        UI.Instance.VictoryScreen(PlayerName, opponent);
                     }
 
                 }
@@ -496,7 +496,7 @@ public class Client : MonoBehaviour
         SendToServer(nm);
 
     }
-
+   
 
 }
 

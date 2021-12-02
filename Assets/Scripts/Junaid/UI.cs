@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -110,6 +111,15 @@ public class UI : MonoBehaviour
 
     public void CloseNotification() {
         Notification.SetActive(false);
+        Debug.Log("check");
+    }
+
+
+    public void VictoryScreen(FixedString128Bytes winner, FixedString128Bytes looser) {
+        UI.Instance.WinnerLoser.text = $"{winner} has won, {looser} has lost";
+        UI.Instance.Victory.SetActive(true);
+        UI.Instance.turns.SetActive(false);
+        UI.Instance.status.SetActive(false);
     }
 
 }

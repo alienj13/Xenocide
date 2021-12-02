@@ -209,13 +209,13 @@ public class Map : MonoBehaviour {
         character[5, 0] = SpawnCharacter(characterType.Queen, 0);
         //Player0Queen = character[5, 0];
         
-        character[6, 0] = SpawnCharacter(characterType.Warrior, 0);
-        character[4, 0] = SpawnCharacter(characterType.Warrior, 0);
-        character[5, 1] = SpawnCharacter(characterType.Warrior, 0);
-        character[5, 3] = SpawnCharacter(characterType.Drone, 0);
-        character[3, 3] = SpawnCharacter(characterType.Drone, 0);
-        character[7, 3] = SpawnCharacter(characterType.Drone, 0);
-        /*
+        //character[6, 0] = SpawnCharacter(characterType.Warrior, 0);
+        //character[4, 0] = SpawnCharacter(characterType.Warrior, 0);
+        //character[5, 1] = SpawnCharacter(characterType.Warrior, 0);
+       // character[5, 3] = SpawnCharacter(characterType.Drone, 0);
+       // character[3, 3] = SpawnCharacter(characterType.Drone, 0);
+       // character[7, 3] = SpawnCharacter(characterType.Drone, 0);
+        
         for (int i = 1;i<10;i++) {
             for (int j = 1; j <5; j++){
                 character[i, j] = SpawnCharacter(characterType.Drone, 0);
@@ -225,16 +225,16 @@ public class Map : MonoBehaviour {
             for (int j = 6; j < 9; j++) {
                 character[i, j] = SpawnCharacter(characterType.Drone, 1);
             }
-        }*/
+        }
         character[5, 9] = SpawnCharacter(characterType.Queen, 1);
         //Player1Queen = character[5, 9];
         Client.Instance.SetQueen1(character[5, 9]);
-        character[6, 9] = SpawnCharacter(characterType.Warrior, 1);
-       character[4, 9] = SpawnCharacter(characterType.Warrior, 1);
-        character[5, 8] = SpawnCharacter(characterType.Warrior, 1);
-        character[5, 4] = SpawnCharacter(characterType.Drone, 1);
-        character[3, 6] = SpawnCharacter(characterType.Drone, 1);
-        character[7, 6] = SpawnCharacter(characterType.Drone, 1);
+        //character[6, 9] = SpawnCharacter(characterType.Warrior, 1);
+       //character[4, 9] = SpawnCharacter(characterType.Warrior, 1);
+        //character[5, 8] = SpawnCharacter(characterType.Warrior, 1);
+        //character[5, 4] = SpawnCharacter(characterType.Drone, 1);
+       // character[3, 6] = SpawnCharacter(characterType.Drone, 1);
+       // character[7, 6] = SpawnCharacter(characterType.Drone, 1);
 
         Client.Instance.SetQueen0(character[5, 0]);
 
@@ -342,12 +342,7 @@ public class Map : MonoBehaviour {
         SpawnAll();
         AllPosition();
     }
-    public void Victory(FixedString128Bytes winner, FixedString128Bytes looser) {
-        UI.Instance.WinnerLoser.text = $"{winner} has won, {looser} has lost";
-        UI.Instance.Victory.SetActive(true);
-        UI.Instance.turns.SetActive(false);
-        UI.Instance.status.SetActive(false);
-    }
+   
 
     public Characters GetCharacters(int x, int y) {
         return character[x,y];
