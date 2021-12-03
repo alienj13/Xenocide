@@ -16,7 +16,7 @@ public class XDrone : Unit
     public override HashSet<Vector2Int> GenerateAvailableMoves()
     {
         ClearMoves();
-        TryToAddMoves(PatternGen.Line(this, directions, range));
+        AddMoves(PatternGen.LineMove(this, directions, range));
         return availableMoves;
     }
 

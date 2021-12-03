@@ -90,22 +90,6 @@ public abstract class Unit : MonoBehaviour
     #endregion
 
     #region Movement
-    protected void ClearMoves()
-    {
-        availableMoves.Clear();
-    }
-
-    protected void TryToAddMove(Vector2Int coords)
-    {
-        availableMoves.Add(coords);
-    }
-
-    protected void TryToAddMoves(ICollection<Vector2Int> coordsCollection)
-    {
-        foreach (Vector2Int coords in coordsCollection)
-            availableMoves.Add(coords);
-    }
-
     public virtual void MoveUnit(Vector2Int coords)
     {
         Vector3 targetPosition = Field.CalculatePositionFromCoords(coords);
@@ -114,28 +98,63 @@ public abstract class Unit : MonoBehaviour
 
         tweener.MoveTo(transform, targetPosition);
     }
+
+    protected void ClearMoves()
+    {
+        availableMoves.Clear();
+    }
+
+    protected void AddMove(Vector2Int coords)
+    {
+        availableMoves.Add(coords);
+    }
+
+    protected void AddMoves(ICollection<Vector2Int> coordsCollection)
+    {
+        availableMoves.UnionWith(coordsCollection);
+    }
+
+    protected void RemoveMove(Vector2Int coords)
+    {
+        availableMoves.Remove(coords);
+    }
+
+    protected void RemoveMoves(ICollection<Vector2Int> coordsCollection)
+    {
+        availableMoves.ExceptWith(coordsCollection);
+    }
+
     #endregion
 
     #region Attack
+    public virtual void AttackAt(Vector2Int coords)
+    {
+        throw new NotImplementedException();
+    }
+
     protected void ClearAttacks()
     {
         availableAttacks.Clear();
     }
 
-    protected void TryToAddAttack(Vector2Int coords)
+    protected void AddAttack(Vector2Int coords)
     {
         availableAttacks.Add(coords);
     }
 
-    protected void TryToAddAttacks(ICollection<Vector2Int> coordsCollection)
+    protected void AddAttacks(ICollection<Vector2Int> coordsCollection)
     {
-        foreach (Vector2Int coords in coordsCollection)
-            availableAttacks.Add(coords);
+        availableMoves.UnionWith(coordsCollection);
     }
 
-    public virtual void AttackAt(Vector2Int coords)
+    protected void RemoveAttack(Vector2Int coords)
     {
-        throw new NotImplementedException();
+        availableAttacks.Remove(coords);
+    }
+
+    protected void RemoveAttacks(ICollection<Vector2Int> coordsCollection)
+    {
+        availableMoves.ExceptWith(coordsCollection);
     }
     #endregion
 
@@ -192,10 +211,10 @@ public abstract class Unit : MonoBehaviour
                     break;
 
                 if (unit == null)
-                    TryToAddMove(nextCoords);
+                    AddMove(nextCoords);
                 else if (!unit.IsFromSameTeam(this))
                 {
-                    TryToAddMove(nextCoords);
+                    AddMove(nextCoords);
                     break;
                 }
                 else if (unit.IsFromSameTeam(this))
