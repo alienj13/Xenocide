@@ -15,12 +15,14 @@ public abstract class Unit : MonoBehaviour
     // Only for display in Unity Editor. DO NOT USE.
     [SerializeField] private Vector2Int SF_unitPosition;
     [SerializeField] private PlayerTeam SF_unitTeam;
-    // For display in Unity Editor and for game UI implementation
-    [SerializeField] private int id = 0;
+    [SerializeField] private int SF_availableMoveCount = 0;
+    [SerializeField] private int SF_availableAttackCount = 0;
+    
 
     [Header("Stats")]
     // To edit the stats, edit the prefab of the unit
     // These are default values
+    [SerializeField] private int id = 0;
     [SerializeField] public int HP = 1;
     [SerializeField] public int maxHP = 1;
     [SerializeField] public int ATK = 1;
@@ -75,6 +77,8 @@ public abstract class Unit : MonoBehaviour
         // Only for debugging
         SF_unitPosition = OccupiedSquare;
         SF_unitTeam = Team;
+        SF_availableMoveCount = availableMoves.Count;
+        SF_availableAttackCount = availableAttacks.Count;
     }
 
     // Set data after instantitation
@@ -160,7 +164,7 @@ public abstract class Unit : MonoBehaviour
 
     protected void AddAttacks(ICollection<Vector2Int> coordsCollection)
     {
-        availableMoves.UnionWith(coordsCollection);
+        availableAttacks.UnionWith(coordsCollection);
     }
 
     protected void RemoveAttack(Vector2Int coords)
@@ -170,7 +174,7 @@ public abstract class Unit : MonoBehaviour
 
     protected void RemoveAttacks(ICollection<Vector2Int> coordsCollection)
     {
-        availableMoves.ExceptWith(coordsCollection);
+        availableAttacks.ExceptWith(coordsCollection);
     }
     #endregion
 

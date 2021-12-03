@@ -19,6 +19,8 @@ public abstract class Field : MonoBehaviour
     private Unit[,] grid;
     public Unit selectedUnit;
 
+    public Dictionary<Vector3, bool> selectionSquareData;
+
     public abstract void SelectedUnitMoved(Vector2 coords);
     public abstract void SetSelectedUnit(Vector2 coords);
 
@@ -27,6 +29,8 @@ public abstract class Field : MonoBehaviour
         squareSelector = GetComponent<SquareSelectorCreator>();
         SetSquareSize();
         CreateGrid();
+
+        selectionSquareData = new Dictionary<Vector3, bool>();
     }
 
     private void SetSquareSize()
@@ -60,7 +64,9 @@ public abstract class Field : MonoBehaviour
 
     public void OnSquareSelected(Vector3 inputPosition)
     {
-        if (!gameController || !gameController.CanPerformMove())
+        // TODO: Implement attack
+
+        if (!gameController || !gameController.CanPerformAction())
             return;
 
         Vector2Int coords = CalculateCoordsFromPosition(inputPosition);
@@ -90,30 +96,38 @@ public abstract class Field : MonoBehaviour
 
     private void SelectUnit(Vector2Int coords)
     {
-        Unit unit = GetUnitOnSquare(coords);
-
         SetSelectedUnit(coords);
-        HashSet<Vector2Int> selection = selectedUnit.availableMoves;
-        ShowSelectionSquare(selection);
+        HashSet<Vector2Int> moveSelection = selectedUnit.availableMoves;
+        AddSelectionSquare(moveSelection, true);
+        HashSet<Vector2Int> attackSelection = selectedUnit.availableAttacks;
+        AddSelectionSquare(attackSelection, false);
+
+        ShowSelectionSquare();
     }
 
-    private void ShowSelectionSquare(HashSet<Vector2Int> selection)
+    private void AddSelectionSquare(HashSet<Vector2Int> selection, bool moveTrue)
     {
-        Dictionary<Vector3, bool> squaresData = new Dictionary<Vector3, bool>();
         foreach (var selectedCoords in selection)
         {
             Vector3 position = CalculatePositionFromCoords(selectedCoords);
             // Manual y-reset due to elevated field
             position.y = 0;
-            bool isSquareFree = (GetUnitOnSquare(selectedCoords) == null);
-            squaresData.Add(position, isSquareFree);
+            // Legacy
+            //bool isSquareFree = (GetUnitOnSquare(selectedCoords) == null);
+            //squaresData.Add(position, isSquareFree);
+            selectionSquareData.Add(position, moveTrue);
         }
-        squareSelector.ShowSelection(squaresData);
+    }
+
+    private void ShowSelectionSquare()
+    {
+        squareSelector.ShowSelection(selectionSquareData);
     }
 
     private void DeselectUnit()
     {
         selectedUnit = null;
+        selectionSquareData.Clear();
         squareSelector.ClearSelection();
     }
 

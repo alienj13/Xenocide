@@ -7,13 +7,15 @@ public class XTest : Unit
     public override HashSet<Vector2Int> GenerateAvailableMoves()
     {
         ClearMoves();
-        AddAttacks(PatternGen.DiamondMove(this, 8));
+        AddMoves(PatternGen.DiamondMove(this, 4));
         return availableMoves;
     }
 
     public override HashSet<Vector2Int> GenerateAvailableAttacks()
     {
         ClearAttacks();
+        AddAttacks(PatternGen.DiamondAttack(this, 8));
+        RemoveAttacks(PatternGen.DiamondAttack(this, 4));
         return availableAttacks;
     }
 

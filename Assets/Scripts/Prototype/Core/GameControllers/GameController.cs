@@ -21,7 +21,7 @@ public abstract class GameController : MonoBehaviour
 
     protected abstract void SetGameState(GameState state);
     public abstract void TryToStartCurrentGame();
-    public abstract bool CanPerformMove();
+    public abstract bool CanPerformAction();
 
     private void Awake()
     {
@@ -50,7 +50,7 @@ public abstract class GameController : MonoBehaviour
 
         CreatePiecesFromLayout(startingFieldLayout);
         activePlayer = player1;
-        GenerateAllPossiblePlayerMoves(activePlayer);
+        GenerateAllPossiblePlayerActions(activePlayer);
 
         TryToStartCurrentGame();
     }
@@ -105,6 +105,13 @@ public abstract class GameController : MonoBehaviour
         currentPlayer.AddUnit(newUnit);
     }
 
+    private void GenerateAllPossiblePlayerActions(XPlayer player)
+    {
+        player.GenerateAllPossibleActions();
+    }
+
+    // Legacy
+    // TODO: Remove this
     private void GenerateAllPossiblePlayerMoves(XPlayer player)
     {
         player.GenerateAllPossibleMoves();
@@ -117,8 +124,8 @@ public abstract class GameController : MonoBehaviour
 
     public void EndTurn()
     {
-        GenerateAllPossiblePlayerMoves(activePlayer);
-        GenerateAllPossiblePlayerMoves(GetOpponentToPlayer(activePlayer));
+        GenerateAllPossiblePlayerActions(activePlayer);
+        GenerateAllPossiblePlayerActions(GetOpponentToPlayer(activePlayer));
 
         if (CheckIfGameIsFinished())
             EndGame();
@@ -158,6 +165,7 @@ public abstract class GameController : MonoBehaviour
     }
 
     #region CameraControls
+    // TODO: FIX THIS
     public void DelayGameOnTeamChange()
     {
         SetGameState(GameState.Pause);

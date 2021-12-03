@@ -29,6 +29,12 @@ public class XPlayer
             activeUnits.Remove(unit);
     }
 
+    public void GenerateAllPossibleActions()
+    {
+        GenerateAllPossibleMoves();
+        GenerateAllPossibleAttacks();
+    }
+
     public void GenerateAllPossibleMoves()
     {
         foreach (var unit in activeUnits)
@@ -36,6 +42,15 @@ public class XPlayer
             if (field.HasUnit(unit))
                 //unit.SelectAvailableSquares();
                 unit.GenerateAvailableMoves();
+        }
+    }
+
+    public void GenerateAllPossibleAttacks()
+    {
+        foreach (var unit in activeUnits)
+        {
+            if (field.HasUnit(unit))
+                unit.GenerateAvailableAttacks();
         }
     }
 
@@ -61,7 +76,7 @@ public class XPlayer
         {
             Unit unitOnSquare = field.GetUnitOnSquare(coords);
             field.UpdateFieldOnUnitMove(coords, selectedUnit.OccupiedSquare, selectedUnit, null);
-            opponent.GenerateAllPossibleMoves();
+            //opponent.GenerateAllPossibleMoves();
             if (opponent.CheckIfIsAttackingUnit<T>())
                 coordsToRemove.Add(coords);
             field.UpdateFieldOnUnitMove(selectedUnit.OccupiedSquare, coords, selectedUnit, unitOnSquare);
@@ -93,7 +108,7 @@ public class XPlayer
             {
                 Unit unitOnCoords = field.GetUnitOnSquare(coords);
                 field.UpdateFieldOnUnitMove(coords, unit.OccupiedSquare, unit, null);
-                opponent.GenerateAllPossibleMoves();
+                //opponent.GenerateAllPossibleMoves();
                 if (!opponent.CheckIfIsAttackingUnit<T>())
                 {
                     field.UpdateFieldOnUnitMove(unit.OccupiedSquare, coords, unit, unitOnCoords);
