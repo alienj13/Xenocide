@@ -107,7 +107,7 @@ public abstract class GameController : MonoBehaviour
 
     private void GenerateAllPossiblePlayerMoves(XPlayer player)
     {
-        player.GenerateAllPosibleMoves();
+        player.GenerateAllPossibleMoves();
     }
 
     public bool IsTeamTurnActive(PlayerTeam team)

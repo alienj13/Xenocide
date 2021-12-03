@@ -25,7 +25,7 @@ public abstract class Unit : MonoBehaviour
     [SerializeField] public int DEF = 1;
 
     // Important properties
-    public Field Field { protected get; set; }
+    public Field Field { get; set; }
     public Vector2Int OccupiedSquare { get; set; }
     public PlayerTeam Team { get; set; }
     public bool HasMoved { get; private set; }
@@ -90,6 +90,11 @@ public abstract class Unit : MonoBehaviour
     #endregion
 
     #region Movement
+    protected void ClearMoves()
+    {
+        availableMoves.Clear();
+    }
+
     protected void TryToAddMove(Vector2Int coords)
     {
         availableMoves.Add(coords);
@@ -112,6 +117,10 @@ public abstract class Unit : MonoBehaviour
     #endregion
 
     #region Attack
+    protected void ClearAttacks()
+    {
+        availableAttacks.Clear();
+    }
 
     protected void TryToAddAttack(Vector2Int coords)
     {

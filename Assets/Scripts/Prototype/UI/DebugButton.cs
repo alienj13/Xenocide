@@ -32,5 +32,7 @@ public class DebugButton : MonoBehaviour
             Debug.Log("Selected Unit - Movement Set Count: " + selectedUnit.availableMoves.Count);
             Debug.Log("Selected Unit - Attack Set Count: " + selectedUnit.availableAttacks.Count);
         }
+        else
+            Debug.Log("Selected Unit = null");
     }
 }

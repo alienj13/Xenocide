@@ -11,18 +11,21 @@ public class XQueen : Unit
         Vector2Int.left,
         Vector2Int.right,
     };
-    private float range = 10;
-
-    public override HashSet<Vector2Int> GenerateAvailableAttacks()
-    {
-        throw new System.NotImplementedException();
-    }
+    private int range = 10;
 
     public override HashSet<Vector2Int> GenerateAvailableMoves()
     {
-        throw new System.NotImplementedException();
+        ClearMoves();
+        return availableMoves;
     }
 
+    public override HashSet<Vector2Int> GenerateAvailableAttacks()
+    {
+        ClearAttacks();
+        return availableAttacks;
+    }
+
+    // TODO: Remove in future commit
     public override HashSet<Vector2Int> SelectAvailableSquares()
     {
         availableMoves.Clear();
