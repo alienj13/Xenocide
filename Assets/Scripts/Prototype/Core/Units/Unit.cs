@@ -15,6 +15,8 @@ public abstract class Unit : MonoBehaviour
     // Only for display in Unity Editor. DO NOT USE.
     [SerializeField] private Vector2Int SF_unitPosition;
     [SerializeField] private PlayerTeam SF_unitTeam;
+    // For display in Unity Editor and for game UI implementation
+    [SerializeField] private int id = 0;
 
     [Header("Stats")]
     // To edit the stats, edit the prefab of the unit
@@ -39,6 +41,17 @@ public abstract class Unit : MonoBehaviour
     public abstract HashSet<Vector2Int> GenerateAvailableMoves();
     // Generate available attack set
     public abstract HashSet<Vector2Int> GenerateAvailableAttacks();
+
+    #region ID system
+    private static int nextID = 1;
+    protected int InitializeID()
+    {
+        if (id > 0)
+            return id;
+        else
+            return (id = nextID++);
+    }
+    #endregion
 
     #region Initialize and Update
     private void Awake()
@@ -67,6 +80,9 @@ public abstract class Unit : MonoBehaviour
     // Set data after instantitation
     public void SetData(Vector2Int coords, PlayerTeam team, Field field)
     {
+        // ID system
+        InitializeID();
+
         // Important properties
         this.OccupiedSquare = coords;
         this.Team = team;
