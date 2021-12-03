@@ -134,7 +134,7 @@ public abstract class GameController : MonoBehaviour
 
     public void OnUnitRemoved(Unit unit)
     {
-        XPlayer unitOwner = (unit.team == PlayerTeam.P1) ? player1 : player2;
+        XPlayer unitOwner = (unit.Team == PlayerTeam.P1) ? player1 : player2;
         unitOwner.RemoveUnit(unit);
         Destroy(unit.gameObject);
     }

@@ -24,6 +24,13 @@ public class DebugButton : MonoBehaviour
         //Debug.Log("Camera Controller - current camera: " + cameraController.c.ToString());
         //Debug.Log("Camera Controller - multiplayer instance? " + (cameraController.gameController is MultiplayerGameController));
 
-        Debug.Log(field.transform.position);
+        //Debug.Log(field.transform.position);
+
+        Unit selectedUnit = field.selectedUnit;
+        if (selectedUnit != null)
+        {
+            Debug.Log("Selected Unit - Movement Set Count: " + selectedUnit.availableMoves.Count);
+            Debug.Log("Selected Unit - Attack Set Count: " + selectedUnit.availableAttacks.Count);
+        }
     }
 }

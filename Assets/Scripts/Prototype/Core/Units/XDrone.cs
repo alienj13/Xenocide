@@ -13,9 +13,20 @@ public class XDrone : Unit
     };
     private float range = 10;
 
-    public override List<Vector2Int> SelectAvailableSquares()
+    public override HashSet<Vector2Int> GenerateAvailableAttacks()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override HashSet<Vector2Int> GenerateAvailableMoves()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override HashSet<Vector2Int> SelectAvailableSquares()
     {
         availableMoves.Clear();
+        LineMovement(directions, range);
         LineMovement(directions, range);
         return availableMoves;
     }

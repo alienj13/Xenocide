@@ -17,7 +17,7 @@ public abstract class Field : MonoBehaviour
     private SquareSelectorCreator squareSelector;
 
     private Unit[,] grid;
-    private Unit selectedUnit;
+    public Unit selectedUnit;
 
     public abstract void SelectedUnitMoved(Vector2 coords);
     public abstract void SetSelectedUnit(Vector2 coords);
@@ -70,14 +70,14 @@ public abstract class Field : MonoBehaviour
         {
             if (unit != null && selectedUnit == unit)
                 DeselectUnit();
-            else if (unit != null && selectedUnit != unit && gameController.IsTeamTurnActive(unit.team))
+            else if (unit != null && selectedUnit != unit && gameController.IsTeamTurnActive(unit.Team))
                 SelectUnit(coords);
             else if (selectedUnit.CanMoveTo(coords))
                 SelectedUnitMoved(coords);
         }
         else
         {
-            if (unit != null && gameController.IsTeamTurnActive(unit.team))
+            if (unit != null && gameController.IsTeamTurnActive(unit.Team))
                 SelectUnit(coords);
         }
     }
@@ -93,11 +93,11 @@ public abstract class Field : MonoBehaviour
         Unit unit = GetUnitOnSquare(coords);
 
         SetSelectedUnit(coords);
-        List<Vector2Int> selection = selectedUnit.availableMoves;
+        HashSet<Vector2Int> selection = selectedUnit.availableMoves;
         ShowSelectionSquare(selection);
     }
 
-    private void ShowSelectionSquare(List<Vector2Int> selection)
+    private void ShowSelectionSquare(HashSet<Vector2Int> selection)
     {
         Dictionary<Vector3, bool> squaresData = new Dictionary<Vector3, bool>();
         foreach (var selectedCoords in selection)
@@ -121,7 +121,7 @@ public abstract class Field : MonoBehaviour
     {
         TryToTakeOppositeUnit(coords);
 
-        UpdateFieldOnUnitMove(coords, selectedUnit.occupiedSquare, selectedUnit, null);
+        UpdateFieldOnUnitMove(coords, selectedUnit.OccupiedSquare, selectedUnit, null);
         selectedUnit.MoveUnit(coords);
         DeselectUnit();
         EndTurn();
@@ -144,7 +144,7 @@ public abstract class Field : MonoBehaviour
     {
         if (unit)
         {
-            grid[unit.occupiedSquare.x, unit.occupiedSquare.y] = null;
+            grid[unit.OccupiedSquare.x, unit.OccupiedSquare.y] = null;
             gameController.OnUnitRemoved(unit);
         }
     }
