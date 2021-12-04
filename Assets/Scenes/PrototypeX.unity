@@ -3052,6 +3052,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   networkManager: {fileID: 165819181}
+  gameController: {fileID: 0}
   player1TeamButton: {fileID: 4777811078671654000}
   player2TeamButton: {fileID: 4777811079027792560}
   resultText: {fileID: 4777811078937224934}
@@ -3366,7 +3367,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   clickEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4777811078889831759}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: RestartGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &4777811078972089926
 MonoBehaviour:
   m_ObjectHideFlags: 0

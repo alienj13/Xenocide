@@ -10,6 +10,7 @@ public class UIManager : MonoBehaviour
 {
     [Header("Scene Dependencies")]
     [SerializeField] private NetworkManager networkManager;
+    [SerializeField] private GameController gameController;
 
     [Header("Buttons")]
     [SerializeField] private Button player1TeamButton;
@@ -32,6 +33,11 @@ public class UIManager : MonoBehaviour
     {
         gameLevelSelection.AddOptions(Enum.GetNames(typeof(PlayerLevel)).ToList());
         OnGameLaunched();
+    }
+
+    public void SetDependencies(GameController gameController)
+    {
+        this.gameController = gameController;
     }
 
     private void OnGameLaunched()
@@ -99,5 +105,10 @@ public class UIManager : MonoBehaviour
     {
         gameoverScreen.SetActive(true);
         resultText.SetText(String.Format("{0} won!", winner));
+    }
+
+    public void RestartGame()
+    {
+        gameController.RestartGame();
     }
 }

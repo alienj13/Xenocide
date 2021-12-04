@@ -136,6 +136,10 @@ public abstract class GameController : MonoBehaviour
     private bool CheckIfGameIsFinished()
     {
         // TODO: Implement this by checking the active player Queen IsAlive()
+        XPlayer opponentPlayer = GetOpponentToPlayer(activePlayer);
+        Unit opponentQueen = opponentPlayer.GetUnitsOfType<XQueen>().FirstOrDefault();
+        if (!opponentQueen.IsAlive())
+            return true;
         return false;
     }
 

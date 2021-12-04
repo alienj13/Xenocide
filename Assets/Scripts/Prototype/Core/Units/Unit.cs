@@ -18,7 +18,7 @@ public abstract class Unit : MonoBehaviour
     [SerializeField] private int SF_availableMoveCount = 0;
     [SerializeField] private int SF_availableAttackCount = 0;
     [SerializeField] private int SF_id = 0;
-    [SerializeField] private int SF_HP = 1;
+    [SerializeField] private int SF_currentHP = 1;
     
 
     [Header("Stats")]

@@ -54,6 +54,8 @@ public class GameInitializer : MonoBehaviour
             field.SetDependencies(controller, squareSelector);
             cameraController.SetDependencies(controller);
 
+            UIManager.SetDependencies(controller);
+
             // Debug:
             debugButton.SetDependencies(controller, field);
         }
@@ -70,6 +72,8 @@ public class GameInitializer : MonoBehaviour
 
             field.SetDependencies(controller, squareSelector);
             cameraController.SetDependencies(controller);
+
+            UIManager.SetDependencies(controller);
 
             controller.StartNewGame();
 
