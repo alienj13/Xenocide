@@ -102,8 +102,8 @@ MonoBehaviour:
   SF_availableMoveCount: 0
   SF_availableAttackCount: 0
   SF_id: 0
-  SF_HP: 1
-  maxHP: 50
+  SF_currentHP: 1
+  maxHP: 5
   ATK: 0
   DEF: 0
 --- !u!114 &-3973531990455254937

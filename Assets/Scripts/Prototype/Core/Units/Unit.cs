@@ -88,7 +88,7 @@ public abstract class Unit : MonoBehaviour
         SF_availableMoveCount = availableMoves.Count;
         SF_availableAttackCount = availableAttacks.Count;
         SF_id = id;
-        SF_HP = HP;
+        SF_currentHP = HP;
     }
 
     // Set data after instantitation
