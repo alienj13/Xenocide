@@ -17,12 +17,13 @@ public class Client : MonoBehaviour
     public Action connectionDropped;
     public string PlayerName;
     public Characters selectedPiece;
-    private int currentTeam = -1;
+    private int currentTeam = 0;
     public string Result;
     private FixedString128Bytes opponent;
     private Vector2Int StartMove;
     private Vector2Int EndMove;
     private bool IsTeam0Turn;
+    float end = 0;
 
     private Characters Player0Queen;    //access to player 1 queens health
     private Characters Player1Queen;    //access to player 1 queens health
@@ -31,8 +32,8 @@ public class Client : MonoBehaviour
         Instance = this;
        
         IsTeam0Turn = true;
-        //Map.Instance.SpawnAll();
-        //Map.Instance.AllPosition();
+        Map.Instance.SpawnAll();
+        Map.Instance.AllPosition();
     }
     public void initialize(string ip ,ushort port,string name) {
         driver = NetworkDriver.Create();
@@ -68,6 +69,10 @@ public class Client : MonoBehaviour
         CheckAlive();
         
         UpdateMessagePump();
+        end += 0.1f;
+        if (end == 1) {
+            end = 0;
+        }
         
     }
 
@@ -199,7 +204,7 @@ public class Client : MonoBehaviour
         return opponent;
     }
 
-    public void Move(Characters c, int x, int y) {
+    public void Move(Characters c,int x, int y) {
 
 
         if (x > c.GetX() && y == c.GetY()) {
@@ -239,11 +244,14 @@ public class Client : MonoBehaviour
 
         //character[x, y].SetX(x);
         //character[x, y].SetY(y);
+        // Map.Instance.GetCharacters(c.GetX(), c.GetY()).transform.position =  Map.Instance.GetTileCenter(x, y);
+        Map.Instance.GetCharacters(c.GetX(), c.GetY()).SetPosition(Map.Instance.GetTileCenter(x, y));
+           // Vector3.Lerp(Map.Instance.GetTileCenter(c.GetY(),c.GetY()), Map.Instance.GetTileCenter(x, y),end);
         Map.Instance.GetCharacters(x, y).SetX(x);
         Map.Instance.GetCharacters(x, y).SetY(y);
 
         // character[x, y].transform.position = Map.Instance.GetTileCenter(x, y);
-       Map.Instance.GetCharacters(x,y).transform.position = Map.Instance.GetTileCenter(x, y);
+        
 
 
     }
@@ -288,7 +296,7 @@ public class Client : MonoBehaviour
             other = Map.Instance.GetCharacters(x2, y2).type;
         }
         if (selectedPiece != null) {
-            ToMakeMoveClient(x1, y1, x2, y2);
+           // ToMakeMoveClient(x1, y1, x2, y2);
 
             if (StartMove == EndMove) {
                 Debug.Log("1");
@@ -306,7 +314,7 @@ public class Client : MonoBehaviour
   
                 Map.Instance.SetCharacters(x2,y2,selectedPiece);
                 Debug.Log("2");
-                Move(selectedPiece, x2, y2);
+                Move(selectedPiece,x2, y2);
 
                 Map.Instance.SetCharacters(x1, y1, null);
                 selectedPiece.HasKilled = false;

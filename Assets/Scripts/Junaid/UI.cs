@@ -39,7 +39,7 @@ public class UI : MonoBehaviour
 
     private void Awake() {
         Instance = this;
-        front.SetActive(true);
+        front.SetActive(false);
         startMenu.SetActive(false);
         Register.SetActive(false);
         OnlineMenu.SetActive(false);

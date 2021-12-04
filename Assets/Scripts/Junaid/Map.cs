@@ -12,7 +12,7 @@ public class Map : MonoBehaviour {
     [SerializeField] private Material m;               //material of the tiles 
     [SerializeField] private GameObject[] prefabs;     //array of 3D models
     [SerializeField] private Material[] teamMaterial;  //the colour of player 1 or 2;
-    [SerializeField] private float tileSize = 1.0f;    
+    [SerializeField] private float tileSize = 2.0f;    
     [SerializeField] private float yoffset = 0.2f;     
     [SerializeField] private Vector3 center = Vector3.zero; 
     [SerializeField] private Camera cam0;  //camera for player assigned to team 0
@@ -276,7 +276,7 @@ public class Map : MonoBehaviour {
     public void SinglePosition(int x, int y, bool force = false) {
         character[x, y].SetX(x);
         character[x, y].SetY(y);
-        character[x, y].transform.position = GetTileCenter(x, y);
+        character[x, y].SetPosition (GetTileCenter(x, y),force);
 
     }
 
