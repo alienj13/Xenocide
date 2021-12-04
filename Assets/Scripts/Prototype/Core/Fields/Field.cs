@@ -21,8 +21,10 @@ public abstract class Field : MonoBehaviour
 
     public Dictionary<Vector3, bool> selectionSquareData;
 
-    public abstract void SelectedUnitMoved(Vector2 coords);
+    
     public abstract void SetSelectedUnit(Vector2 coords);
+    public abstract void SelectedUnitMoved(Vector2 coords);
+    public abstract void SelectedUnitAttacked(Vector2 coords);
 
     protected virtual void Awake()
     {
@@ -80,6 +82,8 @@ public abstract class Field : MonoBehaviour
                 SelectUnit(coords);
             else if (selectedUnit.CanMoveTo(coords))
                 SelectedUnitMoved(coords);
+            else if (selectedUnit.CanAttackAt(coords))
+                SelectedUnitAttacked(coords);
         }
         else
         {
@@ -133,10 +137,15 @@ public abstract class Field : MonoBehaviour
 
     public void OnSelectedUnitMove(Vector2Int coords)
     {
-        TryToTakeOppositeUnit(coords);
-
         UpdateFieldOnUnitMove(coords, selectedUnit.OccupiedSquare, selectedUnit, null);
         selectedUnit.MoveUnit(coords);
+        DeselectUnit();
+        EndTurn();
+    }
+
+    public void OnSelectedUnitAttacked(Vector2Int coords)
+    {
+        selectedUnit.AttackAt(coords);
         DeselectUnit();
         EndTurn();
     }
@@ -147,11 +156,20 @@ public abstract class Field : MonoBehaviour
         selectedUnit = unit;
     }
 
+    public void RemoveUnit(Unit unit)
+    {
+        if (unit)
+        {
+            grid[unit.OccupiedSquare.x, unit.OccupiedSquare.y] = null;
+            gameController.OnUnitRemoved(unit);
+        }
+    }
+
     private void TryToTakeOppositeUnit(Vector2Int coords)
     {
         Unit unit = GetUnitOnSquare(coords);
-        if (unit != null && !selectedUnit.IsFromSameTeam(unit))
-            TakeUnit(unit);
+        //if (unit != null && !selectedUnit.IsFromSameTeam(unit))
+        //    TakeUnit(unit);
     }
 
     private void TakeUnit(Unit unit)

@@ -17,18 +17,19 @@ public abstract class Unit : MonoBehaviour
     [SerializeField] private PlayerTeam SF_unitTeam;
     [SerializeField] private int SF_availableMoveCount = 0;
     [SerializeField] private int SF_availableAttackCount = 0;
+    [SerializeField] private int SF_id = 0;
     
 
     [Header("Stats")]
     // To edit the stats, edit the prefab of the unit
     // These are default values
-    [SerializeField] private int id = 0;
     [SerializeField] public int HP = 1;
     [SerializeField] public int maxHP = 1;
     [SerializeField] public int ATK = 1;
     [SerializeField] public int DEF = 1;
 
     // Important properties
+    private int id = 0;
     public Field Field { get; set; }
     public Vector2Int OccupiedSquare { get; set; }
     public PlayerTeam Team { get; set; }
@@ -39,11 +40,16 @@ public abstract class Unit : MonoBehaviour
     // Available attack set
     public HashSet<Vector2Int> availableAttacks;
 
+    // Abstract methods
+    // Implement these in inherited Units
+    #region Abstract
     // Generate available move set
     public abstract HashSet<Vector2Int> GenerateAvailableMoves();
     // Generate available attack set
     public abstract HashSet<Vector2Int> GenerateAvailableAttacks();
+    #endregion
 
+    // ID system
     #region ID system
     private static int nextID = 1;
     protected int InitializeID()
@@ -55,6 +61,7 @@ public abstract class Unit : MonoBehaviour
     }
     #endregion
 
+    // Initialize and Update methods
     #region Initialize and Update
     private void Awake()
     {
@@ -79,6 +86,7 @@ public abstract class Unit : MonoBehaviour
         SF_unitTeam = Team;
         SF_availableMoveCount = availableMoves.Count;
         SF_availableAttackCount = availableAttacks.Count;
+        SF_id = id;
     }
 
     // Set data after instantitation
@@ -97,6 +105,8 @@ public abstract class Unit : MonoBehaviour
     }
     #endregion
 
+    // Logic methods
+    // Important for other methods to use
     #region Logic
     public bool IsFromSameTeam(Unit unit)
     {
@@ -107,8 +117,34 @@ public abstract class Unit : MonoBehaviour
     {
         return availableMoves.Contains(coords);
     }
+
+    public bool CanAttackAt(Vector2Int coords)
+    {
+        Unit unit = Field.GetUnitOnSquare(coords);
+        if (unit)
+        {
+            if (unit.IsFromSameTeam(this))
+                return false;
+            return true;
+        }
+        return false;
+    }
+
+    public bool IsAlive()
+    {
+        return HP > 0;
+    }
+
+    public virtual void Die()
+    {
+        // Debug:
+        Debug.Log("[!] Unit " + this.id + " has died.");
+
+        Field.RemoveUnit(this);
+    }
     #endregion
 
+    // Movement methods
     #region Movement
     public virtual void MoveUnit(Vector2Int coords)
     {
@@ -146,10 +182,54 @@ public abstract class Unit : MonoBehaviour
 
     #endregion
 
+    // Attack methods
+    // Also include Damage()
     #region Attack
-    public virtual void AttackAt(Vector2Int coords)
+    public virtual bool AttackAt(Vector2Int coords)
     {
-        throw new NotImplementedException();
+        Unit enemy = Field.GetUnitOnSquare(coords);
+        // If there's no enemy, return false
+        if (enemy == null)
+            return false;
+        // If enemy is from same team, return false
+        if (enemy.IsFromSameTeam(this))
+            return false;
+
+        // Damage increase from this Char's ATK roll
+        int damageAddition = this.ATK;
+        // Damage decrease from enemy's DEF roll
+        int damageReduction = enemy.DEF;
+
+        // Gate damage to be min 1
+        int dmg = Math.Max(damageAddition - damageReduction, 1);
+
+        // Debug:
+        Debug.Log("[-] Unit " + this.id + " attacked unit " + enemy.id + ", dealing " + dmg + " damage.");
+
+        // Damage the enemy
+        enemy.Damage(dmg, this);
+        return true;
+    }
+
+    public virtual void Damage(int dmg, Unit source)
+    {
+        // (source) is not needed for now, but it's good to have in future implementations
+        // If this Char is not alive or the damage is not positive, return
+        if (!IsAlive() || dmg < 0)
+            return;
+
+        // Reduce HP by damage amount
+        HP -= dmg;
+
+        // Debug:
+        Debug.Log("[-] Unit " + this.id + " has been damaged, HP before gate: " + this.HP);
+
+        // Gate HP to be min 0
+        if (this.HP < 0)
+            HP = 0;
+        // If not alive, then die.
+        if (!IsAlive())
+            Die();
     }
 
     protected void ClearAttacks()
@@ -178,6 +258,8 @@ public abstract class Unit : MonoBehaviour
     }
     #endregion
 
+    // Utility methods
+    // Does not affect game logic
     #region Utility
     public void SetMaterial(Material material)
     {
@@ -243,5 +325,4 @@ public abstract class Unit : MonoBehaviour
         }
     }
     #endregion
-
 }

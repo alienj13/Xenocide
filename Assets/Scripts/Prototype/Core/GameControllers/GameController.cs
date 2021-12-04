@@ -48,7 +48,7 @@ public abstract class GameController : MonoBehaviour
 
         UIManager.OnGameStarted();
 
-        CreatePiecesFromLayout(startingFieldLayout);
+        CreateUnitsFromLayout(startingFieldLayout);
         activePlayer = player1;
         GenerateAllPossiblePlayerActions(activePlayer);
 
@@ -59,7 +59,7 @@ public abstract class GameController : MonoBehaviour
     {
         Debug.Log("Game restarting.");
 
-        DestroyPieces();
+        DestroyUnits();
         field.OnGameRestarted();
         player1.OnGameRestarted();
         player2.OnGameRestarted();
@@ -67,7 +67,7 @@ public abstract class GameController : MonoBehaviour
         StartNewGame();
     }
 
-    private void DestroyPieces()
+    private void DestroyUnits()
     {
         player1.activeUnits.ForEach(p => Destroy(p.gameObject));
         player2.activeUnits.ForEach(p => Destroy(p.gameObject));
@@ -78,7 +78,7 @@ public abstract class GameController : MonoBehaviour
         return state == GameState.Play;
     }
 
-    private void CreatePiecesFromLayout(FieldLayout layout)
+    private void CreateUnitsFromLayout(FieldLayout layout)
     {
         for (int i = 0; i < layout.GetUnitsCount(); i++)
         {
@@ -87,11 +87,11 @@ public abstract class GameController : MonoBehaviour
             PlayerTeam team = layout.GetSquarePlayerNameAtIndex(i);
 
             Type type = Type.GetType(typeName);
-            CreatePieceAndInitialize(squareCoords, team, type);
+            CreateUnitAndInitialize(squareCoords, team, type);
         }
     }
 
-    public void CreatePieceAndInitialize(Vector2Int squareCoords, PlayerTeam team, Type type)
+    public void CreateUnitAndInitialize(Vector2Int squareCoords, PlayerTeam team, Type type)
     {
         Unit newUnit = unitCreator.CreateUnit(type).GetComponent<Unit>();
         newUnit.SetData(squareCoords, team, field);
@@ -141,7 +141,7 @@ public abstract class GameController : MonoBehaviour
 
     public void OnUnitRemoved(Unit unit)
     {
-        XPlayer unitOwner = (unit.Team == PlayerTeam.P1) ? player1 : player2;
+        XPlayer unitOwner = GetPlayerOfTeam(unit.Team);
         unitOwner.RemoveUnit(unit);
         Destroy(unit.gameObject);
     }
@@ -162,6 +162,19 @@ public abstract class GameController : MonoBehaviour
     private XPlayer GetOpponentToPlayer(XPlayer player)
     {
         return (player == player1) ? player2 : player1;
+    }
+
+    public XPlayer GetPlayerOfTeam(PlayerTeam team)
+    {
+        switch (team)
+        {
+            case PlayerTeam.P1:
+                return player1;
+            case PlayerTeam.P2:
+                return player2;
+            default:
+                return null;
+        }
     }
 
     #region CameraControls
