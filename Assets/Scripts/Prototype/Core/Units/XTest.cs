@@ -4,25 +4,24 @@ using UnityEngine;
 
 public class XTest : Unit
 {
+    private int moveRange = 3;
+    // TODO: Improve this
+    private int attackRangeMin = 4;
+    private int attackRangeMax = 6;
+
     public override HashSet<Vector2Int> GenerateAvailableMoves()
     {
         ClearMoves();
-        AddMoves(PatternGen.DiamondMove(this, 4));
+        AddMoves(PatternGen.DiamondMove(this, moveRange));
         return availableMoves;
     }
 
     public override HashSet<Vector2Int> GenerateAvailableAttacks()
     {
         ClearAttacks();
-        AddAttacks(PatternGen.DiamondAttack(this, 8));
-        RemoveAttacks(PatternGen.DiamondAttack(this, 4));
+        // TODO: Improve this
+        AddAttacks(PatternGen.DiamondAttack(this, attackRangeMax));
+        RemoveAttacks(PatternGen.DiamondAttack(this, attackRangeMin - 1));
         return availableAttacks;
-    }
-
-    // TODO: Remove in future commit
-    public override HashSet<Vector2Int> SelectAvailableSquares()
-    {
-        availableMoves.Clear();
-        return availableMoves;
     }
 }

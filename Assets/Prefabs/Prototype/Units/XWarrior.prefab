@@ -97,7 +97,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddcf59bb0efe4424e93e213068298198, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  availableMoves: []
+  SF_unitPosition: {x: 0, y: 0}
+  SF_unitTeam: 0
+  SF_availableMoveCount: 0
+  SF_availableAttackCount: 0
+  SF_id: 0
+  SF_HP: 1
+  maxHP: 20
+  ATK: 8
+  DEF: 4
 --- !u!114 &-2920426335234134247
 MonoBehaviour:
   m_ObjectHideFlags: 0

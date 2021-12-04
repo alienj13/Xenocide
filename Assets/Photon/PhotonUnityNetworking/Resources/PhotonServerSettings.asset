@@ -38,6 +38,7 @@ MonoBehaviour:
   - DestroyRpc
   - RPC_OnSelectedUnitMoved
   - RPC_OnSetSelectedUnit
+  - RPC_OnSelectedUnitAttacked
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 0

@@ -31,6 +31,19 @@ public class PatternGen
         return results;
     }
 
+    public static HashSet<Vector2Int> CrossMove(Unit selectedUnit, int range)
+    {
+        Vector2Int[] directions = new Vector2Int[]
+        {
+        Vector2Int.up,
+        Vector2Int.down,
+        Vector2Int.left,
+        Vector2Int.right,
+        };
+
+        return LineMove(selectedUnit, directions, range);
+    }
+
     public static HashSet<Vector2Int> SquareMove(Unit selectedUnit, int range)
     {
         HashSet<Vector2Int> results = new HashSet<Vector2Int>();
@@ -121,6 +134,19 @@ public class PatternGen
         }
 
         return results;
+    }
+
+    public static HashSet<Vector2Int> CrossAttack(Unit selectedUnit, int range)
+    {
+        Vector2Int[] directions = new Vector2Int[]
+        {
+        Vector2Int.up,
+        Vector2Int.down,
+        Vector2Int.left,
+        Vector2Int.right,
+        };
+
+        return LineAttack(selectedUnit, directions, range);
     }
 
     public static HashSet<Vector2Int> SquareAttack(Unit selectedUnit, int range)

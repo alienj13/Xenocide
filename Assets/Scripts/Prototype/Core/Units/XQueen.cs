@@ -4,15 +4,6 @@ using UnityEngine;
 
 public class XQueen : Unit
 {
-    private Vector2Int[] directions = new Vector2Int[]
-    {
-        Vector2Int.up,
-        Vector2Int.down,
-        Vector2Int.left,
-        Vector2Int.right,
-    };
-    private int range = 10;
-
     public override HashSet<Vector2Int> GenerateAvailableMoves()
     {
         ClearMoves();
@@ -25,11 +16,10 @@ public class XQueen : Unit
         return availableAttacks;
     }
 
-    // TODO: Remove in future commit
-    public override HashSet<Vector2Int> SelectAvailableSquares()
+    // When the Queen dies, do not destroy GameObject
+    // This is for the GameController to end the game
+    public override void Die()
     {
-        availableMoves.Clear();
-        LineMovement(directions, range);
-        return availableMoves;
+        return;
     }
 }

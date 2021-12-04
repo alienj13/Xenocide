@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(SquareSelectorCreator))]
 public abstract class Field : MonoBehaviour
 {
     public const int FIELD_WIDTH = 21;
@@ -40,9 +39,10 @@ public abstract class Field : MonoBehaviour
         squareSize = Mathf.Abs(bottomLeftCornerTransform.position.x - bottomRightCornerTransform.position.x) / (FIELD_SIZE - 1);
     }
 
-    public void SetDependencies(GameController gameController)
+    public void SetDependencies(GameController gameController, SquareSelectorCreator squareSelector)
     {
         this.gameController = gameController;
+        this.squareSelector = squareSelector;
     }
 
     private void CreateGrid()
@@ -79,7 +79,10 @@ public abstract class Field : MonoBehaviour
             if (unit != null && selectedUnit == unit)
                 DeselectUnit();
             else if (unit != null && selectedUnit != unit && gameController.IsTeamTurnActive(unit.Team))
+            {
+                DeselectUnit();
                 SelectUnit(coords);
+            }
             else if (selectedUnit.CanMoveTo(coords))
                 SelectedUnitMoved(coords);
             else if (selectedUnit.CanAttackAt(coords))
@@ -101,12 +104,28 @@ public abstract class Field : MonoBehaviour
     private void SelectUnit(Vector2Int coords)
     {
         SetSelectedUnit(coords);
-        HashSet<Vector2Int> moveSelection = selectedUnit.availableMoves;
-        AddSelectionSquare(moveSelection, true);
-        HashSet<Vector2Int> attackSelection = selectedUnit.availableAttacks;
-        AddSelectionSquare(attackSelection, false);
+        //HashSet<Vector2Int> moveSelection = selectedUnit.availableMoves;
+        //AddSelectionSquare(moveSelection, true);
+        //HashSet<Vector2Int> attackSelection = selectedUnit.availableAttacks;
+        //AddSelectionSquare(attackSelection, false);
 
-        ShowSelectionSquare();
+        //ShowSelectionSquare();
+
+        ShowSelectionSquare(selectedUnit.availableMoves, true);
+        ShowSelectionSquare(selectedUnit.availableAttacks, false);
+    }
+
+    private void ShowSelectionSquare(HashSet<Vector2Int> selection, bool moveTrue)
+    {
+        Dictionary<Vector3, bool> selectionData = new Dictionary<Vector3, bool>();
+        foreach (var selectedCoords in selection)
+        {
+            Vector3 position = CalculatePositionFromCoords(selectedCoords);
+            // Manual y-reset due to elevated field
+            position.y = 0;
+            selectionData.Add(position, moveTrue);
+        }
+        squareSelector.ShowSelection(selectionData);
     }
 
     private void AddSelectionSquare(HashSet<Vector2Int> selection, bool moveTrue)

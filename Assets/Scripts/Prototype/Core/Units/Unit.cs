@@ -18,15 +18,16 @@ public abstract class Unit : MonoBehaviour
     [SerializeField] private int SF_availableMoveCount = 0;
     [SerializeField] private int SF_availableAttackCount = 0;
     [SerializeField] private int SF_id = 0;
+    [SerializeField] private int SF_HP = 1;
     
 
     [Header("Stats")]
     // To edit the stats, edit the prefab of the unit
     // These are default values
-    [SerializeField] public int HP = 1;
     [SerializeField] public int maxHP = 1;
     [SerializeField] public int ATK = 1;
     [SerializeField] public int DEF = 1;
+    protected int HP = 1;
 
     // Important properties
     private int id = 0;
@@ -87,6 +88,7 @@ public abstract class Unit : MonoBehaviour
         SF_availableMoveCount = availableMoves.Count;
         SF_availableAttackCount = availableAttacks.Count;
         SF_id = id;
+        SF_HP = HP;
     }
 
     // Set data after instantitation
@@ -271,7 +273,6 @@ public abstract class Unit : MonoBehaviour
 
     // TODO: Remove in future commit after method reference = 0
     #region Legacy
-    public abstract HashSet<Vector2Int> SelectAvailableSquares();
     public bool IsAttackingUnitOfType<T>() where T : Unit
     {
         foreach (var square in availableMoves)

@@ -17,6 +17,7 @@ public class GameInitializer : MonoBehaviour
     [SerializeField] private Transform fieldAnchor;
     [SerializeField] private CameraController cameraController;
     [SerializeField] private UnitCreator unitCreator;
+    [SerializeField] private SquareSelectorCreator squareSelector;
 
     [Header("Debugging")]
     [SerializeField] private DebugButton debugButton;
@@ -50,7 +51,7 @@ public class GameInitializer : MonoBehaviour
             controller.SetMultiplayerDependencies(networkManager);
             networkManager.SetDependencies(controller);
 
-            field.SetDependencies(controller);
+            field.SetDependencies(controller, squareSelector);
             cameraController.SetDependencies(controller);
 
             // Debug:
@@ -67,7 +68,7 @@ public class GameInitializer : MonoBehaviour
             controller.SetDependencies(UIManager, field, cameraController, unitCreator);
             controller.CreatePlayers();
 
-            field.SetDependencies(controller);
+            field.SetDependencies(controller, squareSelector);
             cameraController.SetDependencies(controller);
 
             controller.StartNewGame();

@@ -4,34 +4,20 @@ using UnityEngine;
 
 public class XDrone : Unit
 {
-    private Vector2Int[] directions = new Vector2Int[]
-    {
-        Vector2Int.up,
-        Vector2Int.down,
-        Vector2Int.left,
-        Vector2Int.right,
-    };
-    private int range = 10;
+    private int moveRange = 5;
+    private int attackRange = 1;
 
     public override HashSet<Vector2Int> GenerateAvailableMoves()
     {
         ClearMoves();
-        AddMoves(PatternGen.LineMove(this, directions, range));
+        AddMoves(PatternGen.SquareMove(this, moveRange));
         return availableMoves;
     }
 
     public override HashSet<Vector2Int> GenerateAvailableAttacks()
     {
         ClearAttacks();
+        AddAttacks(PatternGen.SquareAttack(this, attackRange));
         return availableAttacks;
-    }
-
-    // TODO: Remove in future commit
-    public override HashSet<Vector2Int> SelectAvailableSquares()
-    {
-        availableMoves.Clear();
-        LineMovement(directions, range);
-        LineMovement(directions, range);
-        return availableMoves;
     }
 }

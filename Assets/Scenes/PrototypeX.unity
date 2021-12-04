@@ -151,9 +151,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 139162210}
-  - {fileID: 713707528}
   - {fileID: 165819180}
+  - {fileID: 713707528}
   - {fileID: 266685980}
+  - {fileID: 1242336636}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -209,6 +210,7 @@ MonoBehaviour:
   fieldAnchor: {fileID: 1303992746}
   cameraController: {fileID: 713707529}
   unitCreator: {fileID: 266685981}
+  squareSelector: {fileID: 1242336637}
   debugButton: {fileID: 1530209317}
 --- !u!1 &165819179
 GameObject:
@@ -239,7 +241,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 46485914}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &165819181
 MonoBehaviour:
@@ -468,7 +470,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 46485914}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &713707529
 MonoBehaviour:
@@ -920,6 +922,53 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 57.123, y: 294.328, z: 83.245}
+--- !u!1 &1242336635
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1242336636}
+  - component: {fileID: 1242336637}
+  m_Layer: 0
+  m_Name: Square Selector Creator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1242336636
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1242336635}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -14.852912, y: -17.739391, z: -35.657207}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 46485914}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1242336637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1242336635}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fd1a1668486f6b4fbe08160fe06f46f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  freeSquareMaterial: {fileID: 2100000, guid: 8faa31fc5a9140d4f97456433acd87d2, type: 2}
+  opponentSquareMaterial: {fileID: 2100000, guid: 30a0c463c39663e49a97a5037340cac8, type: 2}
+  selectorPrefab: {fileID: 4225496655624885485, guid: 21c8c34748b458f459f5f775a87d4bcb, type: 3}
+  subselectorPrefab: {fileID: 4225496655624885485, guid: 504a2e1746cb08c45a99b07c93abeaff, type: 3}
 --- !u!1 &1303992745
 GameObject:
   m_ObjectHideFlags: 0
