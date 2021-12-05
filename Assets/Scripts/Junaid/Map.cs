@@ -63,10 +63,10 @@ public class Map : MonoBehaviour {
             c.transform.Translate(new Vector3(-speed * Time.deltaTime, 0, 0));
         }
         if (Input.GetKey(KeyCode.S)) {
-            c.transform.Translate(new Vector3(0,-0.15f, -speed * Time.deltaTime));
+            c.transform.Translate( 0,0,-speed * Time.deltaTime,Space.World);
         }
         if (Input.GetKey(KeyCode.W)) {
-            c.transform.Translate(new Vector3(0,0.15f, speed * Time.deltaTime));
+            c.transform.Translate(0, 0, speed * Time.deltaTime, Space.World);
         }
         if (Input.GetAxis("Mouse ScrollWheel") > 0f) { 
             c.transform.Translate(new Vector3(0, 0, speed * Time.deltaTime*5));
@@ -209,19 +209,19 @@ public class Map : MonoBehaviour {
         character[5, 0] = SpawnCharacter(characterType.Queen, 0);
         //Player0Queen = character[5, 0];
         
-        //character[6, 0] = SpawnCharacter(characterType.Warrior, 0);
-        //character[4, 0] = SpawnCharacter(characterType.Warrior, 0);
+        character[6, 0] = SpawnCharacter(characterType.Warrior, 0);
+        character[4, 0] = SpawnCharacter(characterType.Warrior, 0);
         //character[5, 1] = SpawnCharacter(characterType.Warrior, 0);
        // character[5, 3] = SpawnCharacter(characterType.Drone, 0);
        // character[3, 3] = SpawnCharacter(characterType.Drone, 0);
        // character[7, 3] = SpawnCharacter(characterType.Drone, 0);
         
-        for (int i = 1;i<10;i++) {
+        for (int i = 1;i<19;i++) {
             for (int j = 1; j <5; j++){
                 character[i, j] = SpawnCharacter(characterType.Drone, 0);
             }
         }
-        for (int i = 1; i < 10; i++) {
+        for (int i = 1; i < 19; i++) {
             for (int j = 6; j < 9; j++) {
                 character[i, j] = SpawnCharacter(characterType.Drone, 1);
             }

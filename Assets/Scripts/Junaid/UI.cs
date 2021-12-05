@@ -18,13 +18,16 @@ public class UI : MonoBehaviour
     public GameObject Register;
     public GameObject Notification;
     public GameObject Victory;
+    public GameObject InGameUIDisplay;
+
     public static UI Instance { set; get; }
     public string Result;
 
     public Client client;
-   // public SignUp s = new SignUp();
+    // public SignUp s = new SignUp();
 
-   // [SerializeField] private TMP_InputField address;
+    // [SerializeField] private TMP_InputField address;
+    [SerializeField] public Texture[] units;
     [SerializeField] public TMP_InputField Playername;
     [SerializeField] public TMP_InputField PlayerPassword;
     [SerializeField] private Button LoginButton;
@@ -36,10 +39,19 @@ public class UI : MonoBehaviour
     [SerializeField] public TMP_InputField RegisterEmail;
     [SerializeField] public TMP_InputField RegisterPassword;
     [SerializeField] private Button RegisterButton;
-
+    [SerializeField] public TMP_Text DisplayUsername;
+    [SerializeField] public TMP_Text DisplayRank;
+    [SerializeField] public TMP_Text DisplayExperience;
+    [SerializeField] public RawImage DisplayUnit;
+    [SerializeField] public Text InGameName;
+    [SerializeField] public Text InGameRank;
+    [SerializeField] public Text InGameUnitType;
+    [SerializeField] public Text InGameUnitHealth;
+    [SerializeField] public Text InGameUnitAttack;
     private void Awake() {
         Instance = this;
-        front.SetActive(false);
+        front.SetActive(true);
+        InGameUIDisplay.SetActive(false);
         startMenu.SetActive(false);
         Register.SetActive(false);
         OnlineMenu.SetActive(false);
@@ -47,6 +59,7 @@ public class UI : MonoBehaviour
         turns.SetActive(false);
         status.SetActive(false);
         Notification.SetActive(false);
+       
     }
     public void Update() {
         LoginButton.enabled = !string.IsNullOrWhiteSpace(Playername.text)
@@ -57,13 +70,13 @@ public class UI : MonoBehaviour
             !string.IsNullOrWhiteSpace(RegisterPassword.text) &&
             !string.IsNullOrWhiteSpace(RegisterEmail.text);
 
+        //InGameUI();
+
     }
     public void play() {
-       // Debug.Log(Playername.text);
-        // Debug.Log(PlayerPassword.text);
+     
         StartCoroutine(SignUp.Instance.LogIn(Playername.text,  PlayerPassword.text));
-       // startMenu.SetActive(false);
-        //OnlineMenu.SetActive(true);
+      
     }
 
     public void GoToLogin() {
@@ -80,7 +93,7 @@ public class UI : MonoBehaviour
     public void CreateNewAccount() {
 
         StartCoroutine(SignUp.Instance.CreateAccount(RegisterName.text,RegisterEmail.text,RegisterPassword.text));
-       // Debug.Log(SignUp.Instance.get());
+    
     }
 
     public void back() {
@@ -91,8 +104,12 @@ public class UI : MonoBehaviour
 
     public void HostOnline() {
         Client.Instance.initialize("127.0.0.1", 8007,Playername.text);
-        Waiting.SetActive(true);
+        Waiting.SetActive(false);
+
         OnlineMenu.SetActive(false);
+        InGameRank.text = DisplayRank.text;
+        InGameName.text = DisplayUsername.text;
+        InGameUIDisplay.SetActive(true);
     }
 
     public void backToOnlineMenu() {
@@ -111,7 +128,7 @@ public class UI : MonoBehaviour
 
     public void CloseNotification() {
         Notification.SetActive(false);
-        Debug.Log("check");
+        
     }
 
 
@@ -120,6 +137,41 @@ public class UI : MonoBehaviour
         UI.Instance.Victory.SetActive(true);
         UI.Instance.turns.SetActive(false);
         UI.Instance.status.SetActive(false);
+
+        
+    }
+
+    public void InGameUI(Characters c) {
+       
+
+        InGameUnitType.text = $"{c.type}";
+        InGameUnitHealth.text = $"{c.GetHealth()}";
+        InGameUnitAttack.text = $"{c.GetAttack()}";
+
+        if (c.type == characterType.Drone  && Client.Instance.getCurrentTeam() == 0) {
+            DisplayUnit.texture = units[1];
+            
+        }
+
+        else if (c.type == characterType.Drone && Client.Instance.getCurrentTeam() == 1) {
+            DisplayUnit.texture = units[0];
+        }
+
+        else if (c.type == characterType.Queen && Client.Instance.getCurrentTeam() == 0) {
+            DisplayUnit.texture = units[2];
+        }
+
+        else if (c.type == characterType.Queen && Client.Instance.getCurrentTeam() == 1) {
+            DisplayUnit.texture = units[3];
+        }
+
+        else if (c.type == characterType.Warrior && Client.Instance.getCurrentTeam() == 0) {
+            DisplayUnit.texture = units[4];
+        }
+
+        else if (c.type == characterType.Warrior && Client.Instance.getCurrentTeam() == 1) {
+            DisplayUnit.texture = units[5];
+        }
     }
 
 }

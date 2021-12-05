@@ -23,7 +23,7 @@ public class Client : MonoBehaviour
     private Vector2Int StartMove;
     private Vector2Int EndMove;
     private bool IsTeam0Turn;
-    float end = 0;
+  
 
     private Characters Player0Queen;    //access to player 1 queens health
     private Characters Player1Queen;    //access to player 1 queens health
@@ -68,11 +68,7 @@ public class Client : MonoBehaviour
         driver.ScheduleUpdate().Complete();
         CheckAlive();
         
-        UpdateMessagePump();
-        end += 0.1f;
-        if (end == 1) {
-            end = 0;
-        }
+        UpdateMessagePump();     
         
     }
 
@@ -167,6 +163,7 @@ public class Client : MonoBehaviour
             selectedPiece = c;
             StartMove = Map.Instance.getMouseover();
             Debug.Log(selectedPiece.type);
+            UI.Instance.InGameUI(c);
         }
     }
 
@@ -206,42 +203,6 @@ public class Client : MonoBehaviour
 
     public void Move(Characters c,int x, int y) {
 
-
-        if (x > c.GetX() && y == c.GetY()) {
-            c.transform.rotation = Quaternion.Euler(0f, 270f, 0f);
-            Debug.Log("right");
-
-        }
-        else if (x < c.GetX() && y == c.GetY()) {
-            c.transform.rotation = Quaternion.Euler(0f, 90f, 0f);
-            Debug.Log("left");
-        }
-        else if (y > c.GetY() && x == c.GetX()) {
-            c.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
-            Debug.Log("up");
-        }
-        else if (y < c.GetY() && x == c.GetX()) {
-            c.transform.rotation = Quaternion.Euler(0f, 360f, 0f);
-            Debug.Log("down");
-        }
-        else if (x > c.GetX() && y > c.GetY()) {
-            c.transform.rotation = Quaternion.Euler(0f, 225f, 0f);
-            Debug.Log("upper right");
-        }
-        else if (x < c.GetX() && y > c.GetY()) {
-            c.transform.rotation = Quaternion.Euler(0f, 135f, 0f);
-            Debug.Log("upper left");
-        }
-        else if (x > c.GetX() && y < c.GetY()) {
-            c.transform.rotation = Quaternion.Euler(0f, 315f, 0f);
-            Debug.Log("lower right ");
-        }
-        else if (x > c.GetX() && y > c.GetY()) {
-            c.transform.rotation = Quaternion.Euler(0f, 45f, 0f);
-            Debug.Log("lower left");
-        }
-
-
         //character[x, y].SetX(x);
         //character[x, y].SetY(y);
         // Map.Instance.GetCharacters(c.GetX(), c.GetY()).transform.position =  Map.Instance.GetTileCenter(x, y);
@@ -251,8 +212,6 @@ public class Client : MonoBehaviour
         Map.Instance.GetCharacters(x, y).SetY(y);
 
         // character[x, y].transform.position = Map.Instance.GetTileCenter(x, y);
-        
-
 
     }
 
@@ -283,7 +242,43 @@ public class Client : MonoBehaviour
         }
     }
 
+    public void rotate(Characters c, int x, int y) {
+        if (x > c.GetX() && y == c.GetY()) {
+            c.transform.rotation = Quaternion.Euler(0f, 270f, 0f);
+            Debug.Log("right");
 
+        }
+        else if (x < c.GetX() && y == c.GetY()) {
+            c.transform.rotation = Quaternion.Euler(0f, 90f, 0f);
+            Debug.Log("left");
+        }
+        else if (y > c.GetY() && x == c.GetX()) {
+            c.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
+            Debug.Log("up");
+        }
+        else if (y < c.GetY() && x == c.GetX()) {
+            c.transform.rotation = Quaternion.Euler(0f, 360f, 0f);
+            Debug.Log("down");
+        }
+        else if (x > c.GetX() && y > c.GetY()) {
+            c.transform.rotation = Quaternion.Euler(0f, 225f, 0f);
+            Debug.Log("upper right");
+        }
+        else if (x < c.GetX() && y > c.GetY()) {
+            c.transform.rotation = Quaternion.Euler(0f, 135f, 0f);
+            Debug.Log("upper left");
+        }
+        else if (x > c.GetX() && y < c.GetY()) {
+            c.transform.rotation = Quaternion.Euler(0f, 315f, 0f);
+            Debug.Log("lower right ");
+        }
+        else if (x < c.GetX() && y < c.GetY()) {
+            c.transform.rotation = Quaternion.Euler(0f, 45f, 0f);
+            Debug.Log("lower left");
+        }
+
+
+    }
 
     public void AttemptMove(int x1, int y1, int x2, int y2) {
 
@@ -299,7 +294,6 @@ public class Client : MonoBehaviour
            // ToMakeMoveClient(x1, y1, x2, y2);
 
             if (StartMove == EndMove) {
-                Debug.Log("1");
                 Move(selectedPiece, x1, y1);
                 selectedPiece = null;
                 Map.Instance.RemoveHighlightMoves();
@@ -311,9 +305,9 @@ public class Client : MonoBehaviour
                 if (selectedPiece.HasKilled) {
                    KilledStatus(selectedPiece, other);
                 }
-  
-                Map.Instance.SetCharacters(x2,y2,selectedPiece);
-                Debug.Log("2");
+
+                Map.Instance.SetCharacters(x2, y2, selectedPiece);
+                rotate(selectedPiece, x2, y2);
                 Move(selectedPiece,x2, y2);
 
                 Map.Instance.SetCharacters(x1, y1, null);
@@ -365,7 +359,6 @@ public class Client : MonoBehaviour
             }
 
             else {
-                Debug.Log("3");
                 Move(selectedPiece, x1, y1);
                 selectedPiece = null;
                 Map.Instance.RemoveHighlightMoves();

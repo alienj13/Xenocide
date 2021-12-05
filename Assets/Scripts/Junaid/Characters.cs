@@ -51,6 +51,8 @@ public abstract class Characters : MonoBehaviour {
     public abstract void SetY(int y);
     public abstract int GetHealth();
 
+    public abstract int GetAttack();
+
     public abstract void HealthLoss(int h);
 
 }

@@ -6,8 +6,8 @@ public class Queen : Characters
 
 {
     public override void SetAttributes() {
-        health = 20;
-        AttackPower = 10;
+        health = 100;
+        AttackPower = 0;
     }
     public override bool ValidMove(Characters[,] board, int x1, int y1, int x2, int y2, Characters c) {
         //no valid moves
@@ -45,5 +45,9 @@ public class Queen : Characters
 
     public override void HealthLoss(int h) {
         health -= h;
+    }
+
+    public override int GetAttack() {
+        return AttackPower;
     }
 }

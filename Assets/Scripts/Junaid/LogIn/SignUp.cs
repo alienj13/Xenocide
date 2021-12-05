@@ -10,7 +10,6 @@ public class SignUp : MonoBehaviour
     private void Awake() {
          
         Instance = this;
-       // StartCoroutine(CreateAccount());
     }
 
     public string Result;
@@ -41,15 +40,10 @@ public class SignUp : MonoBehaviour
                     Debug.Log("Account already exists");
                 }
                 else {
-                    Debug.Log("Error");                
+                    Debug.Log(www.downloadHandler.text);                
                 }
-
-
             }
-
         }
-
-
     }
 
     public IEnumerator LogIn(string user, string password) {
@@ -65,12 +59,15 @@ public class SignUp : MonoBehaviour
             }
             else {
  
-                Debug.Log(www.downloadHandler.text);
+               // Debug.Log(www.downloadHandler.text);
                 Result = www.downloadHandler.text;
                 if (Result.Equals("1")) {
                     UI.Instance.startMenu.SetActive(false);
                     UI.Instance.OnlineMenu.SetActive(true);
-               
+                    StartCoroutine(RetrieveRank(user));
+                    StartCoroutine(RetrieveExperience(user));
+                    
+
                 }
                 else if (Result.Equals("2")) {
                     UI.Instance.NotificationText.text = "incorrect password";
@@ -84,12 +81,51 @@ public class SignUp : MonoBehaviour
                     Debug.Log("Account not found");
              
                 }
-   
             }
         }
     }
 
-    public string get() {
-        return Result;
+    public IEnumerator RetrieveRank(string user) {
+
+        WWWForm form = new WWWForm();
+        form.AddField("username", user);
+
+        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/TeamProject/RetrieveRank.php", form)) {
+            yield return www.SendWebRequest();
+
+            if (www.result == UnityWebRequest.Result.ProtocolError || www.result == UnityWebRequest.Result.ConnectionError) {
+
+                Debug.Log(www.error);
+            }
+            else {
+                Debug.Log(www.downloadHandler.text);
+                Result = www.downloadHandler.text;
+                UI.Instance.DisplayUsername.text = user;
+                UI.Instance.DisplayRank.text = Result;
+                
+            }
+        }
     }
+
+    public IEnumerator RetrieveExperience(string user) {
+
+        WWWForm form = new WWWForm();
+        form.AddField("username", user);
+
+        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/TeamProject/RetrieveExperience.php", form)) {
+            yield return www.SendWebRequest();
+
+            if (www.result == UnityWebRequest.Result.ProtocolError || www.result == UnityWebRequest.Result.ConnectionError) {
+
+                Debug.Log(www.error);
+            }
+            else {
+                Debug.Log(www.downloadHandler.text);
+                Result = www.downloadHandler.text;
+                UI.Instance.DisplayExperience.text = Result;
+
+            }
+        }
+    }
+
 }
