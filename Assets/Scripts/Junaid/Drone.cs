@@ -6,7 +6,8 @@ public class Drone : Characters
 {
     public override void SetAttributes() {
         health = 20;
-        AttackPower = 10;
+        AttackPower = 15;
+        defense = 10;
     }
     public override bool ValidMove(Characters[,] board, int x1, int y1, int x2, int y2, Characters c) {
         moves.Clear();
@@ -98,10 +99,14 @@ public class Drone : Characters
     }
 
     public override void HealthLoss(int h) {
-        health -= h;
+        health -= (h - defense);
     }
 
     public override int GetAttack() {
         return AttackPower;
+    }
+
+    public override int GetDefense() {
+        return defense;
     }
 }

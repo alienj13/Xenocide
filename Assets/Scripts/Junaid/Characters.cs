@@ -17,6 +17,7 @@ public abstract class Characters : MonoBehaviour {
     public characterType type;
     protected int health;
     protected int AttackPower;
+    protected int defense;
     public bool HasAttcked;
     public bool HasKilled;
     protected Vector2Int Destination;
@@ -54,5 +55,7 @@ public abstract class Characters : MonoBehaviour {
     public abstract int GetAttack();
 
     public abstract void HealthLoss(int h);
+
+    public abstract int GetDefense();
 
 }

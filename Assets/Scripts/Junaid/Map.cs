@@ -60,13 +60,25 @@ public class Map : MonoBehaviour {
             c.transform.Translate(new Vector3(speed * Time.deltaTime, 0, 0));
         }
         if (Input.GetKey(KeyCode.A)) {
-            c.transform.Translate(new Vector3(-speed * Time.deltaTime, 0, 0));
+           
+                c.transform.Translate(new Vector3(-speed * Time.deltaTime, 0, 0));
+            
         }
         if (Input.GetKey(KeyCode.S)) {
-            c.transform.Translate( 0,0,-speed * Time.deltaTime,Space.World);
+            if (Client.Instance.getCurrentTeam() == 1) {
+                c.transform.Translate(0, 0, speed * Time.deltaTime, Space.World);
+            }
+            else {
+                c.transform.Translate(0, 0, -speed * Time.deltaTime, Space.World);
+            }
         }
         if (Input.GetKey(KeyCode.W)) {
-            c.transform.Translate(0, 0, speed * Time.deltaTime, Space.World);
+            if (Client.Instance.getCurrentTeam() == 1) {
+                c.transform.Translate(0, 0, -speed * Time.deltaTime, Space.World);
+            }
+            else {
+                c.transform.Translate(0, 0, speed * Time.deltaTime, Space.World);
+            }
         }
         if (Input.GetAxis("Mouse ScrollWheel") > 0f) { 
             c.transform.Translate(new Vector3(0, 0, speed * Time.deltaTime*5));
@@ -111,10 +123,11 @@ public class Map : MonoBehaviour {
           //press left mouse button down 
           
             if (Input.GetMouseButtonDown(0)) {
+
                 if (character[hitPosition.x, hitPosition.y] != null ) {
                     if ((character[hitPosition.x, hitPosition.y].team == 0 && Client.Instance.getTurn() && Client.Instance.getCurrentTeam() == 0) ||
                         (character[hitPosition.x, hitPosition.y].team == 1 && !Client.Instance.getTurn() && Client.Instance.getCurrentTeam() == 1)) {
-                        Client.Instance.SelectPiece(x, y,character);
+                        Client.Instance.SelectPiece(x, y, character);
                         HighlightMoves = Client.Instance.getSelected().setMoves(Client.Instance.getSelected().GetX(), Client.Instance.getSelected().GetY());
                         HighlightMovesMethod();
                     }

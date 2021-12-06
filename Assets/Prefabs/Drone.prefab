@@ -99,3 +99,4 @@ MonoBehaviour:
   type: 1
   HasAttcked: 0
   HasKilled: 0
+  targetPosition: {x: 0, y: 0, z: 0}

@@ -48,10 +48,11 @@ public class UI : MonoBehaviour
     [SerializeField] public Text InGameUnitType;
     [SerializeField] public Text InGameUnitHealth;
     [SerializeField] public Text InGameUnitAttack;
+    [SerializeField] public Text InGameUnitDefense;
     private void Awake() {
         Instance = this;
-        front.SetActive(true);
-        InGameUIDisplay.SetActive(false);
+        front.SetActive(false);
+        InGameUIDisplay.SetActive(true);
         startMenu.SetActive(false);
         Register.SetActive(false);
         OnlineMenu.SetActive(false);
@@ -147,6 +148,7 @@ public class UI : MonoBehaviour
         InGameUnitType.text = $"{c.type}";
         InGameUnitHealth.text = $"{c.GetHealth()}";
         InGameUnitAttack.text = $"{c.GetAttack()}";
+        InGameUnitDefense.text = $"{c.GetDefense()}";
 
         if (c.type == characterType.Drone  && Client.Instance.getCurrentTeam() == 0) {
             DisplayUnit.texture = units[1];

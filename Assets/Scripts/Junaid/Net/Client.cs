@@ -81,9 +81,9 @@ public class Client : MonoBehaviour
     }
 
     public void SetQueen0(Characters q) {
-        Debug.Log("set queen 0");
+       
         Player0Queen = q;
-        Debug.Log(Player0Queen);
+ 
     }
     public void SetQueen1(Characters q) {
        Player1Queen = q;
