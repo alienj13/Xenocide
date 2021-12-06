@@ -1,0 +1,27 @@
+How to create a new unit:
+
+1. Add a model into the screen and make it a prefab (prefab location: Assets/Prefabs/Prototype/Units/).
+NOTE: The name of the prefab must be the exact same as the name of the new unit.
+
+2. Create a script (script location: Assets/Scripts/Prototype/Core/Units/) with the name of the unit.
+NOTE: The name of the script must be the exact same as the name of the new unit.
+
+3. Make the script inherit Unit instead of Monobehavior and implement the necessary methods (generating move set / attack set).
+
+4. Open Assets/Scripts/Prototype/Core/Enum/UnitType.cs and add the name of the new unit into the enum list.
+NOTE: The name added must be the exact same as the name of the new unit.
+
+5. Go to the prefab that was saved in step 1 and add 2 new scripts:
+- FIRST, add a tweener. A tweener determine how a unit moves.
+(if the unit does not move, just put instant tweener as a placeholder)
+- SECOND, add the script of the unit.
+
+6. Open Assets/Data/Test Layout - 01.asset and add the unit starting spawn point as we don't have a spawning system yet.
+
+7. On the PrototypeX scene, Controllers > Unit Creator. Add your unit prefab to the prefab list (you will see the other units there).
+
+8. Pray that your unit spawned on the screen.
+
+9. If you are successful in step 8, congratulation. Now, you can go to your prefab and edit:
+- The size of the unit (because it's highly unlikely that you get the ideal size on your first try. I blame local scaling)
+- The stats of the unit
