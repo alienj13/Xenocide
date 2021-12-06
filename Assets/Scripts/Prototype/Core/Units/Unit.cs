@@ -274,8 +274,7 @@ public abstract class Unit : MonoBehaviour
     }
     #endregion
 
-    // Utility methods
-    // Does not affect game logic
+    // Utility (or misc, depends on my mood)
     #region Utility
     public void SetMaterial(Material material)
     {
@@ -284,23 +283,6 @@ public abstract class Unit : MonoBehaviour
         materialSetter.SetSingleMaterial(material);
     }
 
-    public override string ToString()
-    {
-        return "Unit " + this.id + " (" + this.GetType() + ")";
-    }
-    #endregion
-
-    // TODO: Remove in future commit after method reference = 0
-    #region Legacy
-    public bool IsAttackingUnitOfType<T>() where T : Unit
-    {
-        foreach (var square in availableMoves)
-        {
-            if (Field.GetUnitOnSquare(square) is T)
-                return true;
-        }
-        return false;
-    }
     protected Unit GetUnitInDirection<T>(PlayerTeam team, Vector2Int direction) where T : Unit
     {
         for (int i = 1; i <= Field.FIELD_SIZE; i++)
@@ -320,29 +302,10 @@ public abstract class Unit : MonoBehaviour
         }
         return null;
     }
-    public void LineMovement(Vector2Int[] directions, float range)
+
+    public override string ToString()
     {
-        foreach (var direction in directions)
-        {
-            for (int i = 1; i <= range; i++)
-            {
-                Vector2Int nextCoords = OccupiedSquare + direction * i;
-                Unit unit = Field.GetUnitOnSquare(nextCoords);
-
-                if (!Field.CheckIfCoordsAreOnField(nextCoords))
-                    break;
-
-                if (unit == null)
-                    AddMove(nextCoords);
-                else if (!unit.IsFromSameTeam(this))
-                {
-                    AddMove(nextCoords);
-                    break;
-                }
-                else if (unit.IsFromSameTeam(this))
-                    break;
-            }
-        }
+        return "Unit " + this.id + " (" + this.GetType() + ")";
     }
     #endregion
 }
