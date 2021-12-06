@@ -97,7 +97,8 @@ public abstract class GameController : MonoBehaviour
         newUnit.SetData(squareCoords, team, field);
 
         Material teamMaterial = unitCreator.GetTeamMaterial(team);
-        newUnit.SetMaterial(teamMaterial);
+        if (teamMaterial)
+            newUnit.SetMaterial(teamMaterial);
 
         field.SetUnitOnField(squareCoords, newUnit);
 
