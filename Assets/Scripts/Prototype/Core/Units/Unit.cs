@@ -41,8 +41,7 @@ public abstract class Unit : MonoBehaviour
     // Available attack set
     public HashSet<Vector2Int> availableAttacks;
 
-    // Abstract methods
-    // Implement these in inherited Units
+    // Abstract methods. Implement these in inherited Units
     #region Abstract
     // Generate available move set
     public abstract HashSet<Vector2Int> GenerateAvailableMoves();

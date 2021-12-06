@@ -19,6 +19,6 @@ public class SingleplayerField : Field
     public override void SelectedUnitAttacked(Vector2 coords)
     {
         Vector2Int intCoords = new Vector2Int(Mathf.RoundToInt(coords.x), Mathf.RoundToInt(coords.y));
-        OnSelectedUnitAttacked(intCoords);
+        OnSelectedUnitAttack(intCoords);
     }
 }

@@ -48,6 +48,6 @@ public class MultiplayerField : Field
     private void RPC_OnSelectedUnitAttacked(Vector2 coords)
     {
         Vector2Int intCoords = new Vector2Int(Mathf.RoundToInt(coords.x), Mathf.RoundToInt(coords.y));
-        OnSelectedUnitAttacked(intCoords);
+        OnSelectedUnitAttack(intCoords);
     }
 }

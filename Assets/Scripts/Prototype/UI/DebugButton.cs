@@ -34,7 +34,5 @@ public class DebugButton : MonoBehaviour
         }
         else
             Debug.Log("Selected Unit = null");
-
-        Debug.Log("Selected Square Data count: " + field.selectionSquareData.Count);
     }
 }
