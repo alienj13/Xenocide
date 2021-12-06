@@ -23,11 +23,6 @@ public abstract class GameController : MonoBehaviour
     public abstract void TryToStartCurrentGame();
     public abstract bool CanPerformAction();
 
-    private void Awake()
-    {
-        //unitCreator = GetComponent<UnitCreator>();
-    }
-
     public void SetDependencies(UIManager UIManager, Field field, CameraController cameraController, UnitCreator unitCreator)
     {
         this.UIManager = UIManager;
@@ -69,8 +64,8 @@ public abstract class GameController : MonoBehaviour
 
     private void DestroyUnits()
     {
-        player1.activeUnits.ForEach(p => Destroy(p.gameObject));
-        player2.activeUnits.ForEach(p => Destroy(p.gameObject));
+        player1.ActiveUnits.ForEach(p => Destroy(p.gameObject));
+        player2.ActiveUnits.ForEach(p => Destroy(p.gameObject));
     }
 
     public bool IsGameInProgess()
@@ -111,16 +106,9 @@ public abstract class GameController : MonoBehaviour
         player.GenerateAllPossibleActions();
     }
 
-    // Legacy
-    // TODO: Remove this
-    private void GenerateAllPossiblePlayerMoves(XPlayer player)
-    {
-        player.GenerateAllPossibleMoves();
-    }
-
     public bool IsTeamTurnActive(PlayerTeam team)
     {
-        return activePlayer.team == team;
+        return activePlayer.Team == team;
     }
 
     public void EndTurn()
@@ -136,7 +124,6 @@ public abstract class GameController : MonoBehaviour
 
     private bool CheckIfGameIsFinished()
     {
-        // TODO: Implement this by checking the active player Queen IsAlive()
         XPlayer opponentPlayer = GetOpponentToPlayer(activePlayer);
         Unit opponentQueen = opponentPlayer.GetUnitsOfType<XQueen>().FirstOrDefault();
         if (!opponentQueen.IsAlive())
@@ -155,7 +142,7 @@ public abstract class GameController : MonoBehaviour
     {
         Debug.Log("Game Ended.");
 
-        UIManager.OnGameFinished(activePlayer.team.ToString());
+        UIManager.OnGameFinished(activePlayer.Team.ToString());
         SetGameState(GameState.Finished);
     }
 

@@ -75,13 +75,13 @@ public class CameraController : MonoBehaviour
         if (activePlayer != null)
         {
             Camera.main.enabled = false;
-            if (activePlayer.team == PlayerTeam.P1)
+            if (activePlayer.Team == PlayerTeam.P1)
             {
                 cam1.enabled = true;
                 cam2.enabled = false;
                 c = cam1;
             }
-            else if (activePlayer.team == PlayerTeam.P2)
+            else if (activePlayer.Team == PlayerTeam.P2)
             {
                 cam1.enabled = false;
                 cam2.enabled = true;
