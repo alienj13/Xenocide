@@ -37,3 +37,6 @@ MonoBehaviour:
   - position: {x: 17, y: 17}
     unitType: 0
     playerName: 2
+  - position: {x: 10, y: 10}
+    unitType: 4
+    playerName: 0
