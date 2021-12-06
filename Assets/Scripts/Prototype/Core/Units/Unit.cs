@@ -117,18 +117,33 @@ public abstract class Unit : MonoBehaviour
 
     public bool CanMoveTo(Vector2Int coords)
     {
-        return availableMoves.Contains(coords);
+        // If the coords are not in the available move set, return false
+        if (!availableMoves.Contains(coords))
+            return false;
+        // If there is a unit on that coords, return false
+        Unit unit = Field.GetUnitOnSquare(coords);
+        if (unit)
+            return false;
+        // Else, return true
+        return true;
     }
 
     public bool CanAttackAt(Vector2Int coords)
     {
+        // If the coords are not in the available attack set, return false
+        if (!availableAttacks.Contains(coords))
+            return false;
+        // If there is a unit on that square, continue
         Unit unit = Field.GetUnitOnSquare(coords);
         if (unit)
         {
+            // If that unit is from the same team, return false
             if (unit.IsFromSameTeam(this))
                 return false;
+            // Else, return true
             return true;
         }
+        // If there is no unit on that square, return false
         return false;
     }
 
@@ -140,7 +155,7 @@ public abstract class Unit : MonoBehaviour
     public virtual void Die()
     {
         // Debug:
-        Debug.Log("[!] Unit " + this.id + " has died.");
+        Debug.Log("[!] " + this + " has died.");
 
         Field.RemoveUnit(this);
     }
@@ -206,7 +221,7 @@ public abstract class Unit : MonoBehaviour
         int dmg = Math.Max(damageAddition - damageReduction, 1);
 
         // Debug:
-        Debug.Log("[-] Unit " + this.id + " attacked unit " + enemy.id + ", dealing " + dmg + " damage.");
+        Debug.Log("[-] " + this + " attacked " + enemy + ", dealing " + dmg + " damage.");
 
         // Damage the enemy
         enemy.Damage(dmg, this);
@@ -224,7 +239,7 @@ public abstract class Unit : MonoBehaviour
         HP -= dmg;
 
         // Debug:
-        Debug.Log("[-] Unit " + this.id + " has been damaged, HP before gate: " + this.HP);
+        Debug.Log("[-] " + this + " has been damaged, HP before gate: " + this.HP);
 
         // Gate HP to be min 0
         if (this.HP < 0)
@@ -268,6 +283,11 @@ public abstract class Unit : MonoBehaviour
         if (materialSetter == null)
             materialSetter = GetComponent<MaterialSetter>();
         materialSetter.SetSingleMaterial(material);
+    }
+
+    public override string ToString()
+    {
+        return "Unit " + this.id + " (" + this.GetType() + ")";
     }
     #endregion
 
