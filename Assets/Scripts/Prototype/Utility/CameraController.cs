@@ -33,30 +33,31 @@ public class CameraController : MonoBehaviour
     {
         if (c != null && active)
         {
+            // Left & Right (A & D)
             if (Input.GetKey(KeyCode.D))
-            {
                 c.transform.Translate(new Vector3(speed * Time.deltaTime, 0, 0));
-            }
             if (Input.GetKey(KeyCode.A))
-            {
                 c.transform.Translate(new Vector3(-speed * Time.deltaTime, 0, 0));
+            // Forward and backward (W & S)
+            if (Input.GetKey(KeyCode.W))
+            {
+                if (c == cam1)
+                    c.transform.Translate(0, 0, speed * Time.deltaTime, Space.World);
+                else if (c == cam2)
+                    c.transform.Translate(0, 0, -speed * Time.deltaTime, Space.World);
             }
             if (Input.GetKey(KeyCode.S))
             {
-                c.transform.Translate(new Vector3(0, -0.15f, -speed * Time.deltaTime));
+                if (c == cam1)
+                    c.transform.Translate(0, 0, -speed * Time.deltaTime, Space.World);
+                else if (c == cam2)
+                    c.transform.Translate(0, 0, speed * Time.deltaTime, Space.World);
             }
-            if (Input.GetKey(KeyCode.W))
-            {
-                c.transform.Translate(new Vector3(0, 0.15f, speed * Time.deltaTime));
-            }
+            // Up and down (scroll up & down)
             if (Input.GetAxis("Mouse ScrollWheel") > 0f)
-            {
                 c.transform.Translate(new Vector3(0, 0, speed * Time.deltaTime * 5));
-            }
             if (Input.GetAxis("Mouse ScrollWheel") < 0f)
-            {
                 c.transform.Translate(new Vector3(0, 0, -speed * Time.deltaTime * 5));
-            }
         }
 
         
