@@ -14,7 +14,7 @@ public abstract class Field : MonoBehaviour
     [Header("Dependencies")]
     [SerializeField] private Transform bottomLeftCornerTransform;
     [SerializeField] private Transform bottomRightCornerTransform;
-    private GameController gameController;
+    protected GameController gameController;
     private SquareSelectorCreator squareSelector;
 
     [Header("Property (read-only)")]
@@ -231,7 +231,7 @@ public abstract class Field : MonoBehaviour
     }
     
     // End turn of the current player
-    private void EndTurn()
+    public virtual void EndTurn()
     {
         gameController.EndTurn();
     }

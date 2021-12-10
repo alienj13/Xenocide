@@ -50,4 +50,15 @@ public class MultiplayerField : Field
         Vector2Int intCoords = new Vector2Int(Mathf.RoundToInt(coords.x), Mathf.RoundToInt(coords.y));
         OnSelectedUnitAttack(intCoords);
     }
+
+    public override void EndTurn()
+    {
+        photonView.RPC(nameof(RPC_EndTurn), RpcTarget.AllBuffered, new object[] { });
+    }
+
+    [PunRPC]
+    private void RPC_EndTurn()
+    {
+        gameController.EndTurn();
+    }
 }

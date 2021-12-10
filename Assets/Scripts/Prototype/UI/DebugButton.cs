@@ -16,7 +16,7 @@ public class DebugButton : MonoBehaviour
 
     public void DebugTime()
     {
-        Debug.Log("DEBUG!");
+        Debug.LogError("DEBUG!");
 
         Debug.Log("Game Controller - active player: " + gameController.activePlayer.Team.ToString());
 
@@ -29,8 +29,7 @@ public class DebugButton : MonoBehaviour
         Unit selectedUnit = field.selectedUnit;
         if (selectedUnit != null)
         {
-            Debug.Log("Selected Unit - Movement Set Count: " + selectedUnit.availableMoves.Count);
-            Debug.Log("Selected Unit - Attack Set Count: " + selectedUnit.availableAttacks.Count);
+            Debug.Log("Selected Unit = " + selectedUnit.GetType());
         }
         else
             Debug.Log("Selected Unit = null");

@@ -33,11 +33,21 @@ public class UIManager : MonoBehaviour
     [Header("Debugging")]
     [SerializeField] private DebugButton debugButton;
     [SerializeField] private Button turnEndButton;
+    [SerializeField] private TextMeshProUGUI currentTurnText;
 
     private void Awake()
     {
         gameLevelSelection.AddOptions(Enum.GetNames(typeof(PlayerLevel)).ToList());
         OnGameLaunched();
+    }
+
+    private void Update()
+    {
+        if (gameController)
+        {
+            if (gameController.IsGameInProgess())
+                currentTurnText.SetText(gameController.activePlayer.Team.ToString());
+        }
     }
 
     public void SetDependencies(GameController gameController, Field field)
@@ -123,7 +133,8 @@ public class UIManager : MonoBehaviour
 
     public void EndTurn()
     {
-        gameController.EndTurn();
+        Debug.Log("End turn");
+        field.EndTurn();
     }
 
     public void Debugging()
@@ -133,5 +144,6 @@ public class UIManager : MonoBehaviour
         debugButton.SetDependencies(gameController, field);
 
         turnEndButton.gameObject.SetActive(true);
+        currentTurnText.gameObject.SetActive(true);
     }
 }
