@@ -114,6 +114,9 @@ public abstract class GameController : MonoBehaviour
     public void EndAction()
     {
         activePlayer.GenerateAllPossibleActions();
+
+        if (CheckIfGameIsFinished())
+            EndGame();
     }
 
     public void EndTurn()

@@ -133,7 +133,7 @@ public class UIManager : MonoBehaviour
 
     public void EndTurn()
     {
-        Debug.Log("End turn");
+        //Debug.Log("End turn");
         field.EndTurn();
     }
 

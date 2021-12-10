@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3402406920759827464}
   - component: {fileID: 1583270317152487252}
   - component: {fileID: 1174286979759653199}
-  - component: {fileID: 8941849002140942111}
+  - component: {fileID: 7661545995163444676}
   - component: {fileID: -6516109077694779708}
   m_Layer: 0
   m_Name: XTest
@@ -106,7 +106,7 @@ MonoBehaviour:
   maxHP: 10
   ATK: 200
   DEF: 3
---- !u!114 &8941849002140942111
+--- !u!114 &7661545995163444676
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -115,9 +115,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 6287846801813621524}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3c24bbcda2c098459e4ea12ebcf8e46, type: 3}
+  m_Script: {fileID: 11500000, guid: 7fd267db63fb5f54e96b1ee9ed05e2b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  time: 1.5
+  height: 10
 --- !u!114 &-6516109077694779708
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -18,6 +18,7 @@ public abstract class Unit : MonoBehaviour
     [SerializeField] private int SF_availableMoveCount = 0;
     [SerializeField] private int SF_availableAttackCount = 0;
     [SerializeField] private int SF_id = 0;
+    [SerializeField] private int SF_ActionCount = 0;
     [SerializeField] private int SF_currentHP = 1;
     
 
@@ -88,6 +89,7 @@ public abstract class Unit : MonoBehaviour
         SF_availableMoveCount = availableMoves.Count;
         SF_availableAttackCount = availableAttacks.Count;
         SF_id = id;
+        SF_ActionCount = ActionCount;
         SF_currentHP = HP;
     }
 

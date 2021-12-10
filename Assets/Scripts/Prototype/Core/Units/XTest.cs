@@ -11,6 +11,11 @@ public class XTest : Unit
     };
     private int moveRange = 20;
 
+    public override void StartTurn()
+    {
+        ActionCount = 3;
+    }
+
     public override HashSet<Vector2Int> GenerateAvailableMoves()
     {
         AddMoves(PatternGen.LineMove(this, directions, moveRange));

@@ -200,6 +200,7 @@ public abstract class Field : MonoBehaviour
     public void OnSelectedUnitAttack(Vector2Int coords)
     {
         selectedUnit.AttackAt(coords);
+        selectedUnit.EndAction();
         DeselectUnit();
         EndAction();
     }
