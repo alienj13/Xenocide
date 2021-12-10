@@ -435,7 +435,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitPrefabs:
   - {fileID: 5387734454352972018, guid: 182a7e0b7439ecb48a8d15889652b33b, type: 3}
-  - {fileID: 2834360063148242455, guid: 1880f6d4ad8b7c1498e3eea4de04a366, type: 3}
+  - {fileID: 6315855718669005032, guid: 1880f6d4ad8b7c1498e3eea4de04a366, type: 3}
   - {fileID: 6287846801813621524, guid: 8e0902d174fa78742aa7abf84edf6bd5, type: 3}
   - {fileID: 7706333433906662180, guid: 7c762d7cfce7b8c408411633a3a463eb, type: 3}
   - {fileID: 1098307082435100235, guid: 792da385ded02f24ea4effe6d233ffdf, type: 3}
