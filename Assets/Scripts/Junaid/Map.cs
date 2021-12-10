@@ -125,9 +125,11 @@ public class Map : MonoBehaviour {
             if (Input.GetMouseButtonDown(0)) {
 
                 if (character[hitPosition.x, hitPosition.y] != null ) {
+                    Client.Instance.ViewUnit(character[hitPosition.x, hitPosition.y]);
                     if ((character[hitPosition.x, hitPosition.y].team == 0 && Client.Instance.getTurn() && Client.Instance.getCurrentTeam() == 0) ||
                         (character[hitPosition.x, hitPosition.y].team == 1 && !Client.Instance.getTurn() && Client.Instance.getCurrentTeam() == 1)) {
                         Client.Instance.SelectPiece(x, y, character);
+                        Client.Instance.ViewUnit(character[hitPosition.x, hitPosition.y]);
                         HighlightMoves = Client.Instance.getSelected().setMoves(Client.Instance.getSelected().GetX(), Client.Instance.getSelected().GetY());
                         HighlightMovesMethod();
                     }
@@ -219,18 +221,10 @@ public class Map : MonoBehaviour {
     //spawns all the characters and places them in positions of the array
     public void SpawnAll() {
         character = new Characters[XCount, YCount];
-        character[5, 0] = SpawnCharacter(characterType.Queen, 0);
-        //Player0Queen = character[5, 0];
-        
-        character[6, 0] = SpawnCharacter(characterType.Warrior, 0);
-        character[4, 0] = SpawnCharacter(characterType.Warrior, 0);
-        //character[5, 1] = SpawnCharacter(characterType.Warrior, 0);
-       // character[5, 3] = SpawnCharacter(characterType.Drone, 0);
-       // character[3, 3] = SpawnCharacter(characterType.Drone, 0);
-       // character[7, 3] = SpawnCharacter(characterType.Drone, 0);
-        
-        for (int i = 1;i<19;i++) {
-            for (int j = 1; j <5; j++){
+
+        /*
+        for (int i = 1; i < 19; i++) {
+            for (int j = 1; j < 5; j++) {
                 character[i, j] = SpawnCharacter(characterType.Drone, 0);
             }
         }
@@ -238,17 +232,30 @@ public class Map : MonoBehaviour {
             for (int j = 6; j < 9; j++) {
                 character[i, j] = SpawnCharacter(characterType.Drone, 1);
             }
-        }
-        character[5, 9] = SpawnCharacter(characterType.Queen, 1);
-        //Player1Queen = character[5, 9];
-        Client.Instance.SetQueen1(character[5, 9]);
-        //character[6, 9] = SpawnCharacter(characterType.Warrior, 1);
-       //character[4, 9] = SpawnCharacter(characterType.Warrior, 1);
-        //character[5, 8] = SpawnCharacter(characterType.Warrior, 1);
-        //character[5, 4] = SpawnCharacter(characterType.Drone, 1);
-       // character[3, 6] = SpawnCharacter(characterType.Drone, 1);
-       // character[7, 6] = SpawnCharacter(characterType.Drone, 1);
+        }*/
 
+
+        character[6, 0] = SpawnCharacter(characterType.BlackWarrior, 0);
+        character[4, 0] = SpawnCharacter(characterType.BlackWarrior, 0);
+        character[5, 1] = SpawnCharacter(characterType.BlackWarrior, 0);
+         character[5, 3] = SpawnCharacter(characterType.BlackDrone, 0);
+         character[3, 3] = SpawnCharacter(characterType.BlackDrone, 0);
+         character[7, 8] = SpawnCharacter(characterType.BlackDrone, 0);
+
+
+        character[6, 9] = SpawnCharacter(characterType.RedWarrior, 1);
+        character[4, 9] = SpawnCharacter(characterType.RedWarrior, 1);
+  
+  
+        character[5, 8] = SpawnCharacter(characterType.RedWarrior, 1);
+        character[5, 4] = SpawnCharacter(characterType.RedDrone, 1);
+         character[3, 6] = SpawnCharacter(characterType.RedDrone, 1);
+         character[7, 6] = SpawnCharacter(characterType.RedDrone, 1);
+
+
+        character[5, 0] = SpawnCharacter(characterType.Queen, 0);
+        character[5, 9] = SpawnCharacter(characterType.Queen, 1);
+        Client.Instance.SetQueen1(character[5, 9]);
         Client.Instance.SetQueen0(character[5, 0]);
 
     }
@@ -257,16 +264,20 @@ public class Map : MonoBehaviour {
     //spawns a single 3D character, assigns their team and type
     public Characters SpawnCharacter( characterType type, int team) {
         Characters c;
-        if (team == 0 && type == characterType.Drone) {
-            c = Instantiate(prefabs[(int)type - 1], transform.position,
+        if (team == 0 && type != characterType.Queen) {
+            c = Instantiate(prefabs[(int)type ], transform.position,
                 transform.rotation * Quaternion.Euler(0f, 180f, 0f)).GetComponent<Characters>();
         }
+        else if (type == characterType.Queen) {
+            c = Instantiate(prefabs[(int)type], transform).GetComponent<Characters>();
+            c.GetComponent<MeshRenderer>().material = teamMaterial[team]; 
+        }
         else {
-             c = Instantiate(prefabs[(int)type - 1], transform).GetComponent<Characters>();
+             c = Instantiate(prefabs[(int)type ], transform).GetComponent<Characters>();
         }
         c.type = type;
         c.team = team;
-        c.GetComponent<MeshRenderer>().material = teamMaterial[team];     
+         
         c.SetAttributes();
         
         return c;
@@ -331,15 +342,10 @@ public class Map : MonoBehaviour {
         }
         return false;
     }
-    public void Exit() {
-        UI.Instance.Victory.SetActive(false);
-        UI.Instance.startMenu.SetActive(true);
-        UI.Instance.turns.SetActive(false);
-        UI.Instance.status.SetActive(false);
-    }
+   
     public void ResetMap() {
 
-        UI.Instance.Victory.SetActive(false);
+        UI.Instance.Lose.SetActive(false);
         Client.Instance.setSelected(null);
 
         for (int x = 0; x < XCount; x++) {

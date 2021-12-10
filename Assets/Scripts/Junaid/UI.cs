@@ -5,6 +5,7 @@ using Unity.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using UnityEngine.Video;
 
 public class UI : MonoBehaviour
 {
@@ -17,21 +18,20 @@ public class UI : MonoBehaviour
     public GameObject front;
     public GameObject Register;
     public GameObject Notification;
-    public GameObject Victory;
+    public GameObject Lose;
     public GameObject InGameUIDisplay;
+    public GameObject ExperienceWin;
 
     public static UI Instance { set; get; }
     public string Result;
 
     public Client client;
-    // public SignUp s = new SignUp();
 
-    // [SerializeField] private TMP_InputField address;
     [SerializeField] public Texture[] units;
     [SerializeField] public TMP_InputField Playername;
     [SerializeField] public TMP_InputField PlayerPassword;
     [SerializeField] private Button LoginButton;
-    [SerializeField] public TMP_Text WinnerLoser;
+    [SerializeField] public TMP_Text Loser;
     [SerializeField] public TMP_Text PlayersTurn;
     [SerializeField] public TMP_Text StatusText;
     [SerializeField] public TMP_Text NotificationText;
@@ -49,10 +49,14 @@ public class UI : MonoBehaviour
     [SerializeField] public Text InGameUnitHealth;
     [SerializeField] public Text InGameUnitAttack;
     [SerializeField] public Text InGameUnitDefense;
+    [SerializeField] public TMP_Text ExperienceWinText;
+
+    [SerializeField] public VideoClip[] vids ;
+    [SerializeField]  public VideoPlayer vp;
     private void Awake() {
         Instance = this;
-        front.SetActive(false);
-        InGameUIDisplay.SetActive(true);
+        front.SetActive(true);
+        InGameUIDisplay.SetActive(false);
         startMenu.SetActive(false);
         Register.SetActive(false);
         OnlineMenu.SetActive(false);
@@ -60,6 +64,8 @@ public class UI : MonoBehaviour
         turns.SetActive(false);
         status.SetActive(false);
         Notification.SetActive(false);
+        ExperienceWin.SetActive(false);
+        Lose.SetActive(false);
        
     }
     public void Update() {
@@ -71,7 +77,7 @@ public class UI : MonoBehaviour
             !string.IsNullOrWhiteSpace(RegisterPassword.text) &&
             !string.IsNullOrWhiteSpace(RegisterEmail.text);
 
-        //InGameUI();
+        
 
     }
     public void play() {
@@ -104,13 +110,13 @@ public class UI : MonoBehaviour
     }
 
     public void HostOnline() {
-        Client.Instance.initialize("127.0.0.1", 8007,Playername.text);
-        Waiting.SetActive(false);
+        Client.Instance.initialize("20.108.166.0", 8007,Playername.text);
+        Waiting.SetActive(true);
 
         OnlineMenu.SetActive(false);
         InGameRank.text = DisplayRank.text;
         InGameName.text = DisplayUsername.text;
-        InGameUIDisplay.SetActive(true);
+       // InGameUIDisplay.SetActive(true);
     }
 
     public void backToOnlineMenu() {
@@ -132,14 +138,35 @@ public class UI : MonoBehaviour
         
     }
 
+    public void Exit() {
+        StartCoroutine(SignUp.Instance.RetrieveRank(Playername.text));
+        StartCoroutine(SignUp.Instance.RetrieveExperience(Playername.text));
+        Lose.SetActive(false);
+        OnlineMenu.SetActive(true);
+        turns.SetActive(false);
+        status.SetActive(false);
+        ExperienceWin.SetActive(false);
+    }
 
-    public void VictoryScreen(FixedString128Bytes winner, FixedString128Bytes looser) {
-        UI.Instance.WinnerLoser.text = $"{winner} has won, {looser} has lost";
-        UI.Instance.Victory.SetActive(true);
-        UI.Instance.turns.SetActive(false);
-        UI.Instance.status.SetActive(false);
+    public void LoseScreen() {
+        Loser.text = $"Congrats you lost, now go fuck yourself";
+        Lose.SetActive(true);
+        turns.SetActive(false);
+        status.SetActive(false);
+        InGameUIDisplay.SetActive(false);
+        client.ShutDown();
 
         
+    }
+
+    public void ExperienceWinner() {
+        ExperienceWinText.text = $"You won! +50XP";
+        ExperienceWin.SetActive(true);
+        turns.SetActive(false);
+        status.SetActive(false);
+        InGameUIDisplay.SetActive(false);
+        client.ShutDown();
+
     }
 
     public void InGameUI(Characters c) {
@@ -150,29 +177,44 @@ public class UI : MonoBehaviour
         InGameUnitAttack.text = $"{c.GetAttack()}";
         InGameUnitDefense.text = $"{c.GetDefense()}";
 
-        if (c.type == characterType.Drone  && Client.Instance.getCurrentTeam() == 0) {
-            DisplayUnit.texture = units[1];
-            
+        if (c.type == characterType.BlackDrone  && Client.Instance.getCurrentTeam() == 0) {
+            //DisplayUnit.texture = units[1];
+            vp.clip = vids[3];
+
+            vp.Play();
+
         }
 
-        else if (c.type == characterType.Drone && Client.Instance.getCurrentTeam() == 1) {
-            DisplayUnit.texture = units[0];
+        else if (c.type == characterType.RedDrone && Client.Instance.getCurrentTeam() == 1) {
+            // DisplayUnit.texture = units[0];
+            vp.clip = vids[1];
+
+            vp.Play();
+
+
         }
 
         else if (c.type == characterType.Queen && Client.Instance.getCurrentTeam() == 0) {
-            DisplayUnit.texture = units[2];
+           // DisplayUnit.texture = units[2];
         }
 
         else if (c.type == characterType.Queen && Client.Instance.getCurrentTeam() == 1) {
-            DisplayUnit.texture = units[3];
+           // DisplayUnit.texture = units[3];
         }
 
-        else if (c.type == characterType.Warrior && Client.Instance.getCurrentTeam() == 0) {
-            DisplayUnit.texture = units[4];
+        else if (c.type == characterType.BlackWarrior && Client.Instance.getCurrentTeam() == 0) {
+            // DisplayUnit.texture = units[4];
+            vp.clip = vids[2];
+
+            vp.Play();
         }
 
-        else if (c.type == characterType.Warrior && Client.Instance.getCurrentTeam() == 1) {
-            DisplayUnit.texture = units[5];
+        else if (c.type == characterType.RedWarrior && Client.Instance.getCurrentTeam() == 1) {
+            //DisplayUnit.texture = units[5];
+            vp.clip = vids[0];
+
+            vp.Play();
+            
         }
     }
 

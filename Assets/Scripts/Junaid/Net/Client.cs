@@ -17,7 +17,7 @@ public class Client : MonoBehaviour
     public Action connectionDropped;
     public string PlayerName;
     public Characters selectedPiece;
-    private int currentTeam = 0;
+    private int currentTeam = -1;
     public string Result;
     private FixedString128Bytes opponent;
     private Vector2Int StartMove;
@@ -30,10 +30,9 @@ public class Client : MonoBehaviour
     List<Vector2Int> HighlightMoves = new List<Vector2Int>();
     private void Awake() {
         Instance = this;
-       
         IsTeam0Turn = true;
-        Map.Instance.SpawnAll();
-        Map.Instance.AllPosition();
+        //Map.Instance.SpawnAll();
+        //Map.Instance.AllPosition();
     }
     public void initialize(string ip ,ushort port,string name) {
         driver = NetworkDriver.Create();
@@ -136,15 +135,7 @@ public class Client : MonoBehaviour
         driver.EndSend(writer);
     }
 
-    private void RegisterToEvent() {
-        NetUtility.C_WELCOME += OnWelcomeClient;
-        NetUtility.C_KEEP_ALIVE += OnKeepAlive;
-        NetUtility.C_CLIENT_DISCONNECT += OnDisconnectClient;
-        NetUtility.C_START_GAME += OnStartGame;
-        NetUtility.C_USERNAME += OnUserNameClient;
-        NetUtility.C_MAKE_MOVE += OnMakeMoveClient;
-
-    }
+   
 
   
     private void UnRegisterToEvent() {
@@ -163,8 +154,13 @@ public class Client : MonoBehaviour
             selectedPiece = c;
             StartMove = Map.Instance.getMouseover();
             Debug.Log(selectedPiece.type);
-            UI.Instance.InGameUI(c);
+            
         }
+    }
+
+    public void ViewUnit(Characters c) {
+        if(c.team == currentTeam)
+        UI.Instance.InGameUI(c);
     }
 
     public Vector2Int getStarMove() {
@@ -187,9 +183,7 @@ public class Client : MonoBehaviour
         selectedPiece = c;
     }
 
-    public void OnDisconnectClient(NetMessage msg) {
-        UI.Instance.DisconnectedPlayer.SetActive(true);
-    }
+   
 
 
     
@@ -202,17 +196,9 @@ public class Client : MonoBehaviour
     }
 
     public void Move(Characters c,int x, int y) {
-
-        //character[x, y].SetX(x);
-        //character[x, y].SetY(y);
-        // Map.Instance.GetCharacters(c.GetX(), c.GetY()).transform.position =  Map.Instance.GetTileCenter(x, y);
         Map.Instance.GetCharacters(c.GetX(), c.GetY()).SetPosition(Map.Instance.GetTileCenter(x, y));
-           // Vector3.Lerp(Map.Instance.GetTileCenter(c.GetY(),c.GetY()), Map.Instance.GetTileCenter(x, y),end);
         Map.Instance.GetCharacters(x, y).SetX(x);
         Map.Instance.GetCharacters(x, y).SetY(y);
-
-        // character[x, y].transform.position = Map.Instance.GetTileCenter(x, y);
-
     }
 
     //ui display when a character is killed
@@ -285,13 +271,13 @@ public class Client : MonoBehaviour
        StartMove = new Vector2Int(x1, y1);
         EndMove= new Vector2Int(x2, y2);
         selectedPiece = Map.Instance.GetCharacters(x1, y1);
-        characterType other = characterType.Warrior;
+        characterType other = characterType.RedWarrior;
 
         if (Map.Instance.GetCharacters(x2,y2) != null) {
             other = Map.Instance.GetCharacters(x2, y2).type;
         }
         if (selectedPiece != null) {
-           // ToMakeMoveClient(x1, y1, x2, y2);
+           ToMakeMoveClient(x1, y1, x2, y2);
 
             if (StartMove == EndMove) {
                 Move(selectedPiece, x1, y1);
@@ -301,47 +287,23 @@ public class Client : MonoBehaviour
                 return;
             }
 
-            else if (selectedPiece.ValidMove(Map.Instance.getBoard(), x1, y1, x2, y2, selectedPiece)) {
+            else 
+            if (selectedPiece.ValidMove(Map.Instance.getBoard(), x1, y1, x2, y2, selectedPiece)) {
                 if (selectedPiece.HasKilled) {
-                   KilledStatus(selectedPiece, other);
+                    KilledStatus(selectedPiece, other);
                 }
 
                 Map.Instance.SetCharacters(x2, y2, selectedPiece);
                 rotate(selectedPiece, x2, y2);
                 Move(selectedPiece,x2, y2);
-
                 Map.Instance.SetCharacters(x1, y1, null);
                 selectedPiece.HasKilled = false;
                 selectedPiece.HasAttcked = false;
-               
-                    if (Player0Queen.GetHealth() < 1) {
 
-                        if (currentTeam == 0) {
-                            UI.Instance.VictoryScreen(opponent, PlayerName);
-                        }
+                //send message to server about queens health     
+              
 
-                        else {
-                            UI.Instance.VictoryScreen(PlayerName, opponent);
-                        }
-                    }
-                
-                
-                
-                    if (Player1Queen.GetHealth() < 1) {
-
-                        if (currentTeam == 1) {
-
-                            UI.Instance.VictoryScreen(opponent, PlayerName);
-                        }
-
-                        else {
-                            UI.Instance.VictoryScreen(PlayerName, opponent);
-                        }
-
-                    }
-                
                 IsTeam0Turn = !IsTeam0Turn;
-                
                 selectedPiece = null;
                 Map.Instance.RemoveHighlightMoves();
                 StartMove = Vector2Int.zero;
@@ -350,6 +312,14 @@ public class Client : MonoBehaviour
 
             else if (selectedPiece.HasAttcked == true || selectedPiece.HasKilled == true) {
                 AttackStatus(selectedPiece, other);
+                rotate(selectedPiece, x2, y2);
+                //send message to server about queens health     
+                if (currentTeam == 0) {
+                    SendQueenHealth(Player1Queen.GetHealth());
+                }
+                else {
+                    SendQueenHealth(Player0Queen.GetHealth());
+                }
                 selectedPiece.HasAttcked = false;
                 selectedPiece.HasKilled = false;
                 selectedPiece = null;
@@ -394,13 +364,50 @@ public class Client : MonoBehaviour
         }
     }
 
-   
+
+
+
+
+
     //multiplayer
+    private void RegisterToEvent() {
+        NetUtility.C_WELCOME += OnWelcomeClient;
+        NetUtility.C_KEEP_ALIVE += OnKeepAlive;
+        NetUtility.C_CLIENT_DISCONNECT += OnDisconnectClient;
+        NetUtility.C_START_GAME += OnStartGame;
+        NetUtility.C_USERNAME += OnUserNameClient;
+        NetUtility.C_MAKE_MOVE += OnMakeMoveClient;
+        NetUtility.C_LOSER += OnLoserClient;
+        NetUtility.C_WINNER += OnWinnerClient;
+
+    }
+
+    private void OnWinnerClient(NetMessage msg) {
+        NetWinner nw = msg as NetWinner;
+
+        if (nw.experience == 0) {
+            Debug.Log("Rank");
+        }
+        else {
+            UI.Instance.ExperienceWinner();
+        }
+        
+    }
+
+    private void OnLoserClient(NetMessage msg) {
+        Debug.Log("i lost");
+        UI.Instance.LoseScreen();
+    }
+
+
+    public void OnDisconnectClient(NetMessage msg) {
+        UI.Instance.DisconnectedPlayer.SetActive(true);
+    }
     public void OnMakeMoveClient(NetMessage msg ) {
         NetMakeMove mm = msg as NetMakeMove;
 
         if (mm.team != currentTeam) {
-            characterType other = characterType.Warrior;// could not make null so i made it warrior as a placeholder
+            characterType other = characterType.BlackWarrior;// could not make null so i made it warrior as a placeholder
             if (Map.Instance.GetCharacters(mm.TargetX, mm.TargetY) != null) {
                 other = Map.Instance.GetCharacters(mm.TargetX, mm.TargetY).type;
             }
@@ -410,10 +417,12 @@ public class Client : MonoBehaviour
                     KilledStatus(target, other);
                 }
                 Map.Instance.SetCharacters(mm.TargetX,mm.TargetY, target);
+                rotate(target, mm.TargetX, mm.TargetY);
                 Move(target, mm.TargetX, mm.TargetY);
                 Map.Instance.SetCharacters(mm.currentX, mm.currentY, null);
                 target.HasAttcked = false;
                 target.HasKilled = false;
+                /*
                 if (Player0Queen.GetHealth() < 1) {
                     if (currentTeam == 0) {
 
@@ -432,7 +441,7 @@ public class Client : MonoBehaviour
                         UI.Instance.VictoryScreen(PlayerName, opponent);
                     }
 
-                }
+                }*/
                 IsTeam0Turn = !IsTeam0Turn;
                 target = null;
                 selectedPiece = null;
@@ -441,7 +450,7 @@ public class Client : MonoBehaviour
             }
             else if (target.HasAttcked == true || target.HasKilled == true) {
                 AttackStatus(target, other);
-
+                rotate(target, mm.TargetX, mm.TargetY);
                 target.HasAttcked = false;
                 target.HasKilled = false;
                 selectedPiece = null;
@@ -461,6 +470,7 @@ public class Client : MonoBehaviour
         UI.Instance.turns.SetActive(true);
         UI.Instance.status.SetActive(true);
         UI.Instance.StatusText.text = "Game Started";
+        UI.Instance.InGameUIDisplay.SetActive(true);
         Map.Instance.SpawnAll();
         Map.Instance.AllPosition();
     }
@@ -491,6 +501,13 @@ public class Client : MonoBehaviour
         mm.TargetY = y2;
         mm.team = currentTeam;
        SendToServer(mm);
+    }
+
+    public void SendQueenHealth(int hp) {
+        NetQueen qh = new NetQueen();
+        qh.QueenHealth = hp;
+        
+        SendToServer(qh);
     }
 
     private void OnKeepAlive(NetMessage nm) {

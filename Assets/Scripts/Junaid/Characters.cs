@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum characterType {
-    none = 0,
-    Drone = 1,
-    Warrior = 2,
-    Queen = 3
+    BlackDrone = 0,
+    BlackWarrior = 1,
+    RedDrone = 2,
+    RedWarrior = 3,
+    Queen = 4
 }
 
 public abstract class Characters : MonoBehaviour {
