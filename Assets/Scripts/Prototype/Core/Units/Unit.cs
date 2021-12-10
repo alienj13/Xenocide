@@ -35,6 +35,7 @@ public abstract class Unit : MonoBehaviour
     public Vector2Int OccupiedSquare { get; set; }
     public PlayerTeam Team { get; set; }
     public bool HasMoved { get; private set; }
+    public int ActionCount { get; set; }
 
     // Available move set
     public HashSet<Vector2Int> availableMoves;
@@ -157,6 +158,40 @@ public abstract class Unit : MonoBehaviour
         Debug.Log("[!] " + this + " has died.");
 
         Field.RemoveUnit(this);
+    }
+    
+    public bool HasAction()
+    {
+        return ActionCount > 0;
+    }
+    #endregion
+
+    #region Turn system
+    public virtual void StartTurn()
+    {
+        ActionCount = 1;
+    }
+
+    public void GenerateActions()
+    {
+        ClearMoves();
+        ClearAttacks();
+        
+        if (HasAction())
+        {
+            GenerateAvailableMoves();
+            GenerateAvailableAttacks();
+        }
+    }
+
+    public virtual void EndAction()
+    {
+        ActionCount--;
+    }
+
+    public virtual void EndTurn()
+    {
+        ActionCount = 0;
     }
     #endregion
 

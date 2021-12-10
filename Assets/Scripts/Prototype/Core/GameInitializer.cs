@@ -19,15 +19,6 @@ public class GameInitializer : MonoBehaviour
     [SerializeField] private UnitCreator unitCreator;
     [SerializeField] private SquareSelectorCreator squareSelector;
 
-    [Header("Debugging")]
-    [SerializeField] private DebugButton debugButton;
-
-    public void Awake()
-    {
-        // TODO: remove this when done testing
-        debugButton.gameObject.SetActive(true);
-    }
-
     public void CreateMultiplayerField()
     {
         if (!networkManager.IsRoomFull())
@@ -54,10 +45,7 @@ public class GameInitializer : MonoBehaviour
             field.SetDependencies(controller, squareSelector);
             cameraController.SetDependencies(controller);
 
-            UIManager.SetDependencies(controller);
-
-            // Debug:
-            debugButton.SetDependencies(controller, field);
+            UIManager.SetDependencies(controller, field);
         }
     }
 
@@ -73,12 +61,9 @@ public class GameInitializer : MonoBehaviour
             field.SetDependencies(controller, squareSelector);
             cameraController.SetDependencies(controller);
 
-            UIManager.SetDependencies(controller);
+            UIManager.SetDependencies(controller, field);
 
             controller.StartNewGame();
-
-            // Debug:
-            debugButton.SetDependencies(controller, field);
         }
     }
 }

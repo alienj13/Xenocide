@@ -9,14 +9,12 @@ public class XWarrior : Unit
 
     public override HashSet<Vector2Int> GenerateAvailableMoves()
     {
-        ClearMoves();
         AddMoves(PatternGen.CrossMove(this, moveRange));
         return availableMoves;
     }
 
     public override HashSet<Vector2Int> GenerateAvailableAttacks()
     {
-        ClearAttacks();
         AddAttacks(PatternGen.CrossAttack(this, attackRange));
         return availableAttacks;
     }

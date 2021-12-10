@@ -13,14 +13,12 @@ public class XTest : Unit
 
     public override HashSet<Vector2Int> GenerateAvailableMoves()
     {
-        ClearMoves();
         AddMoves(PatternGen.LineMove(this, directions, moveRange));
         return availableMoves;
     }
 
     public override HashSet<Vector2Int> GenerateAvailableAttacks()
     {
-        ClearAttacks();
         PlayerTeam oppositeTeam = (this.Team == PlayerTeam.P1) ? PlayerTeam.P2 : PlayerTeam.P1;
         Vector2Int direction = (this.Team == PlayerTeam.P1) ? Vector2Int.up : Vector2Int.down;
         // For opposite team unit

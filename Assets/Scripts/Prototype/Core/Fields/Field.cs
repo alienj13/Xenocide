@@ -192,15 +192,16 @@ public abstract class Field : MonoBehaviour
     {
         UpdateFieldOnUnitMove(coords, selectedUnit.OccupiedSquare, selectedUnit, null);
         selectedUnit.MoveUnit(coords);
+        selectedUnit.EndAction();
         DeselectUnit();
-        EndTurn();
+        EndAction();
     }
 
     public void OnSelectedUnitAttack(Vector2Int coords)
     {
         selectedUnit.AttackAt(coords);
         DeselectUnit();
-        EndTurn();
+        EndAction();
     }
     #endregion
 
@@ -221,6 +222,12 @@ public abstract class Field : MonoBehaviour
             grid[unit.OccupiedSquare.x, unit.OccupiedSquare.y] = null;
             gameController.OnUnitRemoved(unit);
         }
+    }
+
+    // End action of the selected piece
+    private void EndAction()
+    {
+        gameController.EndAction();
     }
     
     // End turn of the current player

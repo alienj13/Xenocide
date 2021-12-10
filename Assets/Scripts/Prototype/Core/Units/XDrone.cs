@@ -9,14 +9,12 @@ public class XDrone : Unit
 
     public override HashSet<Vector2Int> GenerateAvailableMoves()
     {
-        ClearMoves();
         AddMoves(PatternGen.SquareMove(this, moveRange));
         return availableMoves;
     }
 
     public override HashSet<Vector2Int> GenerateAvailableAttacks()
     {
-        ClearAttacks();
         AddAttacks(PatternGen.SquareAttack(this, attackRange));
         return availableAttacks;
     }

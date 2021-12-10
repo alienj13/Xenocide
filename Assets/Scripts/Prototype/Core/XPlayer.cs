@@ -41,8 +41,13 @@ public class XPlayer
     #region Generate actions
     public void GenerateAllPossibleActions()
     {
-        GenerateAllPossibleMoves();
-        GenerateAllPossibleAttacks();
+        //GenerateAllPossibleMoves();
+        //GenerateAllPossibleAttacks();
+        foreach (var unit in ActiveUnits)
+        {
+            if (Field.HasUnit(unit))
+                unit.GenerateActions();
+        }
     }
 
     public void GenerateAllPossibleMoves()
@@ -60,6 +65,27 @@ public class XPlayer
         {
             if (Field.HasUnit(unit))
                 unit.GenerateAvailableAttacks();
+        }
+    }
+    #endregion
+
+    #region Turn system
+    public void OnTurnStart()
+    {
+        foreach (var unit in ActiveUnits)
+        {
+            if (Field.HasUnit(unit))
+                unit.StartTurn();
+        }
+        GenerateAllPossibleActions();
+    }
+
+    public void OnTurnEnd()
+    {
+        foreach (var unit in ActiveUnits)
+        {
+            if (Field.HasUnit(unit))
+                unit.EndTurn();
         }
     }
     #endregion

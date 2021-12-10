@@ -45,7 +45,7 @@ public abstract class GameController : MonoBehaviour
 
         CreateUnitsFromLayout(startingFieldLayout);
         activePlayer = player1;
-        GenerateAllPossiblePlayerActions(activePlayer);
+        activePlayer.OnTurnStart();
 
         TryToStartCurrentGame();
     }
@@ -101,25 +101,31 @@ public abstract class GameController : MonoBehaviour
         currentPlayer.AddUnit(newUnit);
     }
 
-    private void GenerateAllPossiblePlayerActions(XPlayer player)
-    {
-        player.GenerateAllPossibleActions();
-    }
-
     public bool IsTeamTurnActive(PlayerTeam team)
     {
         return activePlayer.Team == team;
     }
 
+    public void StartTurn()
+    {
+        activePlayer.OnTurnStart();
+    }
+
+    public void EndAction()
+    {
+        activePlayer.GenerateAllPossibleActions();
+    }
+
     public void EndTurn()
     {
-        GenerateAllPossiblePlayerActions(activePlayer);
-        GenerateAllPossiblePlayerActions(GetOpponentToPlayer(activePlayer));
+        activePlayer.OnTurnEnd();
 
         if (CheckIfGameIsFinished())
             EndGame();
         else
             ChangeActiveTeam();
+
+        activePlayer.OnTurnStart();
     }
 
     private bool CheckIfGameIsFinished()
