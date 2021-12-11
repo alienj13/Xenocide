@@ -26,6 +26,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject connectScreen;
     [SerializeField] private GameObject teamSelectionScreen;
     [SerializeField] private GameObject gameoverScreen;
+    [SerializeField] private GameObject gameUIScreen;
 
     [Header("Other UI")]
     [SerializeField] private TMP_Dropdown gameLevelSelection;
@@ -85,6 +86,7 @@ public class UIManager : MonoBehaviour
     {
         DisableAllScreens();
         connectionStatusText.gameObject.SetActive(false);
+        gameUIScreen.gameObject.SetActive(true);
 
         // Debug:
         Debugging();
@@ -96,6 +98,7 @@ public class UIManager : MonoBehaviour
         connectScreen.SetActive(false);
         teamSelectionScreen.SetActive(false);
         gameoverScreen.SetActive(false);
+        gameUIScreen.SetActive(false);
     }
 
     public void SetConnectionStatus(string statusText)
@@ -122,6 +125,7 @@ public class UIManager : MonoBehaviour
 
     public void OnGameFinished(string winner)
     {
+        DisableAllScreens();
         gameoverScreen.SetActive(true);
         resultText.SetText(String.Format("{0} won!", winner));
     }
