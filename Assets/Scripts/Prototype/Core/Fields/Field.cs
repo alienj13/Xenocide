@@ -3,28 +3,39 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(SquareSelectorCreator))]
 public abstract class Field : MonoBehaviour
 {
+    // Constant value of the field sizes
+    // No idea why I divided into width and height even though it's a square
     public const int FIELD_WIDTH = 21;
     public const int FIELD_HEIGHT = 21;
     public const int FIELD_SIZE = 21;
 
+    [Header("Dependencies")]
     [SerializeField] private Transform bottomLeftCornerTransform;
     [SerializeField] private Transform bottomRightCornerTransform;
-    [SerializeField] private float squareSize;
-    private GameController gameController;
+    protected GameController gameController;
     private SquareSelectorCreator squareSelector;
 
+    [Header("Property (read-only)")]
+    [SerializeField] private float squareSize;
+    
+    // Grid and selected unit
     private Unit[,] grid;
-    private Unit selectedUnit;
+    public Unit selectedUnit;
 
-    public abstract void SelectedUnitMoved(Vector2 coords);
+    // Abstract methods
+    #region Abstract
     public abstract void SetSelectedUnit(Vector2 coords);
+    public abstract void SelectedUnitMoved(Vector2 coords);
+    public abstract void SelectedUnitAttacked(Vector2 coords);
+    #endregion
 
+    // Initialize methods
+    // Also include OnGameRestarted()
+    #region Initialize
     protected virtual void Awake()
     {
-        squareSelector = GetComponent<SquareSelectorCreator>();
         SetSquareSize();
         CreateGrid();
     }
@@ -34,21 +45,34 @@ public abstract class Field : MonoBehaviour
         squareSize = Mathf.Abs(bottomLeftCornerTransform.position.x - bottomRightCornerTransform.position.x) / (FIELD_SIZE - 1);
     }
 
-    public void SetDependencies(GameController gameController)
-    {
-        this.gameController = gameController;
-    }
-
     private void CreateGrid()
     {
         grid = new Unit[FIELD_WIDTH, FIELD_HEIGHT];
     }
 
+    public void SetDependencies(GameController gameController, SquareSelectorCreator squareSelector)
+    {
+        this.gameController = gameController;
+        this.squareSelector = squareSelector;
+    }
+
+    public void OnGameRestarted()
+    {
+        selectedUnit = null;
+        CreateGrid();
+    }
+    #endregion
+
+    // Logic methods
+    // Important for other methods to use
+    #region Logic
+    // Calculate Unity Position from 2D game coords
     public Vector3 CalculatePositionFromCoords(Vector2Int coords)
     {
         return bottomLeftCornerTransform.position + new Vector3(coords.x * squareSize, 0f, coords.y * squareSize);
     }
 
+    // Calculate 2D game coords from Unity position
     private Vector2Int CalculateCoordsFromPosition(Vector3 inputPosition)
     {
         // Current version. Note: BAD SOLUTION. DO NOT FIX.
@@ -58,108 +82,7 @@ public abstract class Field : MonoBehaviour
         return new Vector2Int(x, y);
     }
 
-    public void OnSquareSelected(Vector3 inputPosition)
-    {
-        if (!gameController || !gameController.CanPerformMove())
-            return;
-
-        Vector2Int coords = CalculateCoordsFromPosition(inputPosition);
-        Unit unit = GetUnitOnSquare(coords);
-
-        if (selectedUnit)
-        {
-            if (unit != null && selectedUnit == unit)
-                DeselectUnit();
-            else if (unit != null && selectedUnit != unit && gameController.IsTeamTurnActive(unit.team))
-                SelectUnit(coords);
-            else if (selectedUnit.CanMoveTo(coords))
-                SelectedUnitMoved(coords);
-        }
-        else
-        {
-            if (unit != null && gameController.IsTeamTurnActive(unit.team))
-                SelectUnit(coords);
-        }
-    }
-
-    public void OnGameRestarted()
-    {
-        selectedUnit = null;
-        CreateGrid();
-    }
-
-    private void SelectUnit(Vector2Int coords)
-    {
-        Unit unit = GetUnitOnSquare(coords);
-
-        SetSelectedUnit(coords);
-        List<Vector2Int> selection = selectedUnit.availableMoves;
-        ShowSelectionSquare(selection);
-    }
-
-    private void ShowSelectionSquare(List<Vector2Int> selection)
-    {
-        Dictionary<Vector3, bool> squaresData = new Dictionary<Vector3, bool>();
-        foreach (var selectedCoords in selection)
-        {
-            Vector3 position = CalculatePositionFromCoords(selectedCoords);
-            // Manual y-reset due to elevated field
-            position.y = 0;
-            bool isSquareFree = (GetUnitOnSquare(selectedCoords) == null);
-            squaresData.Add(position, isSquareFree);
-        }
-        squareSelector.ShowSelection(squaresData);
-    }
-
-    private void DeselectUnit()
-    {
-        selectedUnit = null;
-        squareSelector.ClearSelection();
-    }
-
-    public void OnSelectedUnitMove(Vector2Int coords)
-    {
-        TryToTakeOppositeUnit(coords);
-
-        UpdateFieldOnUnitMove(coords, selectedUnit.occupiedSquare, selectedUnit, null);
-        selectedUnit.MoveUnit(coords);
-        DeselectUnit();
-        EndTurn();
-    }
-
-    public void OnSetSelectedUnit(Vector2Int coords)
-    {
-        Unit unit = GetUnitOnSquare(coords);
-        selectedUnit = unit;
-    }
-
-    private void TryToTakeOppositeUnit(Vector2Int coords)
-    {
-        Unit unit = GetUnitOnSquare(coords);
-        if (unit != null && !selectedUnit.IsFromSameTeam(unit))
-            TakeUnit(unit);
-    }
-
-    private void TakeUnit(Unit unit)
-    {
-        if (unit)
-        {
-            grid[unit.occupiedSquare.x, unit.occupiedSquare.y] = null;
-            gameController.OnUnitRemoved(unit);
-        }
-    }
-
-    private void EndTurn()
-    {
-        gameController.EndTurn();
-    }
-
-    public void UpdateFieldOnUnitMove(Vector2Int newCoords, Vector2Int oldCoords, Unit newUnit, Unit oldUnit)
-    {
-        grid[newCoords.x, newCoords.y] = newUnit;
-        grid[oldCoords.x, oldCoords.y] = oldUnit;
-    }
-
+    // Get Unit located on coords
     public Unit GetUnitOnSquare(Vector2Int coords)
     {
         if (CheckIfCoordsAreOnField(coords))
@@ -167,6 +90,7 @@ public abstract class Field : MonoBehaviour
         return null;
     }
 
+    // Check if coords provided are legal
     public bool CheckIfCoordsAreOnField(Vector2Int coords)
     {
         int x = coords.x;
@@ -176,6 +100,7 @@ public abstract class Field : MonoBehaviour
         return true;
     }
 
+    // Check if the Unit is on the field
     public bool HasUnit(Unit unit)
     {
         for (int x = 0; x < FIELD_WIDTH; x++)
@@ -188,10 +113,135 @@ public abstract class Field : MonoBehaviour
         }
         return false;
     }
+    #endregion
 
+    // Square selection and Unit move / attack system
+    #region Selection and Action system
+    // Square selection system. Directly take input from FieldInputHandler
+    public void OnSquareSelected(Vector3 inputPosition)
+    {
+        // If there is no GameController or it is not the current player's turn, return
+        if (!gameController || !gameController.CanPerformAction())
+            return;
+
+        Vector2Int coords = CalculateCoordsFromPosition(inputPosition);
+        Unit unit = GetUnitOnSquare(coords);
+
+        // If a Unit is already selected ...
+        if (selectedUnit)
+        {
+            // If the Unit is selected again, deselect
+            if (unit != null && selectedUnit == unit)
+                DeselectUnit();
+            // If selecting another Unit on the same team
+            else if (unit != null && selectedUnit != unit && gameController.IsTeamTurnActive(unit.Team))
+            {
+                DeselectUnit();
+                SelectUnit(coords);
+            }
+            // Selecting a movement square
+            else if (selectedUnit.CanMoveTo(coords))
+                SelectedUnitMoved(coords);
+            // Selecting an attack square
+            else if (selectedUnit.CanAttackAt(coords))
+                SelectedUnitAttacked(coords);
+        }
+        else
+        // If there is no selected Unit ...
+        {
+            // Only select Units from the same team
+            if (unit != null && gameController.IsTeamTurnActive(unit.Team))
+                SelectUnit(coords);
+        }
+    }
+
+    private void SelectUnit(Vector2Int coords)
+    {
+        SetSelectedUnit(coords);
+
+        ShowSelectionSquare(selectedUnit.availableMoves, true);
+        ShowSelectionSquare(selectedUnit.availableAttacks, false);
+    }
+
+    private void ShowSelectionSquare(HashSet<Vector2Int> selection, bool moveTrue)
+    {
+        Dictionary<Vector3, bool> selectionData = new Dictionary<Vector3, bool>();
+        foreach (var selectedCoords in selection)
+        {
+            Vector3 position = CalculatePositionFromCoords(selectedCoords);
+            // Manual y-reset due to elevated field
+            position.y = 0;
+            selectionData.Add(position, moveTrue);
+        }
+        squareSelector.ShowSelection(selectionData);
+    }
+
+    private void DeselectUnit()
+    {
+        selectedUnit = null;
+        squareSelector.ClearSelection();
+    }
+
+    public void OnSetSelectedUnit(Vector2Int coords)
+    {
+        Unit unit = GetUnitOnSquare(coords);
+        selectedUnit = unit;
+    }
+
+    public void OnSelectedUnitMove(Vector2Int coords)
+    {
+        UpdateFieldOnUnitMove(coords, selectedUnit.OccupiedSquare, selectedUnit, null);
+        selectedUnit.MoveUnit(coords);
+        selectedUnit.EndAction();
+        DeselectUnit();
+        EndAction();
+    }
+
+    public void OnSelectedUnitAttack(Vector2Int coords)
+    {
+        selectedUnit.AttackAt(coords);
+        selectedUnit.EndAction();
+        DeselectUnit();
+        EndAction();
+    }
+    #endregion
+
+    // Utility (or methods I don't know how to catagorize)
+    #region Utility
+    // Add a Unit
     public void SetUnitOnField(Vector2Int coords, Unit unit)
     {
         if (CheckIfCoordsAreOnField(coords))
             grid[coords.x, coords.y] = unit;
     }
+
+    // Remove a Unit
+    public void RemoveUnit(Unit unit)
+    {
+        if (unit)
+        {
+            grid[unit.OccupiedSquare.x, unit.OccupiedSquare.y] = null;
+            gameController.OnUnitRemoved(unit);
+        }
+    }
+
+    // End action of the selected piece
+    private void EndAction()
+    {
+        gameController.EndAction();
+    }
+    
+    // End turn of the current player
+    public virtual void EndTurn()
+    {
+        gameController.EndTurn();
+    }
+
+    // Update the Grid on Unit movement
+    public void UpdateFieldOnUnitMove(Vector2Int newCoords, Vector2Int oldCoords, Unit newUnit, Unit oldUnit)
+    {
+        grid[newCoords.x, newCoords.y] = newUnit;
+        grid[oldCoords.x, oldCoords.y] = oldUnit;
+    }
+    #endregion
 }

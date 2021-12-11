@@ -15,6 +15,18 @@ public class MultiplayerField : Field
         photonView = GetComponent<PhotonView>();
     }
 
+    public override void SetSelectedUnit(Vector2 coords)
+    {
+        photonView.RPC(nameof(RPC_OnSetSelectedUnit), RpcTarget.AllBuffered, new object[] { coords });
+    }
+
+    [PunRPC]
+    private void RPC_OnSetSelectedUnit(Vector2 coords)
+    {
+        Vector2Int intCoords = new Vector2Int(Mathf.RoundToInt(coords.x), Mathf.RoundToInt(coords.y));
+        OnSetSelectedUnit(intCoords);
+    }
+
     public override void SelectedUnitMoved(Vector2 coords)
     {
         photonView.RPC(nameof(RPC_OnSelectedUnitMoved), RpcTarget.AllBuffered, new object[] { coords });
@@ -27,15 +39,26 @@ public class MultiplayerField : Field
         OnSelectedUnitMove(intCoords);
     }
 
-    public override void SetSelectedUnit(Vector2 coords)
+    public override void SelectedUnitAttacked(Vector2 coords)
     {
-        photonView.RPC(nameof(RPC_OnSetSelectedUnit), RpcTarget.AllBuffered, new object[] { coords });
+        photonView.RPC(nameof(RPC_OnSelectedUnitAttacked), RpcTarget.AllBuffered, new object[] { coords });
     }
 
     [PunRPC]
-    private void RPC_OnSetSelectedUnit(Vector2 coords)
+    private void RPC_OnSelectedUnitAttacked(Vector2 coords)
     {
         Vector2Int intCoords = new Vector2Int(Mathf.RoundToInt(coords.x), Mathf.RoundToInt(coords.y));
-        OnSetSelectedUnit(intCoords);
+        OnSelectedUnitAttack(intCoords);
+    }
+
+    public override void EndTurn()
+    {
+        photonView.RPC(nameof(RPC_EndTurn), RpcTarget.AllBuffered, new object[] { });
+    }
+
+    [PunRPC]
+    private void RPC_EndTurn()
+    {
+        gameController.EndTurn();
     }
 }

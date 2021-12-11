@@ -33,7 +33,12 @@ public class UnitCreator : MonoBehaviour
 
     public Material GetTeamMaterial(PlayerTeam team)
     {
-        return (team == PlayerTeam.P1) ? player1Material : player2Material;
+        if (team == PlayerTeam.P1)
+            return player1Material;
+        else if (team == PlayerTeam.P2)
+            return player2Material;
+        else
+            return null;
     }
 
 

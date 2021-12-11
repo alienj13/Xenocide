@@ -10,6 +10,8 @@ public class UIManager : MonoBehaviour
 {
     [Header("Scene Dependencies")]
     [SerializeField] private NetworkManager networkManager;
+    [SerializeField] private GameController gameController;
+    [SerializeField] private Field field;
 
     [Header("Buttons")]
     [SerializeField] private Button player1TeamButton;
@@ -28,10 +30,30 @@ public class UIManager : MonoBehaviour
     [Header("Other UI")]
     [SerializeField] private TMP_Dropdown gameLevelSelection;
 
+    [Header("Debugging")]
+    [SerializeField] private DebugButton debugButton;
+    [SerializeField] private Button turnEndButton;
+    [SerializeField] private TextMeshProUGUI currentTurnText;
+
     private void Awake()
     {
         gameLevelSelection.AddOptions(Enum.GetNames(typeof(PlayerLevel)).ToList());
         OnGameLaunched();
+    }
+
+    private void Update()
+    {
+        if (gameController)
+        {
+            if (gameController.IsGameInProgess())
+                currentTurnText.SetText(gameController.activePlayer.Team.ToString());
+        }
+    }
+
+    public void SetDependencies(GameController gameController, Field field)
+    {
+        this.gameController = gameController;
+        this.field = field;
     }
 
     private void OnGameLaunched()
@@ -63,6 +85,9 @@ public class UIManager : MonoBehaviour
     {
         DisableAllScreens();
         connectionStatusText.gameObject.SetActive(false);
+
+        // Debug:
+        Debugging();
     }
 
     public void DisableAllScreens()
@@ -99,5 +124,26 @@ public class UIManager : MonoBehaviour
     {
         gameoverScreen.SetActive(true);
         resultText.SetText(String.Format("{0} won!", winner));
+    }
+
+    public void RestartGame()
+    {
+        gameController.RestartGame();
+    }
+
+    public void EndTurn()
+    {
+        //Debug.Log("End turn");
+        field.EndTurn();
+    }
+
+    public void Debugging()
+    {
+        // TODO: remove this when done testing
+        debugButton.gameObject.SetActive(true);
+        debugButton.SetDependencies(gameController, field);
+
+        turnEndButton.gameObject.SetActive(true);
+        currentTurnText.gameObject.SetActive(true);
     }
 }

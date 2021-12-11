@@ -4,19 +4,19 @@ using UnityEngine;
 
 public class XWarrior : Unit
 {
-    private Vector2Int[] directions = new Vector2Int[]
-    {
-        Vector2Int.up,
-        Vector2Int.down,
-        Vector2Int.left,
-        Vector2Int.right,
-    };
-    private float range = 10;
+    private int moveRange = 6;
+    private int attackRange = 2;
 
-    public override List<Vector2Int> SelectAvailableSquares()
+    public override HashSet<Vector2Int> GenerateAvailableMoves()
     {
-        availableMoves.Clear();
-        LineMovement(directions, range);
+        AddMoves(PatternGen.CrossMove(this, moveRange));
         return availableMoves;
     }
+
+    public override HashSet<Vector2Int> GenerateAvailableAttacks()
+    {
+        AddAttacks(PatternGen.CrossAttack(this, attackRange));
+        return availableAttacks;
+    }
+
 }

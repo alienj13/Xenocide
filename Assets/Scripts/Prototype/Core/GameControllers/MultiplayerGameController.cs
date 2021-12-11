@@ -41,7 +41,7 @@ public class MultiplayerGameController : GameController, IOnEventCallback
         if (networkManager.IsRoomFull())
             SetGameState(GameState.Play);
     }
-    public override bool CanPerformMove()
+    public override bool CanPerformAction()
     {
         if (!IsGameInProgess() | !IsLocalPlayerTurn())
             return false;

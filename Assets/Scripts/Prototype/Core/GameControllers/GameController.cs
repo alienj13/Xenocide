@@ -21,12 +21,7 @@ public abstract class GameController : MonoBehaviour
 
     protected abstract void SetGameState(GameState state);
     public abstract void TryToStartCurrentGame();
-    public abstract bool CanPerformMove();
-
-    private void Awake()
-    {
-        //unitCreator = GetComponent<UnitCreator>();
-    }
+    public abstract bool CanPerformAction();
 
     public void SetDependencies(UIManager UIManager, Field field, CameraController cameraController, UnitCreator unitCreator)
     {
@@ -48,9 +43,9 @@ public abstract class GameController : MonoBehaviour
 
         UIManager.OnGameStarted();
 
-        CreatePiecesFromLayout(startingFieldLayout);
+        CreateUnitsFromLayout(startingFieldLayout);
         activePlayer = player1;
-        GenerateAllPossiblePlayerMoves(activePlayer);
+        activePlayer.OnTurnStart();
 
         TryToStartCurrentGame();
     }
@@ -59,7 +54,7 @@ public abstract class GameController : MonoBehaviour
     {
         Debug.Log("Game restarting.");
 
-        DestroyPieces();
+        DestroyUnits();
         field.OnGameRestarted();
         player1.OnGameRestarted();
         player2.OnGameRestarted();
@@ -67,10 +62,10 @@ public abstract class GameController : MonoBehaviour
         StartNewGame();
     }
 
-    private void DestroyPieces()
+    private void DestroyUnits()
     {
-        player1.activeUnits.ForEach(p => Destroy(p.gameObject));
-        player2.activeUnits.ForEach(p => Destroy(p.gameObject));
+        player1.ActiveUnits.ForEach(p => Destroy(p.gameObject));
+        player2.ActiveUnits.ForEach(p => Destroy(p.gameObject));
     }
 
     public bool IsGameInProgess()
@@ -78,7 +73,7 @@ public abstract class GameController : MonoBehaviour
         return state == GameState.Play;
     }
 
-    private void CreatePiecesFromLayout(FieldLayout layout)
+    private void CreateUnitsFromLayout(FieldLayout layout)
     {
         for (int i = 0; i < layout.GetUnitsCount(); i++)
         {
@@ -87,17 +82,18 @@ public abstract class GameController : MonoBehaviour
             PlayerTeam team = layout.GetSquarePlayerNameAtIndex(i);
 
             Type type = Type.GetType(typeName);
-            CreatePieceAndInitialize(squareCoords, team, type);
+            CreateUnitAndInitialize(squareCoords, team, type);
         }
     }
 
-    public void CreatePieceAndInitialize(Vector2Int squareCoords, PlayerTeam team, Type type)
+    public void CreateUnitAndInitialize(Vector2Int squareCoords, PlayerTeam team, Type type)
     {
         Unit newUnit = unitCreator.CreateUnit(type).GetComponent<Unit>();
         newUnit.SetData(squareCoords, team, field);
 
         Material teamMaterial = unitCreator.GetTeamMaterial(team);
-        newUnit.SetMaterial(teamMaterial);
+        if (teamMaterial)
+            newUnit.SetMaterial(teamMaterial);
 
         field.SetUnitOnField(squareCoords, newUnit);
 
@@ -105,36 +101,48 @@ public abstract class GameController : MonoBehaviour
         currentPlayer.AddUnit(newUnit);
     }
 
-    private void GenerateAllPossiblePlayerMoves(XPlayer player)
-    {
-        player.GenerateAllPosibleMoves();
-    }
-
     public bool IsTeamTurnActive(PlayerTeam team)
     {
-        return activePlayer.team == team;
+        return activePlayer.Team == team;
+    }
+
+    public void StartTurn()
+    {
+        activePlayer.OnTurnStart();
+    }
+
+    public void EndAction()
+    {
+        activePlayer.GenerateAllPossibleActions();
+
+        if (CheckIfGameIsFinished())
+            EndGame();
     }
 
     public void EndTurn()
     {
-        GenerateAllPossiblePlayerMoves(activePlayer);
-        GenerateAllPossiblePlayerMoves(GetOpponentToPlayer(activePlayer));
+        activePlayer.OnTurnEnd();
 
         if (CheckIfGameIsFinished())
             EndGame();
         else
             ChangeActiveTeam();
+
+        activePlayer.OnTurnStart();
     }
 
     private bool CheckIfGameIsFinished()
     {
-        // TODO: Implement this by checking the active player Queen IsAlive()
+        XPlayer opponentPlayer = GetOpponentToPlayer(activePlayer);
+        Unit opponentQueen = opponentPlayer.GetUnitsOfType<XQueen>().FirstOrDefault();
+        if (!opponentQueen.IsAlive())
+            return true;
         return false;
     }
 
     public void OnUnitRemoved(Unit unit)
     {
-        XPlayer unitOwner = (unit.team == PlayerTeam.P1) ? player1 : player2;
+        XPlayer unitOwner = GetPlayerOfTeam(unit.Team);
         unitOwner.RemoveUnit(unit);
         Destroy(unit.gameObject);
     }
@@ -143,7 +151,7 @@ public abstract class GameController : MonoBehaviour
     {
         Debug.Log("Game Ended.");
 
-        UIManager.OnGameFinished(activePlayer.team.ToString());
+        UIManager.OnGameFinished(activePlayer.Team.ToString());
         SetGameState(GameState.Finished);
     }
 
@@ -157,7 +165,21 @@ public abstract class GameController : MonoBehaviour
         return (player == player1) ? player2 : player1;
     }
 
+    public XPlayer GetPlayerOfTeam(PlayerTeam team)
+    {
+        switch (team)
+        {
+            case PlayerTeam.P1:
+                return player1;
+            case PlayerTeam.P2:
+                return player2;
+            default:
+                return null;
+        }
+    }
+
     #region CameraControls
+    // TODO: FIX THIS
     public void DelayGameOnTeamChange()
     {
         SetGameState(GameState.Pause);

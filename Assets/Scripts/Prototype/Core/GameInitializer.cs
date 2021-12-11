@@ -17,15 +17,7 @@ public class GameInitializer : MonoBehaviour
     [SerializeField] private Transform fieldAnchor;
     [SerializeField] private CameraController cameraController;
     [SerializeField] private UnitCreator unitCreator;
-
-    [Header("Debugging")]
-    [SerializeField] private DebugButton debugButton;
-
-    public void Awake()
-    {
-        // TODO: remove this when done testing
-        debugButton.gameObject.SetActive(true);
-    }
+    [SerializeField] private SquareSelectorCreator squareSelector;
 
     public void CreateMultiplayerField()
     {
@@ -50,11 +42,10 @@ public class GameInitializer : MonoBehaviour
             controller.SetMultiplayerDependencies(networkManager);
             networkManager.SetDependencies(controller);
 
-            field.SetDependencies(controller);
+            field.SetDependencies(controller, squareSelector);
             cameraController.SetDependencies(controller);
 
-            // Debug:
-            debugButton.SetDependencies(controller, field);
+            UIManager.SetDependencies(controller, field);
         }
     }
 
@@ -67,13 +58,12 @@ public class GameInitializer : MonoBehaviour
             controller.SetDependencies(UIManager, field, cameraController, unitCreator);
             controller.CreatePlayers();
 
-            field.SetDependencies(controller);
+            field.SetDependencies(controller, squareSelector);
             cameraController.SetDependencies(controller);
 
-            controller.StartNewGame();
+            UIManager.SetDependencies(controller, field);
 
-            // Debug:
-            debugButton.SetDependencies(controller, field);
+            controller.StartNewGame();
         }
     }
 }

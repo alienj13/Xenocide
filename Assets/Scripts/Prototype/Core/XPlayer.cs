@@ -6,101 +6,99 @@ using UnityEngine;
 
 public class XPlayer
 {
-    public PlayerTeam team { get; set; }
-    public Field field { get; set; }
-    public List<Unit> activeUnits { get; private set; }
+    public PlayerTeam Team { get; set; }
+    public Field Field { get; set; }
+    public List<Unit> ActiveUnits { get; private set; }
 
+    #region Initialize and Restart
     public XPlayer(PlayerTeam team, Field field)
     {
-        this.team = team;
-        this.field = field;
-        activeUnits = new List<Unit>();
-    }
-
-    public void AddUnit(Unit unit)
-    {
-        if (!activeUnits.Contains(unit))
-            activeUnits.Add(unit);
-    }
-
-    public void RemoveUnit(Unit unit)
-    {
-        if (activeUnits.Contains(unit))
-            activeUnits.Remove(unit);
-    }
-
-    public void GenerateAllPosibleMoves()
-    {
-        foreach (var unit in activeUnits)
-        {
-            if (field.HasUnit(unit))
-                unit.SelectAvailableSquares();
-        }
-    }
-
-    public int GetNumberOfAvailableUnits()
-    {
-        return activeUnits.Count;
-    }
-
-    public Unit[] GetUnitsAttackingOppositeUnitOfType<T>() where T : Unit
-    {
-        return activeUnits.Where(p => p.IsAttackingUnitOfType<T>()).ToArray();
-    }
-
-    public Unit[] GetUnitsOfType<T>() where T : Unit
-    {
-        return activeUnits.Where(p => p is T).ToArray();
-    }
-
-    public void RemoveMovesEnablingAttackOnUnit<T>(XPlayer opponent, Unit selectedUnit) where T : Unit
-    {
-        List<Vector2Int> coordsToRemove = new List<Vector2Int>();
-        foreach (var coords in selectedUnit.availableMoves)
-        {
-            Unit unitOnSquare = field.GetUnitOnSquare(coords);
-            field.UpdateFieldOnUnitMove(coords, selectedUnit.occupiedSquare, selectedUnit, null);
-            opponent.GenerateAllPosibleMoves();
-            if (opponent.CheckIfIsAttackingUnit<T>())
-                coordsToRemove.Add(coords);
-            field.UpdateFieldOnUnitMove(selectedUnit.occupiedSquare, coords, selectedUnit, unitOnSquare);
-        }
-        foreach (var coords in coordsToRemove)
-            selectedUnit.availableMoves.Remove(coords);
+        this.Team = team;
+        this.Field = field;
+        ActiveUnits = new List<Unit>();
     }
 
     public void OnGameRestarted()
     {
-        activeUnits.Clear();
+        ActiveUnits.Clear();
+    }
+    #endregion
+
+    #region Add and Remove Units
+    public void AddUnit(Unit unit)
+    {
+        if (!ActiveUnits.Contains(unit))
+            ActiveUnits.Add(unit);
     }
 
-    private bool CheckIfIsAttackingUnit<T>() where T : Unit
+    public void RemoveUnit(Unit unit)
     {
-        foreach (var unit in activeUnits)
+        if (ActiveUnits.Contains(unit))
+            ActiveUnits.Remove(unit);
+    }
+    #endregion
+
+    #region Generate actions
+    public void GenerateAllPossibleActions()
+    {
+        //GenerateAllPossibleMoves();
+        //GenerateAllPossibleAttacks();
+        foreach (var unit in ActiveUnits)
         {
-            if (field.HasUnit(unit) && unit.IsAttackingUnitOfType<T>())
-                return true;
+            if (Field.HasUnit(unit))
+                unit.GenerateActions();
         }
-        return false;
     }
 
-    public bool CanHideUnitFromAttack<T>(XPlayer opponent) where T : Unit
+    public void GenerateAllPossibleMoves()
     {
-        foreach (var unit in activeUnits)
+        foreach (var unit in ActiveUnits)
         {
-            foreach (var coords in unit.availableMoves)
-            {
-                Unit unitOnCoords = field.GetUnitOnSquare(coords);
-                field.UpdateFieldOnUnitMove(coords, unit.occupiedSquare, unit, null);
-                opponent.GenerateAllPosibleMoves();
-                if (!opponent.CheckIfIsAttackingUnit<T>())
-                {
-                    field.UpdateFieldOnUnitMove(unit.occupiedSquare, coords, unit, unitOnCoords);
-                    return true;
-                }
-                field.UpdateFieldOnUnitMove(unit.occupiedSquare, coords, unit, unitOnCoords);
-            }
+            if (Field.HasUnit(unit))
+                unit.GenerateAvailableMoves();
         }
-        return false;
     }
+
+    public void GenerateAllPossibleAttacks()
+    {
+        foreach (var unit in ActiveUnits)
+        {
+            if (Field.HasUnit(unit))
+                unit.GenerateAvailableAttacks();
+        }
+    }
+    #endregion
+
+    #region Turn system
+    public void OnTurnStart()
+    {
+        foreach (var unit in ActiveUnits)
+        {
+            if (Field.HasUnit(unit))
+                unit.StartTurn();
+        }
+        GenerateAllPossibleActions();
+    }
+
+    public void OnTurnEnd()
+    {
+        foreach (var unit in ActiveUnits)
+        {
+            if (Field.HasUnit(unit))
+                unit.EndTurn();
+        }
+    }
+    #endregion
+
+    #region Utility
+    public int GetNumberOfAvailableUnits()
+    {
+        return ActiveUnits.Count;
+    }
+
+    public Unit[] GetUnitsOfType<T>() where T : Unit
+    {
+        return ActiveUnits.Where(p => p is T).ToArray();
+    }
+    #endregion
 }

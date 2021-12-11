@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 6307514835782966066}
   - component: {fileID: 6307514835782966067}
   - component: {fileID: 2037466713962704827}
-  - component: {fileID: 6307514835782966079}
   - component: {fileID: 6307514835782966073}
   - component: {fileID: 6307514835782966078}
   - component: {fileID: 2015283602703844979}
@@ -118,21 +117,7 @@ MonoBehaviour:
   bottomLeftCornerTransform: {fileID: 6307514835841388143}
   bottomRightCornerTransform: {fileID: 6307514835837107978}
   squareSize: 0
---- !u!114 &6307514835782966079
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6307514835782966065}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6fd1a1668486f6b4fbe08160fe06f46f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  freeSquareMaterial: {fileID: 2100000, guid: 8faa31fc5a9140d4f97456433acd87d2, type: 2}
-  opponentSquareMaterial: {fileID: 2100000, guid: 30a0c463c39663e49a97a5037340cac8, type: 2}
-  selectorPrefab: {fileID: 4225496655624885485, guid: 21c8c34748b458f459f5f775a87d4bcb, type: 3}
+  selectedUnit: {fileID: 0}
 --- !u!114 &6307514835782966073
 MonoBehaviour:
   m_ObjectHideFlags: 0

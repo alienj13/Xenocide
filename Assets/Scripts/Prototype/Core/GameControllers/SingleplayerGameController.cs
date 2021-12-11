@@ -16,7 +16,7 @@ public class SingleplayerGameController : GameController
         UpdateCameraOnTeamChange(activePlayer);
     }
 
-    public override bool CanPerformMove()
+    public override bool CanPerformAction()
     {
         if (!IsGameInProgess())
             return false;
