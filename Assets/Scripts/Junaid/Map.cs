@@ -357,9 +357,9 @@ public class Map : MonoBehaviour {
             }
         }
         //IsTeam0Turn = true;
-        //Client.Instance.SetTurn(true);
-        SpawnAll();
-        AllPosition();
+        Client.Instance.setTurn(true);
+        //SpawnAll();
+        //AllPosition();
     }
    
 

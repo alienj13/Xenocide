@@ -110,7 +110,7 @@ public class UI : MonoBehaviour
     }
 
     public void HostOnline() {
-        Client.Instance.initialize("20.108.166.0", 8007,Playername.text);
+        Client.Instance.initialize("139.59.186.112", 8007,Playername.text);
         Waiting.SetActive(true);
 
         OnlineMenu.SetActive(false);
@@ -131,6 +131,7 @@ public class UI : MonoBehaviour
         client.ShutDown();
         turns.SetActive(false);
         status.SetActive(false);
+        InGameUIDisplay.SetActive(false);
     }
 
     public void CloseNotification() {
