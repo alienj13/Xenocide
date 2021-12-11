@@ -110,11 +110,16 @@ public abstract class Unit : MonoBehaviour
         // Temporary solution
         if (this is XQueen)
         {
-            transform.position = transform.position + new Vector3(0, 5f, 0);
+            transform.position = transform.position + new Vector3(0, 1f, 0);
             if (this.Team == PlayerTeam.P1)
                 transform.Rotate(new Vector3(0, 180, 0));
         }
         if (this is XDrone)
+        {
+            if (this.Team == PlayerTeam.P1)
+                transform.Rotate(new Vector3(0, 180, 0));
+        }
+        if (this is XWarrior)
         {
             if (this.Team == PlayerTeam.P1)
                 transform.Rotate(new Vector3(0, 180, 0));
