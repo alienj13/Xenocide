@@ -12,6 +12,7 @@ public class UserAccountDetails : MonoBehaviour
     public static string username = "";
     public static string userRank = "";
     public static string userEXP = "";
+    public static bool userExist = false;
 
     private void Update()
     {

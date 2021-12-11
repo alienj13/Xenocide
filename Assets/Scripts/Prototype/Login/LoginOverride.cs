@@ -20,11 +20,22 @@ public class LoginOverride : MonoBehaviour
         loginUI = GetComponent<UI>();
     }
 
-    public void ChangeScene()
+    public void StartGameWithUser()
     {
         UserAccountDetails.username = loginUI.DisplayUsername.text;
         UserAccountDetails.userRank = loginUI.DisplayRank.text;
         UserAccountDetails.userEXP = loginUI.DisplayExperience.text;
+        UserAccountDetails.userExist = true;
+
+        SceneManager.LoadScene(Scenes.PrototypeX.ToString());
+    }
+
+    public void StartGameAsGuest()
+    {
+        UserAccountDetails.username = "Guest";
+        UserAccountDetails.userRank = "1";
+        UserAccountDetails.userEXP = "0";
+        UserAccountDetails.userExist = false;
 
         SceneManager.LoadScene(Scenes.PrototypeX.ToString());
     }
