@@ -18,20 +18,29 @@ public class DebugButton : MonoBehaviour
     {
         Debug.LogError("DEBUG!");
 
-        Debug.Log("Game Controller - active player: " + gameController.activePlayer.Team.ToString());
+        // Active player of the Game Controller
+        //Debug.Log("Game Controller - active player: " + gameController.activePlayer.Team.ToString());
 
+        // Active player of the camera and currently active camera
         //Debug.Log("Camera Controller - active player: " + cameraController.activePlayer.team.ToString());
         //Debug.Log("Camera Controller - current camera: " + cameraController.c.ToString());
         //Debug.Log("Camera Controller - multiplayer instance? " + (cameraController.gameController is MultiplayerGameController));
 
+        // Transform position of the Field
         //Debug.Log(field.transform.position);
 
-        Unit selectedUnit = field.selectedUnit;
-        if (selectedUnit != null)
-        {
-            Debug.Log("Selected Unit = " + selectedUnit.GetType());
-        }
-        else
-            Debug.Log("Selected Unit = null");
+        // Type of the selected unit
+        //Unit selectedUnit = field.selectedUnit;
+        //if (selectedUnit != null)
+        //{
+        //    Debug.Log("Selected Unit = " + selectedUnit.GetType());
+        //}
+        //else
+        //    Debug.Log("Selected Unit = null");
+
+        // User Account details
+        Debug.Log(UserAccountDetails.username);
+        Debug.Log(UserAccountDetails.userRank);
+        Debug.Log(UserAccountDetails.userEXP);
     }
 }
