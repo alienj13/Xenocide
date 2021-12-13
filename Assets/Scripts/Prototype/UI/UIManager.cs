@@ -163,10 +163,10 @@ public class UIManager : MonoBehaviour
     public void Debugging()
     {
         // TODO: remove this when done testing
-        debugButton.gameObject.SetActive(true);
-        debugButton.SetDependencies(gameController, field);
+        //debugButton.gameObject.SetActive(true);
+        //debugButton.SetDependencies(gameController, field);
 
-        turnEndButton.gameObject.SetActive(true);
+        //turnEndButton.gameObject.SetActive(true);
         currentTurnText.gameObject.SetActive(true);
     }
 

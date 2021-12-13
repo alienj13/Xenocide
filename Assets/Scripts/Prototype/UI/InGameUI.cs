@@ -36,6 +36,7 @@ public class InGameUI : MonoBehaviour
         unitATK.SetText("ATK: " + unit.getATK().ToString());
         unitDEF.SetText("DEF: " + unit.getDEF().ToString());
 
+        display.texture = images[0];
         if (unit is XDrone && unit.Team == PlayerTeam.P1)
         {
             Debug.Log("HERE");
@@ -59,11 +60,11 @@ public class InGameUI : MonoBehaviour
         }
         else if (unit.Team == PlayerTeam.P1)
         {
-            display.texture = images[0];
+            display.texture = images[1];
         }
         else if (unit.Team == PlayerTeam.P2)
         {
-            display.texture = images[1];
+            display.texture = images[2];
         }
     }
 }

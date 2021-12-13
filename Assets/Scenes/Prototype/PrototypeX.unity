@@ -622,7 +622,6 @@ MonoBehaviour:
   - {fileID: 1098307082435100235, guid: 792da385ded02f24ea4effe6d233ffdf, type: 3}
   player1Material: {fileID: 2100000, guid: e33fefd43a475c449bd3d2f57b6edf99, type: 2}
   player2Material: {fileID: 2100000, guid: 477bfeba355dec9498700517d6c04fb3, type: 2}
-  SF_damageMaterial: {fileID: 2100000, guid: 79604d412816aa443878fd71a3ef2584, type: 2}
 --- !u!1 &287947405
 GameObject:
   m_ObjectHideFlags: 0
@@ -775,7 +774,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &424133833
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2301,7 +2300,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1530209313
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3481,6 +3480,7 @@ MonoBehaviour:
   - {fileID: 32900000, guid: bf396f935241e7e4f8438b482f25c754, type: 3}
   vp: {fileID: 3980387859052994416}
   images:
+  - {fileID: 8400000, guid: 41c296ad82e52c94d8def012836afd27, type: 2}
   - {fileID: 2800000, guid: 364653426f5c0fb4e8fb76a505215330, type: 3}
   - {fileID: 2800000, guid: 85ab48bff0d5e324f97f5ba4a44c6fcc, type: 3}
   display: {fileID: 3980387859037665319}
