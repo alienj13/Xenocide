@@ -19,7 +19,19 @@ MonoBehaviour:
   - position: {x: 1, y: 0}
     unitType: 2
     playerName: 1
+  - position: {x: 2, y: 0}
+    unitType: 2
+    playerName: 1
+  - position: {x: 3, y: 0}
+    unitType: 2
+    playerName: 1
   - position: {x: 0, y: 1}
+    unitType: 3
+    playerName: 1
+  - position: {x: 0, y: 2}
+    unitType: 3
+    playerName: 1
+  - position: {x: 0, y: 3}
     unitType: 3
     playerName: 1
   - position: {x: 3, y: 3}
@@ -31,7 +43,19 @@ MonoBehaviour:
   - position: {x: 19, y: 20}
     unitType: 2
     playerName: 2
+  - position: {x: 18, y: 20}
+    unitType: 2
+    playerName: 2
+  - position: {x: 17, y: 20}
+    unitType: 2
+    playerName: 2
   - position: {x: 20, y: 19}
+    unitType: 3
+    playerName: 2
+  - position: {x: 20, y: 18}
+    unitType: 3
+    playerName: 2
+  - position: {x: 20, y: 17}
     unitType: 3
     playerName: 2
   - position: {x: 17, y: 17}

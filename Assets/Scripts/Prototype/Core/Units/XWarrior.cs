@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class XWarrior : Unit
 {
-    private int moveRange = 6;
-    private int attackRange = 2;
+    private int moveRange = 8;
+    private int attackRange = 3;
 
     public override HashSet<Vector2Int> GenerateAvailableMoves()
     {
