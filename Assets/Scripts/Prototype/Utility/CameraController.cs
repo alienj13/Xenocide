@@ -50,14 +50,17 @@ public class CameraController : MonoBehaviour
             {
                 if (c == cam1)
                     c.transform.Translate(0, 0, -speed * Time.deltaTime, Space.World);
-                else if (c == cam2)
+                else if (c == cam2) 
                     c.transform.Translate(0, 0, speed * Time.deltaTime, Space.World);
             }
             // Up and down (scroll up & down)
-            if (Input.GetAxis("Mouse ScrollWheel") > 0f)
-                c.transform.Translate(new Vector3(0, 0, speed * Time.deltaTime * 5));
-            if (Input.GetAxis("Mouse ScrollWheel") < 0f)
-                c.transform.Translate(new Vector3(0, 0, -speed * Time.deltaTime * 5));
+            if (cam1.transform.position.z < -32f && cam2.transform.position.z > 30f)
+                if (Input.GetAxis("Mouse ScrollWheel") > 0f)
+                
+                    c.transform.Translate(new Vector3(0, 0, speed * Time.deltaTime * 5));
+                    
+                if (Input.GetAxis("Mouse ScrollWheel") < 0f)
+                    c.transform.Translate(new Vector3(0, 0, -speed * Time.deltaTime * 5));
         }
 
         
