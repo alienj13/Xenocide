@@ -10,11 +10,6 @@ public class LoginOverride : MonoBehaviour
 
     private UI loginUI;
 
-    private enum Scenes
-    {
-        Login, PrototypeX
-    }
-
     private void Awake()
     {
         loginUI = GetComponent<UI>();

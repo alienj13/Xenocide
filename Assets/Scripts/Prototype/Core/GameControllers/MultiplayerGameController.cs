@@ -10,7 +10,7 @@ public class MultiplayerGameController : GameController, IOnEventCallback
 {
     private const byte SET_GAME_STATE_EVENT_CODE = 1;
 
-    private XPlayer localPlayer;
+    public XPlayer localPlayer;
     private NetworkManager networkManager;
 
     public void SetMultiplayerDependencies(NetworkManager networkManager)

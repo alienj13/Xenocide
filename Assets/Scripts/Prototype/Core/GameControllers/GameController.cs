@@ -154,7 +154,7 @@ public abstract class GameController : MonoBehaviour
     {
         Debug.Log("Game Ended.");
 
-        UIManager.OnGameFinished(activePlayer.Team.ToString());
+        UIManager.OnGameFinished(activePlayer);
         SetGameState(GameState.Finished);
     }
 

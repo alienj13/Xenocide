@@ -5,6 +5,8 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 using System.Linq;
+using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
@@ -21,6 +23,7 @@ public class UIManager : MonoBehaviour
     [Header("Texts")]
     [SerializeField] private TextMeshProUGUI resultText;
     [SerializeField] private TextMeshProUGUI connectionStatusText;
+    [SerializeField] private TextMeshProUGUI multiplayerResultText;
 
     [Header("Screen GameObjects")]
     [SerializeField] private GameObject gameModeSelectionScreen;
@@ -128,11 +131,22 @@ public class UIManager : MonoBehaviour
         buttonToDeactivate.interactable = false;
     }
 
-    public void OnGameFinished(string winner)
+    public void OnGameFinished(XPlayer winner)
     {
         DisableAllScreens();
         gameoverScreen.SetActive(true);
-        resultText.SetText(String.Format("{0} won!", winner));
+        resultText.SetText(String.Format("{0} won!", winner.Team));
+
+        if (gameController is MultiplayerGameController)
+        {
+            MultiplayerGameController mgc = (MultiplayerGameController)gameController;
+            if (mgc.localPlayer == winner)
+            {
+                multiplayerResultText.SetText("XP increase");
+                if (UserAccountDetails.userExist)
+                    StartCoroutine(RetrieveExperience(UserAccountDetails.username));
+            }
+        }
     }
 
     public void RestartGame()
@@ -156,6 +170,12 @@ public class UIManager : MonoBehaviour
         currentTurnText.gameObject.SetActive(true);
     }
 
+    public void Exit()
+    {
+        SceneManager.LoadScene(Scenes.Login.ToString());
+    }
+
+    // In-game UI
     #region In-game UI
     public void ShowUnitDetails(Unit unit)
     {
@@ -168,5 +188,81 @@ public class UIManager : MonoBehaviour
         inGameUIScreen.SetActive(false);
     }
 
+    #endregion
+
+    // Temporary solution
+    #region XP increase
+    public IEnumerator RetrieveExperience(string user)
+    {
+
+        WWWForm form = new WWWForm();
+        form.AddField("username", user);
+
+        using (UnityWebRequest www = UnityWebRequest.Post("https://xenoregistertest.000webhostapp.com/RetrieveExperience.php", form))
+        {
+            yield return www.SendWebRequest();
+
+            if (www.result == UnityWebRequest.Result.ProtocolError || www.result == UnityWebRequest.Result.ConnectionError)
+            {
+
+                Debug.Log(www.error);
+                StartCoroutine(RetrieveExperience(user));//get experience
+            }
+            else
+            {
+                Debug.Log(www.downloadHandler.text);
+                int experience = int.Parse(www.downloadHandler.text);
+                if (experience >= 150)
+                {
+                    //check if a rank up is due
+                    StartCoroutine(UpdateRank(user));//rank up
+                }
+                else
+                {
+                    StartCoroutine(UpdateExperience(user));//+50XP
+                }
+            }
+        }
+    }
+    public IEnumerator UpdateRank(string user)
+    {
+
+        WWWForm form = new WWWForm();
+        form.AddField("username", user);
+
+        using (UnityWebRequest www = UnityWebRequest.Post("https://xenoregistertest.000webhostapp.com/UpdateRank.php", form))
+        {
+            yield return www.SendWebRequest();
+
+            if (www.result == UnityWebRequest.Result.ProtocolError || www.result == UnityWebRequest.Result.ConnectionError)
+            {
+                StartCoroutine(UpdateRank(user));
+            }
+            else
+            {
+                multiplayerResultText.SetText("+50 XP. User ranked up.");
+            }
+        }
+    }
+    public IEnumerator UpdateExperience(string user)
+    {
+
+        WWWForm form = new WWWForm();
+        form.AddField("username", user);
+
+        using (UnityWebRequest www = UnityWebRequest.Post("https://xenoregistertest.000webhostapp.com/UpdateExperience.php", form))
+        {
+            yield return www.SendWebRequest();
+
+            if (www.result == UnityWebRequest.Result.ProtocolError || www.result == UnityWebRequest.Result.ConnectionError)
+            {
+                StartCoroutine(UpdateExperience(user));
+            }
+            else
+            {
+                multiplayerResultText.SetText("+50 XP");
+            }
+        }
+    }
     #endregion
 }
