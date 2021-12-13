@@ -622,6 +622,7 @@ MonoBehaviour:
   - {fileID: 1098307082435100235, guid: 792da385ded02f24ea4effe6d233ffdf, type: 3}
   player1Material: {fileID: 2100000, guid: e33fefd43a475c449bd3d2f57b6edf99, type: 2}
   player2Material: {fileID: 2100000, guid: 477bfeba355dec9498700517d6c04fb3, type: 2}
+  SF_damageMaterial: {fileID: 2100000, guid: 79604d412816aa443878fd71a3ef2584, type: 2}
 --- !u!1 &287947405
 GameObject:
   m_ObjectHideFlags: 0

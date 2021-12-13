@@ -17,7 +17,6 @@ public class UnitCreator : MonoBehaviour
         {
             nameToUnitDict.Add(unit.GetComponent<Unit>().GetType().ToString(), unit);
         }
-
     }
 
     public GameObject CreateUnit(Type type)

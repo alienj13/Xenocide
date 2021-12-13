@@ -10,7 +10,7 @@ public abstract class GameController : MonoBehaviour
     private Field field;
     private UIManager UIManager;
     private CameraController cameraController;
-    private UnitCreator unitCreator;
+    public UnitCreator unitCreator;
 
     public enum GameState { Init, Play, Pause, Finished }
     [SerializeField] public GameState state;

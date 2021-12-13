@@ -314,6 +314,9 @@ public abstract class Unit : MonoBehaviour
         // Debug:
         Debug.Log("[-] " + this + " has been damaged, HP before gate: " + this.HP);
 
+        // Animation:
+        DamageAnimation();
+
         // Gate HP to be min 0
         if (this.HP < 0)
             HP = 0;
@@ -375,6 +378,21 @@ public abstract class Unit : MonoBehaviour
             }
         }
         return null;
+    }
+
+    public void DamageAnimation()
+    {
+        // TODO: Fix this
+        //Material damageMaterial = Resources.Load("Materials/Prototype/Damage material", typeof(Material)) as Material;
+        
+        //Material unitMaterial = GetComponent<Material>();
+        //if (this.Team == PlayerTeam.P1)
+        //    unitMaterial = Resources.Load("Materials/Prototype/Player 1", typeof(Material)) as Material;
+        //else if (this.Team == PlayerTeam.P2)
+        //    unitMaterial = Resources.Load("Materials/Prototype/Player 2", typeof(Material)) as Material;
+
+        //SetMaterial(damageMaterial);
+        //SetMaterial(unitMaterial);
     }
 
     public override string ToString()
