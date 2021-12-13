@@ -127,6 +127,24 @@ public abstract class Unit : MonoBehaviour
     }
     #endregion
 
+    // Get methods
+    #region Getters
+    public int getHP()
+    {
+        return HP;
+    }
+
+    public int getATK()
+    {
+        return ATK;
+    }
+
+    public int getDEF()
+    {
+        return DEF;
+    }
+    #endregion
+
     // Logic methods
     // Important for other methods to use
     #region Logic
@@ -186,6 +204,7 @@ public abstract class Unit : MonoBehaviour
     }
     #endregion
 
+    // Turn system
     #region Turn system
     public virtual void StartTurn()
     {
