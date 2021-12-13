@@ -3035,8 +3035,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 100}
-  m_SizeDelta: {x: 400, y: 400}
+  m_AnchoredPosition: {x: 0, y: 75}
+  m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &3980387859037665316
 GameObject:
@@ -3339,6 +3339,16 @@ MonoBehaviour:
   unitHP: {fileID: 522780374}
   unitATK: {fileID: 797631434}
   unitDEF: {fileID: 1554854697}
+  vids:
+  - {fileID: 32900000, guid: 87493f70823f98a4e9b276ea3f0c6d08, type: 3}
+  - {fileID: 32900000, guid: b8b05bb2b5e75ba42aa641e7ac8ffacb, type: 3}
+  - {fileID: 32900000, guid: e4500b3c5152a074a933e1e9cb8b4f98, type: 3}
+  - {fileID: 32900000, guid: bf396f935241e7e4f8438b482f25c754, type: 3}
+  vp: {fileID: 3980387859052994416}
+  images:
+  - {fileID: 2800000, guid: 364653426f5c0fb4e8fb76a505215330, type: 3}
+  - {fileID: 2800000, guid: 85ab48bff0d5e324f97f5ba4a44c6fcc, type: 3}
+  display: {fileID: 3980387859037665319}
 --- !u!1 &3980387859501870088
 GameObject:
   m_ObjectHideFlags: 0

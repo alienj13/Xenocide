@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Video;
+using UnityEngine.UI;
 using TMPro;
 
 public class InGameUI : MonoBehaviour
@@ -15,6 +17,12 @@ public class InGameUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI unitATK;
     [SerializeField] private TextMeshProUGUI unitDEF;
 
+    [Header("Videos")]
+    [SerializeField] public VideoClip[] vids;
+    [SerializeField] public VideoPlayer vp;
+    [SerializeField] public Texture[] images;
+    [SerializeField] public RawImage display;
+
     public void UpdateUserDetails(string username, string rank)
     {
         this.username.SetText(username);
@@ -27,5 +35,35 @@ public class InGameUI : MonoBehaviour
         unitHP.SetText("HP: " + unit.getHP().ToString());
         unitATK.SetText("ATK: " + unit.getATK().ToString());
         unitDEF.SetText("DEF: " + unit.getDEF().ToString());
+
+        if (unit is XDrone && unit.Team == PlayerTeam.P1)
+        {
+            Debug.Log("HERE");
+            vp.clip = vids[0];
+            vp.Play();
+        }
+        else if (unit is XDrone && unit.Team == PlayerTeam.P2)
+        {
+            vp.clip = vids[1];
+            vp.Play();
+        }
+        else if (unit is XWarrior && unit.Team == PlayerTeam.P1)
+        {
+            vp.clip = vids[2];
+            vp.Play();
+        }
+        else if (unit is XWarrior && unit.Team == PlayerTeam.P2)
+        {
+            vp.clip = vids[3];
+            vp.Play();
+        }
+        else if (unit.Team == PlayerTeam.P1)
+        {
+            display.texture = images[0];
+        }
+        else if (unit.Team == PlayerTeam.P2)
+        {
+            display.texture = images[1];
+        }
     }
 }
