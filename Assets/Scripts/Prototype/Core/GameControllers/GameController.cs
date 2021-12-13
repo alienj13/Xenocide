@@ -121,6 +121,9 @@ public abstract class GameController : MonoBehaviour
 
     public void EndTurn()
     {
+        // In-game UI:
+        UIManager.HideUnitDetails();
+
         activePlayer.OnTurnEnd();
 
         if (CheckIfGameIsFinished())
@@ -177,6 +180,18 @@ public abstract class GameController : MonoBehaviour
                 return null;
         }
     }
+
+    #region In-game UI
+    public void ShowUnitDetails(Unit unit)
+    {
+        UIManager.ShowUnitDetails(unit);
+    }
+
+    public void HideUnitDetails()
+    {
+        UIManager.HideUnitDetails();
+    }
+    #endregion
 
     #region CameraControls
     // TODO: FIX THIS

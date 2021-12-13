@@ -5276,6 +5276,7 @@ MonoBehaviour:
   teamSelectionScreen: {fileID: 4777811077887268089}
   gameoverScreen: {fileID: 4777811078489827374}
   gameUIScreen: {fileID: 687416906}
+  inGameUIScreen: {fileID: 3980387859361592303}
   gameLevelSelection: {fileID: 4777811079258627300}
   debugButton: {fileID: 1530209317}
   turnEndButton: {fileID: 424133833}

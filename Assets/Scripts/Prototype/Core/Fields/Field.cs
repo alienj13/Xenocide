@@ -161,6 +161,9 @@ public abstract class Field : MonoBehaviour
 
         ShowSelectionSquare(selectedUnit.availableMoves, true);
         ShowSelectionSquare(selectedUnit.availableAttacks, false);
+
+        // In-game UI:
+        gameController.ShowUnitDetails(selectedUnit);
     }
 
     private void ShowSelectionSquare(HashSet<Vector2Int> selection, bool moveTrue)
@@ -180,6 +183,9 @@ public abstract class Field : MonoBehaviour
     {
         selectedUnit = null;
         squareSelector.ClearSelection();
+
+        // In-game UI:
+        gameController.HideUnitDetails();
     }
 
     public void OnSetSelectedUnit(Vector2Int coords)

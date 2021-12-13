@@ -28,6 +28,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject teamSelectionScreen;
     [SerializeField] private GameObject gameoverScreen;
     [SerializeField] private GameObject gameUIScreen;
+    [SerializeField] private GameObject inGameUIScreen;
 
     [Header("Other UI")]
     [SerializeField] private TMP_Dropdown gameLevelSelection;
@@ -41,6 +42,9 @@ public class UIManager : MonoBehaviour
     {
         gameLevelSelection.AddOptions(Enum.GetNames(typeof(PlayerLevel)).ToList());
         OnGameLaunched();
+
+        // Temporary solution:
+        inGameUI.UpdateUserDetails(UserAccountDetails.username, UserAccountDetails.userRank);
     }
 
     private void Update()
@@ -151,4 +155,18 @@ public class UIManager : MonoBehaviour
         turnEndButton.gameObject.SetActive(true);
         currentTurnText.gameObject.SetActive(true);
     }
+
+    #region In-game UI
+    public void ShowUnitDetails(Unit unit)
+    {
+        inGameUIScreen.SetActive(true);
+        inGameUI.UpdateUnitDetails(unit);
+    }
+
+    public void HideUnitDetails()
+    {
+        inGameUIScreen.SetActive(false);
+    }
+
+    #endregion
 }

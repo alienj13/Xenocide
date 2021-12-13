@@ -24,8 +24,8 @@ public class InGameUI : MonoBehaviour
     public void UpdateUnitDetails(Unit unit)
     {
         unitName.SetText(unit.GetType().ToString());
-        unitHP.SetText(unit.getHP().ToString());
-        unitATK.SetText(unit.getATK().ToString());
-        unitDEF.SetText(unit.getDEF().ToString());
+        unitHP.SetText("HP: " + unit.getHP().ToString());
+        unitATK.SetText("ATK: " + unit.getATK().ToString());
+        unitDEF.SetText("DEF: " + unit.getDEF().ToString());
     }
 }
