@@ -12,6 +12,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private NetworkManager networkManager;
     [SerializeField] private GameController gameController;
     [SerializeField] private Field field;
+    [SerializeField] private InGameUI inGameUI;
 
     [Header("Buttons")]
     [SerializeField] private Button player1TeamButton;
