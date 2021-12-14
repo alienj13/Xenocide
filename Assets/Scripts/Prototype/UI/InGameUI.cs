@@ -39,7 +39,6 @@ public class InGameUI : MonoBehaviour
         display.texture = images[0];
         if (unit is XDrone && unit.Team == PlayerTeam.P1)
         {
-            Debug.Log("HERE");
             vp.clip = vids[0];
             vp.Play();
         }
