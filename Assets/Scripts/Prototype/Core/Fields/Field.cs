@@ -179,7 +179,7 @@ public abstract class Field : MonoBehaviour
         squareSelector.ShowSelection(selectionData);
     }
 
-    private void DeselectUnit()
+    public void DeselectUnit()
     {
         selectedUnit = null;
         squareSelector.ClearSelection();

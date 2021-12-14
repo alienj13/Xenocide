@@ -121,8 +121,7 @@ public abstract class GameController : MonoBehaviour
 
     public void EndTurn()
     {
-        // In-game UI:
-        UIManager.HideUnitDetails();
+        field.DeselectUnit();
 
         activePlayer.OnTurnEnd();
 
