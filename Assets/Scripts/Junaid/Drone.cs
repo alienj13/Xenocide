@@ -10,15 +10,24 @@ public class Drone : Characters
         defense = 10;
     }
     public override bool ValidMove(Characters[,] board, int x1, int y1, int x2, int y2, Characters c) {
+        Debug.Log("1");
         moves.Clear();
+        Debug.Log("2");
         setMoves(this.currentX, this.currentY);
+        Debug.Log("3");
         Destination = new Vector2Int(x2, y2);
-        foreach(Vector2Int i in moves) {
+        Debug.Log("4");
+        foreach (Vector2Int i in moves) {
             if (Destination == i) {
+                Debug.Log("5");
                 if (board[x2, y2] != null) {
+                    Debug.Log("6");
                     if (board[x2, y2].team != c.team) {
+                        Debug.Log("7");
                         Characters opponent = board[x2, y2];
+                        Debug.Log("8");
                         attack(opponent, c);
+                        Debug.Log("9");
                         if (death(board, opponent, x2, y2) == true) {
                             return true;
                         }

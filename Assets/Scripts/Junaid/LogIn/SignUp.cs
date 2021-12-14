@@ -48,6 +48,8 @@ public class SignUp : MonoBehaviour
 
             }
         }
+        
+            
     }
 
     public IEnumerator LogIn(string user, string password) {
@@ -59,7 +61,7 @@ public class SignUp : MonoBehaviour
  
             if (www.result == UnityWebRequest.Result.ProtocolError || www.result == UnityWebRequest.Result.ConnectionError) {
 
-                Debug.Log(www.error);
+               StartCoroutine( LogIn(user,  password));
             }
             else {
  
@@ -99,7 +101,7 @@ public class SignUp : MonoBehaviour
 
             if (www.result == UnityWebRequest.Result.ProtocolError || www.result == UnityWebRequest.Result.ConnectionError) {
 
-                Debug.Log(www.error);
+                StartCoroutine(RetrieveRank(user));
             }
             else {
                 Debug.Log(www.downloadHandler.text);
@@ -121,7 +123,7 @@ public class SignUp : MonoBehaviour
 
             if (www.result == UnityWebRequest.Result.ProtocolError || www.result == UnityWebRequest.Result.ConnectionError) {
 
-                Debug.Log(www.error);
+                StartCoroutine(RetrieveExperience(user));
             }
             else {
                 Debug.Log(www.downloadHandler.text);

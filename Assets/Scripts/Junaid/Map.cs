@@ -23,7 +23,7 @@ public class Map : MonoBehaviour {
     private const int XCount = 20;      // X size of the tilemap
     private const int YCount = 20;      // Y size of the tilemap
     private GameObject[,] tiles;        // array of all tiles
-    private Camera c;                   //a variable to control the camera 
+    public   Camera c;                   //a variable to control the camera 
     private Vector2Int hover;           //co ordinates for where the mouse is relative to the camera
     private Vector3 bounds;             // positioning for tiles
     private Vector2Int mouseOver;       //mouse position
@@ -35,7 +35,8 @@ public class Map : MonoBehaviour {
         Instance = this;
       
         GenerateTiles(tileSize, XCount, YCount);
-        //SpawnAll();
+        character = new Characters[XCount, YCount];
+        SpawnAll();
         //AllPosition();
 
     }
@@ -220,19 +221,23 @@ public class Map : MonoBehaviour {
     //uses the single character spawner to
     //spawns all the characters and places them in positions of the array
     public void SpawnAll() {
-        character = new Characters[XCount, YCount];
+  
 
-        /*
-        for (int i = 1; i < 19; i++) {
-            for (int j = 1; j < 5; j++) {
-                character[i, j] = SpawnCharacter(characterType.Drone, 0);
+        for (int x = 0; x < XCount; x++) {
+            for (int y = 0; y < YCount; y++) {
+
+                if (character[x, y] != null) {
+                    Debug.Log($"destroy {character[x, y].GetType()} at {x}{y}");
+                    Destroy(character[x, y].gameObject);
+                    character[x, y] = null;
+                }
+               
+
             }
         }
-        for (int i = 1; i < 19; i++) {
-            for (int j = 6; j < 9; j++) {
-                character[i, j] = SpawnCharacter(characterType.Drone, 1);
-            }
-        }*/
+ 
+
+        character = new Characters[XCount, YCount];
 
 
         character[6, 0] = SpawnCharacter(characterType.BlackWarrior, 0);
@@ -258,6 +263,16 @@ public class Map : MonoBehaviour {
         Client.Instance.SetQueen1(character[5, 9]);
         Client.Instance.SetQueen0(character[5, 0]);
 
+
+      
+            for (int x = 0; x < XCount; x++) {
+                for (int y = 0; y < YCount; y++) {
+                    if (character[x, y] != null) {
+                        SinglePosition(x, y, true);
+                    }
+                }
+            }
+        
     }
 
 
@@ -279,21 +294,14 @@ public class Map : MonoBehaviour {
         c.team = team;
          
         c.SetAttributes();
+        //c.SetX();
         
         return c;
     }
 
 
     //uses the single position function to position all characters
-    public void AllPosition() {
-        for (int x = 0; x < XCount; x++) {
-            for (int y = 0; y < YCount; y++) {
-                if (character[x, y] != null) {
-                    SinglePosition(x, y, true);
-                }
-            }
-        }
-    }
+  
 
 
     //places a single character in a particular position on the board
@@ -345,21 +353,21 @@ public class Map : MonoBehaviour {
    
     public void ResetMap() {
 
-        UI.Instance.Lose.SetActive(false);
+ 
         Client.Instance.setSelected(null);
 
         for (int x = 0; x < XCount; x++) {
             for (int y = 0; y < YCount; y++) {
+
                 if (character[x, y] != null) {
+                    Debug.Log($"destroy {character[x,y].GetType()} at {x}{y}");
                     Destroy(character[x, y].gameObject);
                 }
                 character[x, y] = null;
+                
             }
         }
-        //IsTeam0Turn = true;
         Client.Instance.setTurn(true);
-        //SpawnAll();
-        //AllPosition();
     }
    
 

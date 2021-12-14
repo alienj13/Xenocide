@@ -5806,7 +5806,6 @@ GameObject:
   - component: {fileID: 1054702146}
   - component: {fileID: 1054702145}
   - component: {fileID: 1054702149}
-  - component: {fileID: 1054702151}
   - component: {fileID: 1054702150}
   - component: {fileID: 1054702152}
   m_Layer: 5
@@ -5933,7 +5932,6 @@ MonoBehaviour:
   InGameUIDisplay: {fileID: 1670054538}
   ExperienceWin: {fileID: 1494388450}
   Result: 
-  client: {fileID: 1054702150}
   units:
   - {fileID: 2800000, guid: 7a276e22a52cc8a4baa5bf9ef3913868, type: 3}
   - {fileID: 2800000, guid: d48cace77b2dc1b47a8fa8692dd3e463, type: 3}
@@ -5963,6 +5961,7 @@ MonoBehaviour:
   InGameUnitAttack: {fileID: 82083756}
   InGameUnitDefense: {fileID: 1937774774}
   ExperienceWinText: {fileID: 607246641}
+  test: {fileID: 1095984549}
   vids:
   - {fileID: 32900000, guid: e4500b3c5152a074a933e1e9cb8b4f98, type: 3}
   - {fileID: 32900000, guid: 87493f70823f98a4e9b276ea3f0c6d08, type: 3}
@@ -5986,18 +5985,6 @@ MonoBehaviour:
   PlayerName: 
   selectedPiece: {fileID: 0}
   Result: 
---- !u!114 &1054702151
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1054702144}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f5d634e70f66ae478403796d9d7e735, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1054702152
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6105,7 +6092,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1092107670
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6253,6 +6240,7 @@ MonoBehaviour:
   center: {x: 0, y: 0, z: 0}
   cam0: {fileID: 40919617}
   cam1: {fileID: 223974229}
+  c: {fileID: 0}
 --- !u!4 &1095984551
 Transform:
   m_ObjectHideFlags: 0
@@ -9262,7 +9250,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!154 &1630342602
 TerrainCollider:
   m_ObjectHideFlags: 0

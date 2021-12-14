@@ -25,7 +25,7 @@ public class UI : MonoBehaviour
     public static UI Instance { set; get; }
     public string Result;
 
-    public Client client;
+   
 
     [SerializeField] public Texture[] units;
     [SerializeField] public TMP_InputField Playername;
@@ -50,7 +50,7 @@ public class UI : MonoBehaviour
     [SerializeField] public Text InGameUnitAttack;
     [SerializeField] public Text InGameUnitDefense;
     [SerializeField] public TMP_Text ExperienceWinText;
-
+    [SerializeField] public GameObject test;
     [SerializeField] public VideoClip[] vids ;
     [SerializeField]  public VideoPlayer vp;
     private void Awake() {
@@ -106,7 +106,7 @@ public class UI : MonoBehaviour
     public void back() {
         startMenu.SetActive(true);
         OnlineMenu.SetActive(false);
-        client.ShutDown();
+        Client.Instance.ShutDown();
     }
 
     public void HostOnline() {
@@ -122,13 +122,13 @@ public class UI : MonoBehaviour
     public void backToOnlineMenu() {
         OnlineMenu.SetActive(true);
         Waiting.SetActive(false);
-        client.ShutDown();
+        Client.Instance.ShutDown();
     }
 
     public void ExitFromDisconnect() {
         DisconnectedPlayer.SetActive(false);
         startMenu.SetActive(true);
-        client.ShutDown();
+        Client.Instance.ShutDown();
         turns.SetActive(false);
         status.SetActive(false);
         InGameUIDisplay.SetActive(false);
@@ -147,33 +147,44 @@ public class UI : MonoBehaviour
         turns.SetActive(false);
         status.SetActive(false);
         ExperienceWin.SetActive(false);
+        Client.Instance.ShutDown();
     }
 
     public void LoseScreen() {
-        Loser.text = $"Congrats you lost, now go fuck yourself";
+        Loser.text = $"You lost!";
         Lose.SetActive(true);
         turns.SetActive(false);
         status.SetActive(false);
         InGameUIDisplay.SetActive(false);
-        client.ShutDown();
-
-        
+        Client.Instance.ShutDown();
+        test.GetComponent<Map>().enabled = false; //toggle this script to re-invoke it
+        test.GetComponent<Map>().enabled = true;
     }
 
-    public void ExperienceWinner() {
-        ExperienceWinText.text = $"You won! +50XP";
+    public void ExperienceWinner(string message) {
+        ExperienceWinText.text = message;
         ExperienceWin.SetActive(true);
         turns.SetActive(false);
         status.SetActive(false);
         InGameUIDisplay.SetActive(false);
-        client.ShutDown();
+        Client.Instance.ShutDown();
+        test.GetComponent<Map>().enabled = false; //toggle this script to re-invoke it
+        test.GetComponent<Map>().enabled = true;
 
     }
 
     public void InGameUI(Characters c) {
-       
 
-        InGameUnitType.text = $"{c.type}";
+        if (c.type == characterType.BlackDrone || c.type == characterType.RedDrone) {
+            InGameUnitType.text = "Drone";
+        }
+        else if (c.type == characterType.BlackWarrior || c.type == characterType.RedWarrior) {
+            InGameUnitType.text = "Warrior";
+        }
+       else if (c.type == characterType.Queen) {
+            InGameUnitType.text = "Queen";
+        }
+
         InGameUnitHealth.text = $"{c.GetHealth()}";
         InGameUnitAttack.text = $"{c.GetAttack()}";
         InGameUnitDefense.text = $"{c.GetDefense()}";
