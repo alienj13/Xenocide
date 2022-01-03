@@ -5,7 +5,7 @@ using UnityEngine;
 public class Warrior : Characters
 {
     public override void SetAttributes() {
-        health = 30;
+        health = 15;
         AttackPower = 15;
         defense = 10;
     }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class Drone : Characters
 {
     public override void SetAttributes() {
-        health = 20;
+        health = 15;
         AttackPower = 15;
         defense = 10;
     }
