@@ -110,7 +110,7 @@ public abstract class Unit : MonoBehaviour
         // Temporary solution
         if (this is XQueen)
         {
-            transform.position = transform.position + new Vector3(0, 5f, 0);
+            transform.position = transform.position + new Vector3(0, 1f, 0);
             if (this.Team == PlayerTeam.P1)
                 transform.Rotate(new Vector3(0, 180, 0));
         }
@@ -119,6 +119,29 @@ public abstract class Unit : MonoBehaviour
             if (this.Team == PlayerTeam.P1)
                 transform.Rotate(new Vector3(0, 180, 0));
         }
+        if (this is XWarrior)
+        {
+            if (this.Team == PlayerTeam.P1)
+                transform.Rotate(new Vector3(0, 180, 0));
+        }
+    }
+    #endregion
+
+    // Get methods
+    #region Getters
+    public int getHP()
+    {
+        return HP;
+    }
+
+    public int getATK()
+    {
+        return ATK;
+    }
+
+    public int getDEF()
+    {
+        return DEF;
     }
     #endregion
 
@@ -181,6 +204,7 @@ public abstract class Unit : MonoBehaviour
     }
     #endregion
 
+    // Turn system
     #region Turn system
     public virtual void StartTurn()
     {
@@ -290,6 +314,9 @@ public abstract class Unit : MonoBehaviour
         // Debug:
         Debug.Log("[-] " + this + " has been damaged, HP before gate: " + this.HP);
 
+        // Animation:
+        DamageAnimation();
+
         // Gate HP to be min 0
         if (this.HP < 0)
             HP = 0;
@@ -351,6 +378,21 @@ public abstract class Unit : MonoBehaviour
             }
         }
         return null;
+    }
+
+    public void DamageAnimation()
+    {
+        // TODO: Fix this
+        //Material damageMaterial = Resources.Load("Materials/Prototype/Damage material", typeof(Material)) as Material;
+        
+        //Material unitMaterial = GetComponent<Material>();
+        //if (this.Team == PlayerTeam.P1)
+        //    unitMaterial = Resources.Load("Materials/Prototype/Player 1", typeof(Material)) as Material;
+        //else if (this.Team == PlayerTeam.P2)
+        //    unitMaterial = Resources.Load("Materials/Prototype/Player 2", typeof(Material)) as Material;
+
+        //SetMaterial(damageMaterial);
+        //SetMaterial(unitMaterial);
     }
 
     public override string ToString()

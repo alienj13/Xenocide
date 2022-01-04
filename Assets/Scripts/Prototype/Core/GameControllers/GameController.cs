@@ -10,7 +10,7 @@ public abstract class GameController : MonoBehaviour
     private Field field;
     private UIManager UIManager;
     private CameraController cameraController;
-    private UnitCreator unitCreator;
+    public UnitCreator unitCreator;
 
     public enum GameState { Init, Play, Pause, Finished }
     [SerializeField] public GameState state;
@@ -121,6 +121,8 @@ public abstract class GameController : MonoBehaviour
 
     public void EndTurn()
     {
+        field.DeselectUnit();
+
         activePlayer.OnTurnEnd();
 
         if (CheckIfGameIsFinished())
@@ -151,7 +153,7 @@ public abstract class GameController : MonoBehaviour
     {
         Debug.Log("Game Ended.");
 
-        UIManager.OnGameFinished(activePlayer.Team.ToString());
+        UIManager.OnGameFinished(activePlayer);
         SetGameState(GameState.Finished);
     }
 
@@ -177,6 +179,18 @@ public abstract class GameController : MonoBehaviour
                 return null;
         }
     }
+
+    #region In-game UI
+    public void ShowUnitDetails(Unit unit)
+    {
+        UIManager.ShowUnitDetails(unit);
+    }
+
+    public void HideUnitDetails()
+    {
+        UIManager.HideUnitDetails();
+    }
+    #endregion
 
     #region CameraControls
     // TODO: FIX THIS
