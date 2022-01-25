@@ -11,6 +11,7 @@ public class AnimationUI : MonoBehaviour
     [SerializeField] public UIManager ui;
 
     [Header("Videos")]
+    [SerializeField] public RawImage display;
     [SerializeField] public VideoPlayer vp;
     [SerializeField] public VideoClip[] vids;
 
@@ -22,6 +23,7 @@ public class AnimationUI : MonoBehaviour
     public void ShowExecutionAnimation(Unit attacker, Unit defender)
     {
         // (attacker) -> (defender)
+        HideDisplays();
         vp.clip = null;
         played = false;
 
@@ -38,6 +40,7 @@ public class AnimationUI : MonoBehaviour
         // Final check
         if (vp.clip != null)
         {
+            ShowDisplays();
             vp.Play();
             played = true;
         }
@@ -50,8 +53,21 @@ public class AnimationUI : MonoBehaviour
             if (vp.isPaused)
             {
                 played = false;
+                HideDisplays();
                 ui.HideAnimationScreen();
             }
         }
+    }
+
+    public void ShowDisplays()
+    {
+        display.gameObject.SetActive(true);
+        vp.gameObject.SetActive(true);
+    }
+
+    public void HideDisplays()
+    {
+        display.gameObject.SetActive(false);
+        vp.gameObject.SetActive(false);
     }
 }
