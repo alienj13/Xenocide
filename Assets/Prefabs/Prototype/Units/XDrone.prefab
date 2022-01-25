@@ -106,7 +106,7 @@ MonoBehaviour:
   SF_ActionCount: 0
   SF_currentHP: 1
   maxHP: 15
-  ATK: 5
+  ATK: 5000
   DEF: 2
 --- !u!114 &1251115959267842332
 MonoBehaviour:
