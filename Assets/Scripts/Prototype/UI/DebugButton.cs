@@ -6,6 +6,7 @@ public class DebugButton : MonoBehaviour
 {
     [SerializeField] private GameController gameController;
     [SerializeField] private CameraController cameraController;
+    [SerializeField] private UIManager ui;
     private Field field;
 
     public void SetDependencies(GameController gameController, Field field)
@@ -30,17 +31,26 @@ public class DebugButton : MonoBehaviour
         //Debug.Log(field.transform.position);
 
         // Type of the selected unit
-        //Unit selectedUnit = field.selectedUnit;
-        //if (selectedUnit != null)
-        //{
-        //    Debug.Log("Selected Unit = " + selectedUnit.GetType());
-        //}
-        //else
-        //    Debug.Log("Selected Unit = null");
+        Unit selectedUnit = field.selectedUnit;
+        if (selectedUnit != null)
+        {
+            Debug.Log("Selected Unit = " + selectedUnit.GetType());
+        }
+        else
+            Debug.Log("Selected Unit = null");
 
         // User Account details
-        Debug.Log(UserAccountDetails.username);
-        Debug.Log(UserAccountDetails.userRank);
-        Debug.Log(UserAccountDetails.userEXP);
+        //Debug.Log(UserAccountDetails.username);
+        //Debug.Log(UserAccountDetails.userRank);
+        //Debug.Log(UserAccountDetails.userEXP);
+
+        // Animation test
+        if (selectedUnit != null)
+        {
+            ui.ShowAnimationScreen();
+            Unit test = new XDrone();
+            test.Team = (selectedUnit.Team == PlayerTeam.P1) ? PlayerTeam.P2 : PlayerTeam.P1;
+            ui.ShowExecutionAnimation(selectedUnit, test);
+        }
     }
 }

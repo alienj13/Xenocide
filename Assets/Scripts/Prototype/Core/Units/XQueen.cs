@@ -16,7 +16,7 @@ public class XQueen : Unit
 
     // When the Queen dies, do not destroy GameObject
     // This is for the GameController to end the game
-    public override void Die()
+    public override void Die(Unit source)
     {
         return;
     }
