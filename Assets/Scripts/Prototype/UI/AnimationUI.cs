@@ -44,6 +44,9 @@ public class AnimationUI : MonoBehaviour
             vp.Play();
             played = true;
         }
+        else {
+            ui.HideAnimationScreen();
+        }
     }
 
     public void Update()
