@@ -122,6 +122,7 @@ public abstract class GameController : MonoBehaviour
     public void EndTurn()
     {
         field.DeselectUnit();
+        UIManager.HideUnitDetails();
 
         activePlayer.OnTurnEnd();
 
@@ -189,6 +190,12 @@ public abstract class GameController : MonoBehaviour
     public void HideUnitDetails()
     {
         UIManager.HideUnitDetails();
+    }
+
+    public void ShowExecutionAnimation(Unit attacker, Unit defender)
+    {
+        UIManager.ShowAnimationScreen();
+        UIManager.ShowExecutionAnimation(attacker, defender);
     }
     #endregion
 

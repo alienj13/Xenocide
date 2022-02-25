@@ -185,7 +185,7 @@ public abstract class Field : MonoBehaviour
         squareSelector.ClearSelection();
 
         // In-game UI:
-        gameController.HideUnitDetails();
+        //gameController.HideUnitDetails();
     }
 
     public void OnSetSelectedUnit(Vector2Int coords)
@@ -248,6 +248,12 @@ public abstract class Field : MonoBehaviour
     {
         grid[newCoords.x, newCoords.y] = newUnit;
         grid[oldCoords.x, oldCoords.y] = oldUnit;
+    }
+
+    // Animation 
+    public void ShowExecutionAnimation(Unit attacker, Unit defender)
+    {
+        gameController.ShowExecutionAnimation(attacker, defender);
     }
     #endregion
 }

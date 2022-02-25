@@ -15,6 +15,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameController gameController;
     [SerializeField] private Field field;
     [SerializeField] private InGameUI inGameUI;
+    [SerializeField] private AnimationUI animationUI;
 
     [Header("Buttons")]
     [SerializeField] private Button player1TeamButton;
@@ -32,6 +33,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject gameoverScreen;
     [SerializeField] private GameObject gameUIScreen;
     [SerializeField] private GameObject inGameUIScreen;
+    [SerializeField] private GameObject animationScreen;
 
     [Header("Other UI")]
     [SerializeField] private TMP_Dropdown gameLevelSelection;
@@ -188,6 +190,24 @@ public class UIManager : MonoBehaviour
         inGameUIScreen.SetActive(false);
     }
 
+    #endregion
+
+    // Animation
+    #region Animation
+    public void ShowAnimationScreen()
+    {
+        animationScreen.SetActive(true);
+    }
+
+    public void ShowExecutionAnimation(Unit attacker, Unit defender)
+    {
+        animationUI.ShowExecutionAnimation(attacker, defender);
+    }
+
+    public void HideAnimationScreen()
+    {
+        animationScreen.SetActive(false);
+    }
     #endregion
 
     // Temporary solution

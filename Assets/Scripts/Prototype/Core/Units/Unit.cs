@@ -190,7 +190,7 @@ public abstract class Unit : MonoBehaviour
         return HP > 0;
     }
 
-    public virtual void Die()
+    public virtual void Die(Unit source)
     {
         // Debug:
         Debug.Log("[!] " + this + " has died.");
@@ -322,7 +322,7 @@ public abstract class Unit : MonoBehaviour
             HP = 0;
         // If not alive, then die.
         if (!IsAlive())
-            Die();
+            Die(source);
     }
 
     protected void ClearAttacks()

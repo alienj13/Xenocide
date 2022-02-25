@@ -18,4 +18,11 @@ public class XDrone : Unit
         AddAttacks(PatternGen.SquareAttack(this, attackRange));
         return availableAttacks;
     }
+
+    // [] Temporary solution
+    public override void Die(Unit source)
+    {
+        Field.ShowExecutionAnimation(source, this);
+        base.Die(source);
+    }
 }
