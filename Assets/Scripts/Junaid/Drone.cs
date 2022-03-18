@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Drone : Characters
-{
+{ 
     public override void SetAttributes() {
         health = 15;
         AttackPower = 15;
@@ -47,7 +47,12 @@ public class Drone : Characters
 
         opponent.HealthLoss(AttackPower);      
         HasAttcked = true;
+        Debug.Log("Drone.attack()");
+        GameObject particle = Instantiate(FX_hit);
+        particle.transform.position = transform.position;
+        Destroy(particle, 5.0f);
     }
+
     public bool death(Characters[,] board, Characters opponent, int x2, int y2) {
         if (opponent.GetHealth() < 1) {
             Destroy(opponent.gameObject);
