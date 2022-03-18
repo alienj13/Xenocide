@@ -11,7 +11,7 @@ public enum characterType {
 }
 
 public abstract class Characters : MonoBehaviour {
-
+    public GameObject FX_hit;
     public int team;
     protected int currentX;
     protected int currentY;
@@ -24,6 +24,7 @@ public abstract class Characters : MonoBehaviour {
     protected Vector2Int Destination;
     protected List<Vector2Int> moves = new List<Vector2Int>();
     public Vector3 targetPosition;
+
   
 
     public void Update() {
@@ -58,5 +59,6 @@ public abstract class Characters : MonoBehaviour {
     public abstract void HealthLoss(int h);
 
     public abstract int GetDefense();
+
 
 }

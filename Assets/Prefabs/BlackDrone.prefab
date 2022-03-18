@@ -96,6 +96,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13a40dbb07e10ff439c4951b5cbadc67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  FX_hit: {fileID: 0}
   team: 0
   type: 0
   HasAttcked: 0

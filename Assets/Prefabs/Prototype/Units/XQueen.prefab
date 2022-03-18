@@ -108,6 +108,7 @@ MonoBehaviour:
   maxHP: 50
   ATK: 0
   DEF: 0
+  FXHit: {fileID: 9206383620626935351, guid: 94b06e2d1791aa347a9d73c9111ccdde, type: 3}
 --- !u!114 &1209355259812080988
 MonoBehaviour:
   m_ObjectHideFlags: 0
