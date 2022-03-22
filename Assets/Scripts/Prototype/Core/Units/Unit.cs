@@ -121,8 +121,12 @@ public abstract class Unit : MonoBehaviour
             transform.Rotate(new Vector3(0, 180, 0));
         }
         if (this is Curer) {
-            // transform.position = transform.position + new Vector3(-1f, 1f, -2.5f);
-            // transform.Rotate(new Vector3(-90, 0, 0));
+            //transform.position = transform.position + new Vector3(0, 2f, 2.5f);
+            if (this.Team == PlayerTeam.P1)
+                transform.Translate(new Vector3(0, 2f, 2.5f), Space.World);
+            else if (this.Team == PlayerTeam.P2)
+                transform.Translate(new Vector3(0, 2f, -2.5f), Space.World);
+            transform.Rotate(new Vector3(0, 180, 0));
         }
         if (this is Destroyer) {
             transform.Rotate(new Vector3(0, 180, 0));
