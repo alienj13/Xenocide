@@ -9,7 +9,7 @@ public class Destroyer : Unit
 
     public override HashSet<Vector2Int> GenerateAvailableMoves()
     {
-        AddMoves(PatternGen.SquareMove(this, moveRange));
+        AddMoves(PatternGen.CrossMove(this, moveRange));
         return availableMoves;
     }
 

@@ -64,3 +64,15 @@ MonoBehaviour:
   - position: {x: 10, y: 10}
     unitType: 4
     playerName: 0
+  - position: {x: 8, y: 0}
+    unitType: 5
+    playerName: 1
+  - position: {x: 10, y: 0}
+    unitType: 6
+    playerName: 1
+  - position: {x: 12, y: 0}
+    unitType: 5
+    playerName: 2
+  - position: {x: 14, y: 0}
+    unitType: 6
+    playerName: 2

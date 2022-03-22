@@ -108,22 +108,29 @@ public abstract class Unit : MonoBehaviour
         transform.position = field.CalculatePositionFromCoords(coords);
 
         // Temporary solution
+        // Hard-code the fix to the prefabs
         if (this is XQueen)
         {
             transform.position = transform.position + new Vector3(0, 1f, 0);
-            if (this.Team == PlayerTeam.P1)
-                transform.Rotate(new Vector3(0, 180, 0));
+            transform.Rotate(new Vector3(0, 180, 0));
         }
-        if (this is XDrone)
-        {
-            if (this.Team == PlayerTeam.P1)
-                transform.Rotate(new Vector3(0, 180, 0));
+        if (this is XDrone) {
+            transform.Rotate(new Vector3(0, 180, 0));
         }
-        if (this is XWarrior)
-        {
-            if (this.Team == PlayerTeam.P1)
-                transform.Rotate(new Vector3(0, 180, 0));
+        if (this is XWarrior) {
+            transform.Rotate(new Vector3(0, 180, 0));
         }
+        if (this is Curer) {
+            // transform.position = transform.position + new Vector3(-1f, 1f, -2.5f);
+            // transform.Rotate(new Vector3(-90, 0, 0));
+        }
+        if (this is Destroyer) {
+            transform.Rotate(new Vector3(0, 180, 0));
+        }
+
+        // Post-hard-code prefab should align with P1. Rotate y180 for P2 alignment
+        if (this.Team == PlayerTeam.P2)
+            transform.Rotate(new Vector3(0, 180, 0));
     }
     #endregion
 
