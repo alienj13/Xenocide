@@ -13,6 +13,11 @@ public class FieldInputHandler : MonoBehaviour, IInputHandler
     }
     public void ProcessInput(Vector3 inputPosition, GameObject selectedObject, Action callback)
     {
-        field.OnSquareSelected(inputPosition);
+        // Debug:
+        //Debug.Log("FIH, input Position: " + inputPosition);
+        var mousePosition = Input.mousePosition;
+        //Debug.Log("FIH, mouse Position: " + mousePosition);
+        if (mousePosition.x <= (Screen.width * 0.75f))
+            field.OnSquareSelected(inputPosition);
     }
 }
