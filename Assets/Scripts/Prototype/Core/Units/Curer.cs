@@ -23,7 +23,19 @@ public class Curer : Unit
     // When killing an enemy, recover 5 HP
     public override bool AttackAt(Vector2Int coords)
     {
-        // TODO: IMPLEMENT THIS
-        return base.AttackAt(coords);
+        if (base.AttackAt(coords))
+        {
+            Unit enemy = Field.GetUnitOnSquare(coords);
+            // Temporary solution:
+            // If enemy unit cannot be found after attack, then enemy is considered dead
+            if (enemy == null)
+            {
+                Heal(5, this);
+                UpdateUnitDetails();
+            }
+
+            return true;
+        }
+        return false;
     }
 }

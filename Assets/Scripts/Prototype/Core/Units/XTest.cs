@@ -58,5 +58,5 @@ public class XTest : Unit
     //    AddAttacks(PatternGen.DiamondAttack(this, attackRangeMax));
     //    RemoveAttacks(PatternGen.DiamondAttack(this, attackRangeMin - 1));
     //    return availableAttacks;
-    //}
+    //}    
 }
