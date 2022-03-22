@@ -1291,6 +1291,7 @@ MonoBehaviour:
   maxHP: 20
   ATK: 12
   DEF: 5
+  FXHit: {fileID: 5487650720231781904, guid: f5670dc5930535341a1c3debb5c38405, type: 3}
 --- !u!1 &5067875226891079452
 GameObject:
   m_ObjectHideFlags: 0
