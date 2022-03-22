@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class XWarrior : HitParticleEmitter
+public class XWarrior : Unit
 {
     private int moveRange = 8;
     private int attackRange = 3;

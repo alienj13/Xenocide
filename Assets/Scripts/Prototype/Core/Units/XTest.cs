@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class XTest : HitParticleEmitter
+public class XTest : Unit
 {
     private Vector2Int[] directions =
     {

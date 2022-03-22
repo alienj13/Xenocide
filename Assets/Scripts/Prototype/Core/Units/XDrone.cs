@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class XDrone : HitParticleEmitter
+public class XDrone : Unit
 {
     private int moveRange = 5;
     private int attackRange = 1;

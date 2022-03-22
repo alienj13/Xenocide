@@ -716,7 +716,7 @@ MonoBehaviour:
   - {fileID: 6287846801813621524, guid: 8e0902d174fa78742aa7abf84edf6bd5, type: 3}
   - {fileID: 5280729100811899644, guid: 7c762d7cfce7b8c408411633a3a463eb, type: 3}
   - {fileID: 1098307082435100235, guid: 792da385ded02f24ea4effe6d233ffdf, type: 3}
-  - {fileID: 7810642608130839858, guid: 506cbf2e7d5db6b49807261d2be8f24c, type: 3}
+  - {fileID: 4910377173930713578, guid: 506cbf2e7d5db6b49807261d2be8f24c, type: 3}
   - {fileID: 6573492528407522323, guid: 3ec2da93e8e481c46b497752eacf5306, type: 3}
   player1Material: {fileID: 2100000, guid: e33fefd43a475c449bd3d2f57b6edf99, type: 2}
   player2Material: {fileID: 2100000, guid: 477bfeba355dec9498700517d6c04fb3, type: 2}

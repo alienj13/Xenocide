@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class XQueen : HitParticleEmitter
+public class XQueen : Unit
 {
     public override HashSet<Vector2Int> GenerateAvailableMoves()
     {

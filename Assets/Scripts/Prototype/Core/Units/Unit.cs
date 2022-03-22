@@ -30,6 +30,9 @@ public abstract class Unit : MonoBehaviour
     [SerializeField] public int DEF = 1;
     protected int HP = 1;
 
+    [Header("Particles")]
+    [SerializeField] protected GameObject FXHit;
+
     // Important properties
     private int id = 0;
     public Field Field { get; set; }
@@ -123,9 +126,9 @@ public abstract class Unit : MonoBehaviour
         if (this is Curer) {
             //transform.position = transform.position + new Vector3(0, 2f, 2.5f);
             if (this.Team == PlayerTeam.P1)
-                transform.Translate(new Vector3(0, 2f, 2.5f), Space.World);
+                transform.Translate(new Vector3(1f, -2f, 2.5f), Space.World);
             else if (this.Team == PlayerTeam.P2)
-                transform.Translate(new Vector3(0, 2f, -2.5f), Space.World);
+                transform.Translate(new Vector3(-1f, -2f, -2.5f), Space.World);
             transform.Rotate(new Vector3(0, 180, 0));
         }
         if (this is Destroyer) {
@@ -295,6 +298,14 @@ public abstract class Unit : MonoBehaviour
         // If enemy is from same team, return false
         if (enemy.IsFromSameTeam(this))
             return false;
+
+        // Particle system:
+        if (FXHit != null)
+        {
+            GameObject particle = Instantiate(FXHit);
+            particle.transform.position = transform.position;
+            Destroy(particle, 5.0f);
+        }
 
         // Damage increase from this Char's ATK roll
         int damageAddition = this.ATK;
