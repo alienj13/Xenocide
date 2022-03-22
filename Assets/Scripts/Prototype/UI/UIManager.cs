@@ -190,6 +190,11 @@ public class UIManager : MonoBehaviour
         inGameUIScreen.SetActive(false);
     }
 
+    public void UpdateUnitDetails(Unit unit)
+    {
+        inGameUI.UpdateUnitDetails(unit);
+    }
+
     #endregion
 
     // Animation

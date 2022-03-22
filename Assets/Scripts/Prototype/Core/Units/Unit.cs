@@ -108,22 +108,29 @@ public abstract class Unit : MonoBehaviour
         transform.position = field.CalculatePositionFromCoords(coords);
 
         // Temporary solution
+        // Hard-code the fix to the prefabs
         if (this is XQueen)
         {
             transform.position = transform.position + new Vector3(0, 1f, 0);
-            if (this.Team == PlayerTeam.P1)
-                transform.Rotate(new Vector3(0, 180, 0));
+            transform.Rotate(new Vector3(0, 180, 0));
         }
-        if (this is XDrone)
-        {
-            if (this.Team == PlayerTeam.P1)
-                transform.Rotate(new Vector3(0, 180, 0));
+        if (this is XDrone) {
+            transform.Rotate(new Vector3(0, 180, 0));
         }
-        if (this is XWarrior)
-        {
-            if (this.Team == PlayerTeam.P1)
-                transform.Rotate(new Vector3(0, 180, 0));
+        if (this is XWarrior) {
+            transform.Rotate(new Vector3(0, 180, 0));
         }
+        if (this is Curer) {
+            // transform.position = transform.position + new Vector3(-1f, 1f, -2.5f);
+            // transform.Rotate(new Vector3(-90, 0, 0));
+        }
+        if (this is Destroyer) {
+            transform.Rotate(new Vector3(0, 180, 0));
+        }
+
+        // Post-hard-code prefab should align with P1. Rotate y180 for P2 alignment
+        if (this.Team == PlayerTeam.P2)
+            transform.Rotate(new Vector3(0, 180, 0));
     }
     #endregion
 
@@ -273,7 +280,7 @@ public abstract class Unit : MonoBehaviour
     #endregion
 
     // Attack methods
-    // Also include Damage()
+    // Also include Damage() and Heal()
     #region Attack
     public virtual bool AttackAt(Vector2Int coords)
     {
@@ -323,6 +330,26 @@ public abstract class Unit : MonoBehaviour
         // If not alive, then die.
         if (!IsAlive())
             Die(source);
+    }
+
+    public virtual void Heal(int hpr, Unit source)
+    {
+        // (source) is not needed for now, but it's good to have in future implementations
+        // If this Char is not alive or the healing is not positive, return
+        if (!IsAlive() || hpr < 0)
+            return;
+
+        // Increase HP by healing amount
+        HP += hpr;
+
+        // Debug:
+        Debug.Log("[-] " + this + " has been healed, HP before gate: " + this.HP);
+
+        // Gate HP to be max maxHP
+        if (this.HP >= maxHP)
+            HP = maxHP;
+
+        //
     }
 
     protected void ClearAttacks()
@@ -393,6 +420,13 @@ public abstract class Unit : MonoBehaviour
 
         //SetMaterial(damageMaterial);
         //SetMaterial(unitMaterial);
+    }
+
+    // Temporary solution:
+    // Update in-game UI, use with caution!
+    public void UpdateUnitDetails()
+    {
+        Field.UpdateUnitDetails(this);
     }
 
     public override string ToString()

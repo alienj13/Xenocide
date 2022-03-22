@@ -197,6 +197,11 @@ public abstract class GameController : MonoBehaviour
         UIManager.ShowAnimationScreen();
         UIManager.ShowExecutionAnimation(attacker, defender);
     }
+
+    public void UpdateUnitDetails(Unit unit)
+    {
+        UIManager.UpdateUnitDetails(unit);
+    }
     #endregion
 
     #region CameraControls

@@ -255,5 +255,11 @@ public abstract class Field : MonoBehaviour
     {
         gameController.ShowExecutionAnimation(attacker, defender);
     }
+
+    // UI
+    public void UpdateUnitDetails(Unit unit)
+    {
+        gameController.UpdateUnitDetails(unit);
+    }
     #endregion
 }

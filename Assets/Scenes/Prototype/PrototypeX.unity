@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 3f698c5d47507d54db2dcb930054532e, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44403154, g: 0.49343348, b: 0.5728841, a: 1}
+  m_IndirectSpecularColor: {r: 0.7620864, g: 0.7857872, b: 0.73049414, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -716,6 +716,8 @@ MonoBehaviour:
   - {fileID: 6287846801813621524, guid: 8e0902d174fa78742aa7abf84edf6bd5, type: 3}
   - {fileID: 5280729100811899644, guid: 7c762d7cfce7b8c408411633a3a463eb, type: 3}
   - {fileID: 1098307082435100235, guid: 792da385ded02f24ea4effe6d233ffdf, type: 3}
+  - {fileID: 5858363455240487322, guid: 506cbf2e7d5db6b49807261d2be8f24c, type: 3}
+  - {fileID: 6573492528407522323, guid: 3ec2da93e8e481c46b497752eacf5306, type: 3}
   player1Material: {fileID: 2100000, guid: e33fefd43a475c449bd3d2f57b6edf99, type: 2}
   player2Material: {fileID: 2100000, guid: 477bfeba355dec9498700517d6c04fb3, type: 2}
 --- !u!1 &287947405
@@ -1985,7 +1987,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1053666414}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.6, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 120, y: 1, z: 120}
   m_Children: []
   m_Father: {fileID: 1067242552}
@@ -2083,7 +2085,7 @@ Transform:
   m_Children:
   - {fileID: 1303992746}
   - {fileID: 1053666415}
-  - {fileID: 8971191550938833800}
+  - {fileID: 5388104918867057299}
   - {fileID: 1183384269}
   m_Father: {fileID: 0}
   m_RootOrder: 2
@@ -8227,13 +8229,13 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4777811079899241708}
   m_CullTransparentMesh: 1
---- !u!4 &8971191550938833800
+--- !u!4 &5388104918867057299
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8971191550938833804}
+  m_GameObject: {fileID: 5388104918867057303}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -200, y: -0.6, z: -200}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -8241,42 +8243,13 @@ Transform:
   m_Father: {fileID: 1067242552}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &8971191550938833804
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8971191550938833800}
-  - component: {fileID: 8971191550938833807}
-  - component: {fileID: 8971191550938833806}
-  m_Layer: 0
-  m_Name: Terrain
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
---- !u!154 &8971191550938833806
-TerrainCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8971191550938833804}
-  m_Material: {fileID: 0}
-  m_Enabled: 1
-  m_TerrainData: {fileID: 15600000, guid: d3f581572cdc0144c92feea014bd2840, type: 2}
-  m_EnableTreeColliders: 1
---- !u!218 &8971191550938833807
+--- !u!218 &5388104918867057300
 Terrain:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8971191550938833804}
+  m_GameObject: {fileID: 5388104918867057303}
   m_Enabled: 1
   serializedVersion: 6
   m_TerrainData: {fileID: 15600000, guid: d3f581572cdc0144c92feea014bd2840, type: 2}
@@ -8304,3 +8277,32 @@ Terrain:
   m_GroupingID: 0
   m_RenderingLayerMask: 1
   m_AllowAutoConnect: 1
+--- !u!154 &5388104918867057301
+TerrainCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5388104918867057303}
+  m_Material: {fileID: 0}
+  m_Enabled: 1
+  m_TerrainData: {fileID: 15600000, guid: d3f581572cdc0144c92feea014bd2840, type: 2}
+  m_EnableTreeColliders: 1
+--- !u!1 &5388104918867057303
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5388104918867057299}
+  - component: {fileID: 5388104918867057300}
+  - component: {fileID: 5388104918867057301}
+  m_Layer: 0
+  m_Name: Terrain 2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 2147483647
+  m_IsActive: 1
