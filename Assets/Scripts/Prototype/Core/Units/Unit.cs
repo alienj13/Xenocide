@@ -33,6 +33,10 @@ public abstract class Unit : MonoBehaviour
     [Header("Particles")]
     [SerializeField] protected GameObject FXHit;
 
+    [Header("HealthBar")]
+    //connects the healthbar script to the units
+    public HealthBarScript healthbar;
+
     // Important properties
     private int id = 0;
     public Field Field { get; set; }
@@ -81,6 +85,7 @@ public abstract class Unit : MonoBehaviour
 
         // Initialize stats
         HP = maxHP;
+        healthbar.setMaxHealth(maxHP);
     }
 
     private void Update()
@@ -337,6 +342,7 @@ public abstract class Unit : MonoBehaviour
 
         // Reduce HP by damage amount
         HP -= dmg;
+        healthbar.setHealth(HP);
 
         // Debug:
         Debug.Log("[-] " + this + " has been damaged, HP before gate: " + this.HP);
