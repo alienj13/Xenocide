@@ -10,19 +10,22 @@ public class HealthBarScript : MonoBehaviour
     //public Gradient gradient;
     //public Image fill;
 
+    int maxHP;
     float newHealth;
 
-    public void setMaxHealth(int health)
+    public void setMaxHealth(int maxHP)
     {
-        newHealth = health/health;
+        this.maxHP = maxHP;
+        newHealth = 1.0f;
         transform.localScale = new Vector3(newHealth/10,0.025f,0.025f);
         //fill.colour = gradient.Evaluate(if);
     }
 
     public void setHealth(int health)
     {
-        float newHealthU = health/newHealth;
-        transform.localScale = new Vector3(newHealthU/1000,0.025f,0.025f);
+        newHealth = (health * 1.0f) /maxHP;
+        //Debug.Log("HP: " + health + ", maxHP: " + maxHP + ", ratio: " + newHealth);
+        transform.localScale = new Vector3(newHealth/10,0.025f,0.025f);
         //fill.colour = gradient.Evaluate(slider.normalizedValue);
     }
 }

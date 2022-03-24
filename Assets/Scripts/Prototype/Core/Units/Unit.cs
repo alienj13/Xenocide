@@ -85,7 +85,8 @@ public abstract class Unit : MonoBehaviour
 
         // Initialize stats
         HP = maxHP;
-        healthbar.setMaxHealth(maxHP);
+        if (healthbar)
+            healthbar.setMaxHealth(maxHP);
     }
 
     private void Update()
@@ -342,7 +343,8 @@ public abstract class Unit : MonoBehaviour
 
         // Reduce HP by damage amount
         HP -= dmg;
-        healthbar.setHealth(HP);
+        if (healthbar)
+            healthbar.setHealth(HP);
 
         // Debug:
         Debug.Log("[-] " + this + " has been damaged, HP before gate: " + this.HP);
