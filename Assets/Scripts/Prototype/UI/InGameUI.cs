@@ -67,6 +67,16 @@ public class InGameUI : MonoBehaviour
             vp.clip = vids[5];
             vp.Play();
         }
+        else if (unit is Curer && unit.Team == PlayerTeam.P1)
+        {
+            vp.clip = vids[6];
+            vp.Play();
+        }
+        else if (unit is Curer && unit.Team == PlayerTeam.P2)
+        {
+            vp.clip = vids[7];
+            vp.Play();
+        }
         else if (unit.Team == PlayerTeam.P1)
         {
             display.texture = images[1];
