@@ -144,9 +144,12 @@ public class UIManager : MonoBehaviour
             MultiplayerGameController mgc = (MultiplayerGameController)gameController;
             if (mgc.localPlayer == winner)
             {
-                multiplayerResultText.SetText("XP increase");
+                
                 if (UserAccountDetails.userExist)
+                {
+                    multiplayerResultText.SetText("XP increase");
                     StartCoroutine(RetrieveExperience(UserAccountDetails.username));
+                }
             }
         }
     }
@@ -215,7 +218,7 @@ public class UIManager : MonoBehaviour
     }
     #endregion
 
-    // Temporary solution
+    // [] Temporary solution
     #region XP increase
     public IEnumerator RetrieveExperience(string user)
     {

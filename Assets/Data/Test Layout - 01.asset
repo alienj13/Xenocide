@@ -68,11 +68,11 @@ MonoBehaviour:
     unitType: 5
     playerName: 1
   - position: {x: 10, y: 0}
-    unitType: 6
+    unitType: 7
     playerName: 1
   - position: {x: 12, y: 0}
-    unitType: 5
+    unitType: 6
     playerName: 2
   - position: {x: 14, y: 0}
-    unitType: 6
+    unitType: 8
     playerName: 2

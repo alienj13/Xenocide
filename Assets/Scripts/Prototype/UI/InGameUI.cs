@@ -31,7 +31,23 @@ public class InGameUI : MonoBehaviour
 
     public void UpdateUnitDetails(Unit unit)
     {
-        unitName.SetText(unit.GetType().ToString());
+        // [] Temporary solution
+        string unitNameString = unit.GetType().ToString();
+        switch (unitNameString)
+        {
+            case "Destroyer_P1":
+            case "Destroyer_P2":
+                unitName.SetText("Destroyer");
+                break;
+            case "Curer_P1":
+            case "Curer_P2":
+                unitName.SetText("Curer");
+                break;
+            default:
+                unitName.SetText(unit.GetType().ToString());
+                break;
+        }
+        
         unitHP.SetText("HP: " + unit.getHP().ToString());
         unitATK.SetText("ATK: " + unit.getATK().ToString());
         unitDEF.SetText("DEF: " + unit.getDEF().ToString());
@@ -57,22 +73,22 @@ public class InGameUI : MonoBehaviour
             vp.clip = vids[3];
             vp.Play();
         }
-        else if (unit is Destroyer && unit.Team == PlayerTeam.P1)
+        else if (unit is Destroyer_P1)
         {
             vp.clip = vids[4];
             vp.Play();
         }
-        else if (unit is Destroyer && unit.Team == PlayerTeam.P2)
+        else if (unit is Destroyer_P2)
         {
             vp.clip = vids[5];
             vp.Play();
         }
-        else if (unit is Curer && unit.Team == PlayerTeam.P1)
+        else if (unit is Curer_P1)
         {
             vp.clip = vids[6];
             vp.Play();
         }
-        else if (unit is Curer && unit.Team == PlayerTeam.P2)
+        else if (unit is Curer_P2)
         {
             vp.clip = vids[7];
             vp.Play();

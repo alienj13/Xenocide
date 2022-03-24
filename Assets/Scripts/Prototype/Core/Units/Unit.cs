@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(MaterialSetter))]
+//[RequireComponent(typeof(MaterialSetter))]
 [RequireComponent(typeof(IObjectTweener))]
 public abstract class Unit : MonoBehaviour
 {
@@ -126,13 +126,14 @@ public abstract class Unit : MonoBehaviour
         if (this is Curer) {
             //transform.position = transform.position + new Vector3(0, 2f, 2.5f);
             if (this.Team == PlayerTeam.P1)
-                transform.Translate(new Vector3(1f, -2f, 2.5f), Space.World);
+                transform.Translate(new Vector3(1f, -2.3f, 2.5f), Space.World);
             else if (this.Team == PlayerTeam.P2)
-                transform.Translate(new Vector3(-1f, -2f, -2.5f), Space.World);
+                transform.Translate(new Vector3(-1f, -2.3f, -2.5f), Space.World);
             transform.Rotate(new Vector3(0, 180, 0));
         }
         if (this is Destroyer) {
             transform.Rotate(new Vector3(0, 180, 0));
+            transform.Translate(new Vector3(0f, 0.7f, 0f), Space.World);
         }
 
         // Post-hard-code prefab should align with P1. Rotate y180 for P2 alignment
@@ -253,6 +254,10 @@ public abstract class Unit : MonoBehaviour
     public virtual void MoveUnit(Vector2Int coords)
     {
         Vector3 targetPosition = Field.CalculatePositionFromCoords(coords);
+
+        // [] Temporary solution
+        targetPosition.y = transform.position.y;
+
         OccupiedSquare = coords;
         HasMoved = true;
 
@@ -399,7 +404,8 @@ public abstract class Unit : MonoBehaviour
     {
         if (materialSetter == null)
             materialSetter = GetComponent<MaterialSetter>();
-        materialSetter.SetSingleMaterial(material);
+        if (materialSetter)
+            materialSetter.SetSingleMaterial(material);
     }
 
     protected Unit GetUnitInDirection<T>(PlayerTeam team, Vector2Int direction) where T : Unit
