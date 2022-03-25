@@ -268,6 +268,8 @@ public abstract class Unit : MonoBehaviour
         HasMoved = true;
 
         tweener.MoveTo(transform, targetPosition);
+
+        SoundEffects.Instance.PlayMovement();
     }
 
     protected void ClearMoves()
@@ -358,6 +360,7 @@ public abstract class Unit : MonoBehaviour
         // If not alive, then die.
         if (!IsAlive())
             Die(source);
+        SoundEffects.Instance.PlayHit();
     }
 
     public virtual void Heal(int hpr, Unit source)

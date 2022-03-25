@@ -77,6 +77,7 @@ public class UIManager : MonoBehaviour
     public void OnSingleplayerModeSelected()
     {
         DisableAllScreens();
+        BackgroundMusic.Instance.PlayGamePlay();
     }
 
     public void OnMultiplayerModeSelected()
@@ -84,6 +85,7 @@ public class UIManager : MonoBehaviour
         DisableAllScreens();
         connectScreen.SetActive(true);
         connectionStatusText.gameObject.SetActive(true);
+        BackgroundMusic.Instance.PlayGamePlay();
     }
 
     public void OnConnect()
