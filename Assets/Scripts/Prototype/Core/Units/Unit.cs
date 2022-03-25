@@ -252,6 +252,7 @@ public abstract class Unit : MonoBehaviour
     public virtual void EndTurn()
     {
         ActionCount = 0;
+        SoundEffects.Instance.PlayButton();
     }
     #endregion
 
