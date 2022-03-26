@@ -966,7 +966,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitPrefabs:
   - {fileID: 2898472662193677452, guid: 182a7e0b7439ecb48a8d15889652b33b, type: 3}
-  - {fileID: 8628027429744639769, guid: 1880f6d4ad8b7c1498e3eea4de04a366, type: 3}
+  - {fileID: 5007225229668560659, guid: 79962b0437104b14eaec780c310dbe47, type: 3}
+  - {fileID: 2078478401051205357, guid: 46a66482a7ad61b4ea1eb004029c1039, type: 3}
   - {fileID: 6287846801813621524, guid: 8e0902d174fa78742aa7abf84edf6bd5, type: 3}
   - {fileID: 5280729100811899644, guid: 7c762d7cfce7b8c408411633a3a463eb, type: 3}
   - {fileID: 1098307082435100235, guid: 792da385ded02f24ea4effe6d233ffdf, type: 3}
@@ -4574,6 +4575,8 @@ MonoBehaviour:
   - {fileID: 32900000, guid: 95119f430522a0c45bc1a2246c0a9d78, type: 3}
   - {fileID: 32900000, guid: bce8aacfbcf8daf418b1216f9ec1e17c, type: 3}
   - {fileID: 32900000, guid: 9dd7831e9172fb5469403b85231143d0, type: 3}
+  - {fileID: 32900000, guid: c2bb6382d6bcb924b90fd284003cfbb5, type: 3}
+  - {fileID: 32900000, guid: 3348869538515964980d8b763717dd25, type: 3}
   vp: {fileID: 3980387859052994416}
   images:
   - {fileID: 8400000, guid: 41c296ad82e52c94d8def012836afd27, type: 2}

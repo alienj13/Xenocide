@@ -43,6 +43,10 @@ public class InGameUI : MonoBehaviour
             case "Curer_P2":
                 unitName.SetText("Curer");
                 break;
+            case "Queen_P1":
+            case "Queen_P2":
+                unitName.SetText("Queen");
+                break;
             default:
                 unitName.SetText(unit.GetType().ToString());
                 break;
@@ -91,6 +95,16 @@ public class InGameUI : MonoBehaviour
         else if (unit is Curer_P2)
         {
             vp.clip = vids[7];
+            vp.Play();
+        }
+        else if (unit is Queen_P1)
+        {
+            vp.clip = vids[8];
+            vp.Play();
+        }
+        else if (unit is Queen_P2)
+        {
+            vp.clip = vids[9];
             vp.Play();
         }
         else if (unit.Team == PlayerTeam.P1)

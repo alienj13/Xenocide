@@ -118,10 +118,11 @@ public abstract class Unit : MonoBehaviour
 
         // Temporary solution
         // Hard-code the fix to the prefabs
+        // TODO: Put this inside the child classes!
         if (this is XQueen)
         {
-            transform.position = transform.position + new Vector3(0, 1f, 0);
-            transform.Rotate(new Vector3(0, 180, 0));
+            transform.position = transform.position + new Vector3(0, -2.5f, 0);
+            transform.Rotate(new Vector3(0, 270, 0));
         }
         if (this is XDrone) {
             transform.Rotate(new Vector3(0, 180, 0));

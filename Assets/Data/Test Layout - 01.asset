@@ -38,7 +38,7 @@ MonoBehaviour:
     unitType: 0
     playerName: 1
   - position: {x: 20, y: 20}
-    unitType: 1
+    unitType: 9
     playerName: 2
   - position: {x: 18, y: 20}
     unitType: 2
