@@ -118,10 +118,11 @@ public abstract class Unit : MonoBehaviour
 
         // Temporary solution
         // Hard-code the fix to the prefabs
+        // TODO: Put this inside the child classes!
         if (this is XQueen)
         {
-            transform.position = transform.position + new Vector3(0, 1f, 0);
-            transform.Rotate(new Vector3(0, 180, 0));
+            transform.position = transform.position + new Vector3(0, -2.5f, 0);
+            transform.Rotate(new Vector3(0, 270, 0));
         }
         if (this is XDrone) {
             transform.Rotate(new Vector3(0, 180, 0));
@@ -252,6 +253,7 @@ public abstract class Unit : MonoBehaviour
     public virtual void EndTurn()
     {
         ActionCount = 0;
+        SoundEffects.Instance.PlayButton();
     }
     #endregion
 
@@ -268,6 +270,8 @@ public abstract class Unit : MonoBehaviour
         HasMoved = true;
 
         tweener.MoveTo(transform, targetPosition);
+
+        SoundEffects.Instance.PlayMovement();
     }
 
     protected void ClearMoves()
@@ -358,6 +362,7 @@ public abstract class Unit : MonoBehaviour
         // If not alive, then die.
         if (!IsAlive())
             Die(source);
+        SoundEffects.Instance.PlayHit();
     }
 
     public virtual void Heal(int hpr, Unit source)
