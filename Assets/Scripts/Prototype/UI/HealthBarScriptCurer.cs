@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HealthBarScript : MonoBehaviour
+public class HealthBarScriptCurer : MonoBehaviour
 {
 
     //public Vector3 slider;
@@ -13,19 +13,19 @@ public class HealthBarScript : MonoBehaviour
     int maxHP;
     float newHealth;
 
-    public void setMaxHealth(int maxHP)
+    public void setMaxHealthC(int maxHP)
     {
         this.maxHP = maxHP;
-        newHealth = 1.0f;
-        transform.localScale = new Vector3(newHealth/10,0.001f,0.007f);
+        newHealth = 5.0f;
+        transform.localScale = new Vector3(newHealth/1,0.001f,0.65f);
         //fill.colour = gradient.Evaluate(if);
     }
 
-    public void setHealth(int health)
+    public void setHealthC(int health)
     {
         newHealth = (health * 1.0f) /maxHP;
         //Debug.Log("HP: " + health + ", maxHP: " + maxHP + ", ratio: " + newHealth);
-        transform.localScale = new Vector3(newHealth/10,0.001f,0.007f);
+        transform.localScale = new Vector3((newHealth/1)*5,0.001f,0.65f);
         //fill.colour = gradient.Evaluate(slider.normalizedValue);
     }
 }
