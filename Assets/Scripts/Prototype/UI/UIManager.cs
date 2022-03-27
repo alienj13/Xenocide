@@ -203,7 +203,8 @@ public class UIManager : MonoBehaviour
 
     public void HideUnitDetails()
     {
-        inGameUIScreen.SetActive(false);
+        //inGameUIScreen.SetActive(false);
+        inGameUI.HideUnitDetails();
     }
 
     public void UpdateUnitDetails(Unit unit)
