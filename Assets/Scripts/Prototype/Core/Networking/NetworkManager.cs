@@ -43,7 +43,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsConnected)
         {
             // Debug:
-            Debug.LogError($"Connected to server. Looking for random room with level [ {playerLevel} ].");
+            //Debug.LogError($"Connected to server. Looking for random room with level [ {playerLevel} ].");
 
             PhotonNetwork.JoinRandomRoom(new ExitGames.Client.Photon.Hashtable() { { LEVEL, playerLevel } }, MAX_PLAYERS);
         }

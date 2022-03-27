@@ -97,7 +97,7 @@ public class MultiplayerGameController : GameController, IOnEventCallback
         }
         else if (eventCode == CREATE_UNITS_EVENT_CODE)
         {
-            Debug.Log("CREATE_UNITS_EVENT");
+            //Debug.Log("CREATE_UNITS_EVENT");
             CreateUnitsBasedOnRank();
             activePlayer.OnTurnStart();
         }

@@ -28,6 +28,7 @@ public class UIManager : MonoBehaviour
 
     [Header("Screen GameObjects")]
     [SerializeField] private GameObject gameModeSelectionScreen;
+    [SerializeField] private GameObject waitingRoom;
     [SerializeField] private GameObject connectScreen;
     [SerializeField] private GameObject teamSelectionScreen;
     [SerializeField] private GameObject gameoverScreen;
@@ -88,7 +89,13 @@ public class UIManager : MonoBehaviour
     public void OnMultiplayerModeSelected()
     {
         DisableAllScreens();
-        connectScreen.SetActive(true);
+        // Legacy feature
+        //connectScreen.SetActive(true);
+
+        waitingRoom.SetActive(true);
+        networkManager.SetPlayerLevel(PlayerLevel.Normal);
+        networkManager.Connect();
+
         connectionStatusText.gameObject.SetActive(true);
         if (BackgroundMusic.Instance)
         {
@@ -98,8 +105,9 @@ public class UIManager : MonoBehaviour
 
     public void OnConnect()
     {
-        networkManager.SetPlayerLevel((PlayerLevel)gameLevelSelection.value);
-        networkManager.Connect();
+        // Legacy feature
+        //networkManager.SetPlayerLevel((PlayerLevel)gameLevelSelection.value);
+        //networkManager.Connect();
     }
 
     public void OnGameStarted()
@@ -115,6 +123,7 @@ public class UIManager : MonoBehaviour
     public void DisableAllScreens()
     {
         gameModeSelectionScreen.SetActive(false);
+        waitingRoom.SetActive(false);
         connectScreen.SetActive(false);
         teamSelectionScreen.SetActive(false);
         gameoverScreen.SetActive(false);
