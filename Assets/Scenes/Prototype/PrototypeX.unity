@@ -283,6 +283,7 @@ Transform:
   - {fileID: 266685980}
   - {fileID: 1242336636}
   - {fileID: 200636800}
+  - {fileID: 78237130}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -382,6 +383,57 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 64254807}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &78237129
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 78237130}
+  - component: {fileID: 78237131}
+  m_Layer: 0
+  m_Name: Field Layout Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &78237130
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 78237129}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 46485914}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &78237131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 78237129}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddf09b135948e9a488fb7997126354ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fieldLayouts_P1:
+  - {fileID: 11400000, guid: a526c2ec880213c47bdacbabfd2543b5, type: 2}
+  - {fileID: 11400000, guid: c3ae3d2d71a015548a81be109c762340, type: 2}
+  - {fileID: 11400000, guid: 314b3eaa9f9b08c40b27dc7771b2d558, type: 2}
+  fieldLayouts_P2:
+  - {fileID: 11400000, guid: 523214e2efe549d40bd2684527fcb202, type: 2}
+  - {fileID: 11400000, guid: 1bb84698eb1c46942a9b8cf0e96ee4ad, type: 2}
+  - {fileID: 11400000, guid: 282b73ba9dba5df40804f97a86159246, type: 2}
 --- !u!1 &137097045
 GameObject:
   m_ObjectHideFlags: 0
@@ -563,6 +615,7 @@ MonoBehaviour:
   multiplayerGameControllerPrefab: {fileID: 3555305057606905602, guid: f627dbb0fd1440741867292e9b55c6ef, type: 3}
   singleplayerFieldPrefab: {fileID: 6239445800111378163, guid: dcfd35af6c2dcf246a290acf70946a14, type: 3}
   multiplayerFieldPrefab: {fileID: 2037466713962704827, guid: 9dc9773764c7bef4a8e558dbc5c11c83, type: 3}
+  fieldLayoutManager: {fileID: 78237131}
   networkManager: {fileID: 165819181}
   UIManager: {fileID: 4777811078889831759}
   fieldAnchor: {fileID: 1303992746}
