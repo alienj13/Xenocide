@@ -42,6 +42,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private DebugButton debugButton;
     [SerializeField] private Button turnEndButton;
     [SerializeField] private TextMeshProUGUI currentTurnText;
+    // Switch this bool for debugButton!
+    private bool debugMode = true;
 
     private void Awake()
     {
@@ -176,8 +178,11 @@ public class UIManager : MonoBehaviour
     public void Debugging()
     {
         // TODO: remove this when done testing
-        //debugButton.gameObject.SetActive(true);
-        //debugButton.SetDependencies(gameController, field);
+        if (debugMode)
+        {
+            debugButton.gameObject.SetActive(true);
+            debugButton.SetDependencies(gameController, field);
+        }
 
         //turnEndButton.gameObject.SetActive(true);
         currentTurnText.gameObject.SetActive(true);
