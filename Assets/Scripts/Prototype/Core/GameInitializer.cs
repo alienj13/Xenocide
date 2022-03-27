@@ -10,6 +10,7 @@ public class GameInitializer : MonoBehaviour
     [SerializeField] private MultiplayerGameController multiplayerGameControllerPrefab;
     [SerializeField] private SingleplayerField singleplayerFieldPrefab;
     [SerializeField] private MultiplayerField multiplayerFieldPrefab;
+    [SerializeField] private FieldLayoutManager fieldLayoutManager;
 
     [Header("Scene references")]
     [SerializeField] private NetworkManager networkManager;
@@ -37,6 +38,7 @@ public class GameInitializer : MonoBehaviour
         {
             MultiplayerGameController controller = Instantiate(multiplayerGameControllerPrefab);
             controller.SetDependencies(UIManager, field, cameraController, unitCreator);
+            controller.SetDependency(fieldLayoutManager);
             controller.CreatePlayers();
 
             controller.SetMultiplayerDependencies(networkManager);
@@ -56,6 +58,7 @@ public class GameInitializer : MonoBehaviour
         {
             SingleplayerGameController controller = Instantiate(singleplayerGameControllerPrefab);
             controller.SetDependencies(UIManager, field, cameraController, unitCreator);
+            controller.SetDependency(fieldLayoutManager);
             controller.CreatePlayers();
 
             field.SetDependencies(controller, squareSelector);

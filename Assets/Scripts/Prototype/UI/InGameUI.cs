@@ -56,6 +56,8 @@ public class InGameUI : MonoBehaviour
         unitATK.SetText("ATK: " + unit.getATK().ToString());
         unitDEF.SetText("DEF: " + unit.getDEF().ToString());
 
+        display.gameObject.SetActive(true);
+
         display.texture = images[0];
         if (unit is XDrone && unit.Team == PlayerTeam.P1)
         {
@@ -115,5 +117,15 @@ public class InGameUI : MonoBehaviour
         {
             display.texture = images[2];
         }
+    }
+
+    public void HideUnitDetails()
+    {
+        unitName.SetText("");
+        unitHP.SetText("");
+        unitATK.SetText("");
+        unitDEF.SetText("");
+
+        display.gameObject.SetActive(false);
     }
 }

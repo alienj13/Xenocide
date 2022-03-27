@@ -28,6 +28,7 @@ public class UIManager : MonoBehaviour
 
     [Header("Screen GameObjects")]
     [SerializeField] private GameObject gameModeSelectionScreen;
+    [SerializeField] private GameObject waitingRoom;
     [SerializeField] private GameObject connectScreen;
     [SerializeField] private GameObject teamSelectionScreen;
     [SerializeField] private GameObject gameoverScreen;
@@ -42,6 +43,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private DebugButton debugButton;
     [SerializeField] private Button turnEndButton;
     [SerializeField] private TextMeshProUGUI currentTurnText;
+    // Switch this bool for debugButton!
+    private bool debugMode = true;
 
     private void Awake()
     {
@@ -86,7 +89,13 @@ public class UIManager : MonoBehaviour
     public void OnMultiplayerModeSelected()
     {
         DisableAllScreens();
-        connectScreen.SetActive(true);
+        // Legacy feature
+        //connectScreen.SetActive(true);
+
+        waitingRoom.SetActive(true);
+        networkManager.SetPlayerLevel(PlayerLevel.Normal);
+        networkManager.Connect();
+
         connectionStatusText.gameObject.SetActive(true);
         if (BackgroundMusic.Instance)
         {
@@ -96,8 +105,9 @@ public class UIManager : MonoBehaviour
 
     public void OnConnect()
     {
-        networkManager.SetPlayerLevel((PlayerLevel)gameLevelSelection.value);
-        networkManager.Connect();
+        // Legacy feature
+        //networkManager.SetPlayerLevel((PlayerLevel)gameLevelSelection.value);
+        //networkManager.Connect();
     }
 
     public void OnGameStarted()
@@ -113,6 +123,7 @@ public class UIManager : MonoBehaviour
     public void DisableAllScreens()
     {
         gameModeSelectionScreen.SetActive(false);
+        waitingRoom.SetActive(false);
         connectScreen.SetActive(false);
         teamSelectionScreen.SetActive(false);
         gameoverScreen.SetActive(false);
@@ -176,8 +187,11 @@ public class UIManager : MonoBehaviour
     public void Debugging()
     {
         // TODO: remove this when done testing
-        //debugButton.gameObject.SetActive(true);
-        //debugButton.SetDependencies(gameController, field);
+        if (debugMode)
+        {
+            debugButton.gameObject.SetActive(true);
+            debugButton.SetDependencies(gameController, field);
+        }
 
         //turnEndButton.gameObject.SetActive(true);
         currentTurnText.gameObject.SetActive(true);
@@ -197,6 +211,12 @@ public class UIManager : MonoBehaviour
     }
 
     public void HideUnitDetails()
+    {
+        //inGameUIScreen.SetActive(false);
+        inGameUI.HideUnitDetails();
+    }
+
+    public void HideUnitDetailsDisplay()
     {
         inGameUIScreen.SetActive(false);
     }

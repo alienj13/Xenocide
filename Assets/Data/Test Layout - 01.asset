@@ -17,62 +17,62 @@ MonoBehaviour:
     unitType: 1
     playerName: 1
   - position: {x: 2, y: 0}
-    unitType: 2
+    unitType: 3
     playerName: 1
   - position: {x: 4, y: 0}
-    unitType: 2
+    unitType: 3
     playerName: 1
   - position: {x: 6, y: 0}
-    unitType: 2
+    unitType: 3
     playerName: 1
   - position: {x: 0, y: 2}
-    unitType: 3
+    unitType: 4
     playerName: 1
   - position: {x: 0, y: 4}
-    unitType: 3
+    unitType: 4
     playerName: 1
   - position: {x: 0, y: 6}
-    unitType: 3
+    unitType: 4
     playerName: 1
   - position: {x: 3, y: 3}
     unitType: 0
     playerName: 1
   - position: {x: 20, y: 20}
-    unitType: 9
+    unitType: 2
     playerName: 2
   - position: {x: 18, y: 20}
-    unitType: 2
+    unitType: 3
     playerName: 2
   - position: {x: 16, y: 20}
-    unitType: 2
+    unitType: 3
     playerName: 2
   - position: {x: 14, y: 20}
-    unitType: 2
+    unitType: 3
     playerName: 2
   - position: {x: 20, y: 18}
-    unitType: 3
+    unitType: 4
     playerName: 2
   - position: {x: 20, y: 16}
-    unitType: 3
+    unitType: 4
     playerName: 2
   - position: {x: 20, y: 14}
-    unitType: 3
+    unitType: 4
     playerName: 2
   - position: {x: 17, y: 17}
     unitType: 0
     playerName: 2
   - position: {x: 10, y: 10}
-    unitType: 4
+    unitType: 5
     playerName: 0
   - position: {x: 8, y: 0}
-    unitType: 5
+    unitType: 6
     playerName: 1
   - position: {x: 10, y: 0}
-    unitType: 7
+    unitType: 8
     playerName: 1
   - position: {x: 12, y: 0}
-    unitType: 6
+    unitType: 7
     playerName: 2
   - position: {x: 14, y: 0}
-    unitType: 8
+    unitType: 9
     playerName: 2

@@ -9,9 +9,9 @@ public class UserAccountDetails : MonoBehaviour
     [SerializeField] private string SF_UserRank = "";
     [SerializeField] private string SF_UserEXP = "";
 
-    public static string username = "";
-    public static string userRank = "";
-    public static string userEXP = "";
+    public static string username = "Guest";
+    public static string userRank = "1";
+    public static string userEXP = "0";
     public static bool userExist = false;
 
     private void Update()
