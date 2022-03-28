@@ -23,6 +23,9 @@ public class InGameUI : MonoBehaviour
     [SerializeField] public Texture[] images;
     [SerializeField] public RawImage display;
 
+    [Header("GameObjects")]
+    [SerializeField] public GameObject unitBorder;
+
     public void UpdateUserDetails(string username, string rank)
     {
         this.username.SetText(username);
@@ -56,6 +59,7 @@ public class InGameUI : MonoBehaviour
         unitATK.SetText("ATK: " + unit.getATK().ToString());
         unitDEF.SetText("DEF: " + unit.getDEF().ToString());
 
+        unitBorder.gameObject.SetActive(true);
         display.gameObject.SetActive(true);
 
         display.texture = images[0];
@@ -126,6 +130,7 @@ public class InGameUI : MonoBehaviour
         unitATK.SetText("");
         unitDEF.SetText("");
 
+        unitBorder.gameObject.SetActive(false);
         display.gameObject.SetActive(false);
     }
 }
