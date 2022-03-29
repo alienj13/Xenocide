@@ -8,7 +8,7 @@ public abstract class GameController : MonoBehaviour
 {
     [SerializeField] private FieldLayout startingFieldLayout;
     [SerializeField] private FieldLayoutManager fieldLayoutManager;
-    private Field field;
+    protected Field field;
     private UIManager UIManager;
     private CameraController cameraController;
     public UnitCreator unitCreator;
