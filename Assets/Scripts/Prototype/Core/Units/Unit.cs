@@ -9,7 +9,7 @@ public abstract class Unit : MonoBehaviour
 {
     // Dependencies
     private MaterialSetter materialSetter;
-    private IObjectTweener tweener;
+    public IObjectTweener tweener;
 
     [Header("Properties (read-only)")]
     // Only for display in Unity Editor. DO NOT USE.
@@ -42,7 +42,7 @@ public abstract class Unit : MonoBehaviour
     public Field Field { get; set; }
     public Vector2Int OccupiedSquare { get; set; }
     public PlayerTeam Team { get; set; }
-    public bool HasMoved { get; private set; }
+    public bool HasMoved { get; set; }
     public int ActionCount { get; set; }
 
     // Available move set
