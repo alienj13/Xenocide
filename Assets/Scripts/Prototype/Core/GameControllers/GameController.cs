@@ -7,6 +7,7 @@ using UnityEngine;
 public abstract class GameController : MonoBehaviour
 {
     [SerializeField] private FieldLayout startingFieldLayout;
+    [SerializeField] private FieldLayoutManager fieldLayoutManager;
     private Field field;
     private UIManager UIManager;
     private CameraController cameraController;
@@ -20,15 +21,21 @@ public abstract class GameController : MonoBehaviour
     public XPlayer activePlayer;
 
     protected abstract void SetGameState(GameState state);
+    public abstract void CreateUnitsBasedOnRank();
     public abstract void TryToStartCurrentGame();
     public abstract bool CanPerformAction();
 
+    // TODO: Use method overloading instead of this mess
     public void SetDependencies(UIManager UIManager, Field field, CameraController cameraController, UnitCreator unitCreator)
     {
         this.UIManager = UIManager;
         this.field = field;
         this.cameraController = cameraController;
         this.unitCreator = unitCreator;
+    }
+    public void SetDependency(FieldLayoutManager fieldLayoutManager)
+    {
+        this.fieldLayoutManager = fieldLayoutManager;
     }
 
     public void CreatePlayers()
@@ -43,9 +50,10 @@ public abstract class GameController : MonoBehaviour
 
         UIManager.OnGameStarted();
 
-        CreateUnitsFromLayout(startingFieldLayout);
+        // Moved creating units to TryToStartCurrentGame()
+        //CreateUnitsFromLayout(startingFieldLayout);
         activePlayer = player1;
-        activePlayer.OnTurnStart();
+        //activePlayer.OnTurnStart();
 
         TryToStartCurrentGame();
     }
@@ -73,7 +81,7 @@ public abstract class GameController : MonoBehaviour
         return state == GameState.Play;
     }
 
-    private void CreateUnitsFromLayout(FieldLayout layout)
+    public void CreateUnitsFromLayout(FieldLayout layout)
     {
         for (int i = 0; i < layout.GetUnitsCount(); i++)
         {
@@ -84,6 +92,11 @@ public abstract class GameController : MonoBehaviour
             Type type = Type.GetType(typeName);
             CreateUnitAndInitialize(squareCoords, team, type);
         }
+    }
+
+    public List<FieldLayout> getPlayerLayouts(PlayerTeam team, int rank)
+    {
+        return fieldLayoutManager.getPlayerLayouts(team, rank);
     }
 
     public void CreateUnitAndInitialize(Vector2Int squareCoords, PlayerTeam team, Type type)
@@ -123,6 +136,7 @@ public abstract class GameController : MonoBehaviour
     {
         field.DeselectUnit();
         UIManager.HideUnitDetails();
+        UIManager.HideUnitDetailsDisplay();
 
         activePlayer.OnTurnEnd();
 

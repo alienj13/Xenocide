@@ -185,7 +185,7 @@ public abstract class Field : MonoBehaviour
         squareSelector.ClearSelection();
 
         // In-game UI:
-        //gameController.HideUnitDetails();
+        gameController.HideUnitDetails();
     }
 
     public void OnSetSelectedUnit(Vector2Int coords)

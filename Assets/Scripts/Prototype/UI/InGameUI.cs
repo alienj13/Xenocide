@@ -23,6 +23,9 @@ public class InGameUI : MonoBehaviour
     [SerializeField] public Texture[] images;
     [SerializeField] public RawImage display;
 
+    [Header("GameObjects")]
+    [SerializeField] public GameObject unitBorder;
+
     public void UpdateUserDetails(string username, string rank)
     {
         this.username.SetText(username);
@@ -43,6 +46,10 @@ public class InGameUI : MonoBehaviour
             case "Curer_P2":
                 unitName.SetText("Curer");
                 break;
+            case "Queen_P1":
+            case "Queen_P2":
+                unitName.SetText("Queen");
+                break;
             default:
                 unitName.SetText(unit.GetType().ToString());
                 break;
@@ -51,6 +58,9 @@ public class InGameUI : MonoBehaviour
         unitHP.SetText("HP: " + unit.getHP().ToString());
         unitATK.SetText("ATK: " + unit.getATK().ToString());
         unitDEF.SetText("DEF: " + unit.getDEF().ToString());
+
+        unitBorder.gameObject.SetActive(true);
+        display.gameObject.SetActive(true);
 
         display.texture = images[0];
         if (unit is XDrone && unit.Team == PlayerTeam.P1)
@@ -93,6 +103,16 @@ public class InGameUI : MonoBehaviour
             vp.clip = vids[7];
             vp.Play();
         }
+        else if (unit is Queen_P1)
+        {
+            vp.clip = vids[8];
+            vp.Play();
+        }
+        else if (unit is Queen_P2)
+        {
+            vp.clip = vids[9];
+            vp.Play();
+        }
         else if (unit.Team == PlayerTeam.P1)
         {
             display.texture = images[1];
@@ -101,5 +121,16 @@ public class InGameUI : MonoBehaviour
         {
             display.texture = images[2];
         }
+    }
+
+    public void HideUnitDetails()
+    {
+        unitName.SetText("");
+        unitHP.SetText("");
+        unitATK.SetText("");
+        unitDEF.SetText("");
+
+        unitBorder.gameObject.SetActive(false);
+        display.gameObject.SetActive(false);
     }
 }

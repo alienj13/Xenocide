@@ -9,6 +9,7 @@ using System;
 public class MultiplayerGameController : GameController, IOnEventCallback
 {
     private const byte SET_GAME_STATE_EVENT_CODE = 1;
+    private const byte CREATE_UNITS_EVENT_CODE = 2;
 
     public XPlayer localPlayer;
     private NetworkManager networkManager;
@@ -36,10 +37,36 @@ public class MultiplayerGameController : GameController, IOnEventCallback
         PhotonNetwork.RaiseEvent(SET_GAME_STATE_EVENT_CODE, content, raiseEventOptions, SendOptions.SendReliable);
     }
 
+    public override void CreateUnitsBasedOnRank()
+    {
+        foreach (var player in PhotonNetwork.PlayerList)
+        {
+            PlayerTeam team = (((int) player.CustomProperties["team"] == 1) ? PlayerTeam.P1 : PlayerTeam.P2);
+            int rank = (int) player.CustomProperties["rank"];
+
+            List<FieldLayout> fieldLayouts = getPlayerLayouts(team, rank);
+            foreach (FieldLayout layout in fieldLayouts)
+                CreateUnitsFromLayout(layout);
+        }
+    }
+
+    private void CreateUnitsEvent()
+    {
+        RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
+        PhotonNetwork.RaiseEvent(CREATE_UNITS_EVENT_CODE, null, raiseEventOptions, SendOptions.SendReliable);
+    }
+
+
     public override void TryToStartCurrentGame()
     {
         if (networkManager.IsRoomFull())
+        {
+            //CreateUnitsBasedOnRank();
+            //activePlayer.OnTurnStart();
+
+            CreateUnitsEvent();
             SetGameState(GameState.Play);
+        }
     }
     public override bool CanPerformAction()
     {
@@ -67,6 +94,12 @@ public class MultiplayerGameController : GameController, IOnEventCallback
             GameState state = (GameState)data[0];
 
             this.state = state;
+        }
+        else if (eventCode == CREATE_UNITS_EVENT_CODE)
+        {
+            //Debug.Log("CREATE_UNITS_EVENT");
+            CreateUnitsBasedOnRank();
+            activePlayer.OnTurnStart();
         }
     }
 }
