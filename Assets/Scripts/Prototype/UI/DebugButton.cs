@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
 public class DebugButton : MonoBehaviour
@@ -31,26 +32,34 @@ public class DebugButton : MonoBehaviour
         //Debug.Log(field.transform.position);
 
         // Type of the selected unit
-        Unit selectedUnit = field.selectedUnit;
-        if (selectedUnit != null)
-        {
-            Debug.Log("Selected Unit = " + selectedUnit.GetType());
-        }
-        else
-            Debug.Log("Selected Unit = null");
+        //Unit selectedUnit = field.selectedUnit;
+        //if (selectedUnit != null)
+        //{
+        //    Debug.Log("Selected Unit = " + selectedUnit.GetType());
+        //}
+        //else
+        //    Debug.Log("Selected Unit = null");
+
+        // Animation test
+        //if (selectedUnit != null)
+        //{
+        //    ui.ShowAnimationScreen();
+        //    Unit test = new XDrone();
+        //    test.Team = (selectedUnit.Team == PlayerTeam.P1) ? PlayerTeam.P2 : PlayerTeam.P1;
+        //    ui.ShowExecutionAnimation(selectedUnit, test);
+        //}
 
         // User Account details
         //Debug.Log(UserAccountDetails.username);
         //Debug.Log(UserAccountDetails.userRank);
         //Debug.Log(UserAccountDetails.userEXP);
 
-        // Animation test
-        if (selectedUnit != null)
+        // Photon Network account
+        foreach (var player in PhotonNetwork.PlayerList)
         {
-            ui.ShowAnimationScreen();
-            Unit test = new XDrone();
-            test.Team = (selectedUnit.Team == PlayerTeam.P1) ? PlayerTeam.P2 : PlayerTeam.P1;
-            ui.ShowExecutionAnimation(selectedUnit, test);
+            Debug.Log(player.CustomProperties["team"]);
+            Debug.Log(player.CustomProperties["pname"]);
+            Debug.Log(player.CustomProperties["rank"]);
         }
     }
 }

@@ -3,15 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
+using System;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
     [SerializeField] private UIManager UIManager;
     [SerializeField] private GameInitializer gameInitializer;
+    //[SerializeField] private UserAccountDetails accountDetails;
     private MultiplayerGameController gameController;
 
+    // Legacy feature
     private const string LEVEL = "level";
+    // Player's team
     private const string TEAM = "team";
+    // Player's account details
+    private const string PNAME = "pname";
+    private const string RANK = "rank";
     private const int MAX_PLAYERS = 2;
 
     private PlayerLevel playerLevel;
@@ -36,7 +43,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsConnected)
         {
             // Debug:
-            Debug.LogError($"Connected to server. Looking for random room with level [ {playerLevel} ].");
+            //Debug.LogError($"Connected to server. Looking for random room with level [ {playerLevel} ].");
 
             PhotonNetwork.JoinRandomRoom(new ExitGames.Client.Photon.Hashtable() { { LEVEL, playerLevel } }, MAX_PLAYERS);
         }
@@ -94,6 +101,16 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public void SelectTeam(int intTeam)
     {
         PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable() { { TEAM, intTeam } });
+
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable() {
+            { PNAME, UserAccountDetails.username }
+        });
+        int intRank = Int32.Parse(UserAccountDetails.userRank);
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable() { 
+            { RANK, intRank } 
+        });
+
+
         gameInitializer.InitializeMultiplayerController();
         gameController.SetLocalPlayer((PlayerTeam)intTeam);
 

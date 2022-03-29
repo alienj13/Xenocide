@@ -9,8 +9,23 @@ public class SingleplayerGameController : GameController
         this.state = state;
     }
 
+    public override void CreateUnitsBasedOnRank()
+    {
+        // P1
+        List<FieldLayout> fieldLayouts_P1 = getPlayerLayouts(PlayerTeam.P1, 5);
+        foreach (FieldLayout layout in fieldLayouts_P1)
+            CreateUnitsFromLayout(layout);
+        // P2
+        List<FieldLayout> fieldLayouts_P2 = getPlayerLayouts(PlayerTeam.P2, 3);
+        foreach (FieldLayout layout in fieldLayouts_P2)
+            CreateUnitsFromLayout(layout);
+    }
+
     public override void TryToStartCurrentGame()
     {
+        CreateUnitsBasedOnRank();
+        activePlayer.OnTurnStart();
+
         SetGameState(GameState.Play);
         SetCameraActive(true);
         UpdateCameraOnTeamChange(activePlayer);
