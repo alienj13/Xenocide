@@ -8,19 +8,19 @@ public class SignUp : MonoBehaviour
     public static SignUp Instance { set; get; }
     
     private void Awake() {
-         
         Instance = this;
     }
 
     public string Result;
+
     public IEnumerator CreateAccount(string user, string email, string password) {
         
-        WWWForm form = new WWWForm();     //all three post forms
+        WWWForm form = new WWWForm();    //all three post forms
         form.AddField("username", user);
         form.AddField("email", email);
         form.AddField("password", password);
 
-        using (UnityWebRequest www = UnityWebRequest.Post("https://xenoregistertest.000webhostapp.com/Register.php", form)) {  //location of php files 
+        using (UnityWebRequest www = UnityWebRequest.Post("https://xenocidex.herokuapp.com/Register.php", form)) {  //location of php files 
             yield return www.SendWebRequest();
 
             if (www.result == UnityWebRequest.Result.ProtocolError || www.result == UnityWebRequest.Result.ConnectionError) {
@@ -31,17 +31,39 @@ public class SignUp : MonoBehaviour
 
                 Result = www.downloadHandler.text;       //php echos are saved in "www.downloadHandler.text"
                 if (Result.Equals("1")) {
-                    UI.Instance.NotificationText.text = "New Account created";  // if php echos 1
+                    UI.Instance.NotificationText.text = "New account created, you can now log in";  // if php echos 1
                     UI.Instance.Notification.SetActive(true);
-                    Debug.Log("New Account created");
+                    Debug.Log("New Account created, you can now log in");
                 }
 
                 else if (Result.Equals("2")) {
-                    UI.Instance.NotificationText.text = "Account already exists";  //if php echos 2
+                    UI.Instance.NotificationText.text = "Account already exists for this email";  //if php echos 2
                     UI.Instance.Notification.SetActive(true);
-                    Debug.Log("Account already exists");
+                    Debug.Log("Account already exists for this email");
 
                 }
+
+                else if (Result.Equals("3")) {
+                    UI.Instance.NotificationText.text = "Username is already taken";  //if php echos 3
+                    UI.Instance.Notification.SetActive(true);
+                    Debug.Log("Username is already taken");
+
+                }
+                
+                else if (Result.Equals("4")) {
+                    UI.Instance.NotificationText.text = "Password must be at least 8 characters long";  //if php echos 4
+                    UI.Instance.Notification.SetActive(true);
+                    Debug.Log("Password must be at least 8 characters long");
+
+                }
+
+               else if (Result.Equals("5")) {
+                    UI.Instance.NotificationText.text = "Provide a valid email address";  //if php echos 5
+                    UI.Instance.Notification.SetActive(true);
+                    Debug.Log("Provide a valid email address");
+
+                }
+
                 else {
                     Debug.Log(www.downloadHandler.text);                
                 }
@@ -56,7 +78,7 @@ public class SignUp : MonoBehaviour
         WWWForm form = new WWWForm();
         form.AddField("username", user);    
         form.AddField("password", password);
-        using (UnityWebRequest www = UnityWebRequest.Post("https://xenoregistertest.000webhostapp.com/Login.php", form)) {
+        using (UnityWebRequest www = UnityWebRequest.Post("https://xenocidex.herokuapp.com/Login.php", form)) {
             yield return www.SendWebRequest();
  
             if (www.result == UnityWebRequest.Result.ProtocolError || www.result == UnityWebRequest.Result.ConnectionError) {
@@ -76,9 +98,9 @@ public class SignUp : MonoBehaviour
 
                 }
                 else if (Result.Equals("2")) {
-                    UI.Instance.NotificationText.text = "incorrect password";
+                    UI.Instance.NotificationText.text = "Incorrect password";
                     UI.Instance.Notification.SetActive(true);
-                    Debug.Log("incorrect password");
+                    Debug.Log("Incorrect password");
                    
                 }
                 else if (Result.Equals("3")) {
@@ -96,7 +118,7 @@ public class SignUp : MonoBehaviour
         WWWForm form = new WWWForm();
         form.AddField("username", user);
 
-        using (UnityWebRequest www = UnityWebRequest.Post("https://xenoregistertest.000webhostapp.com/RetrieveRank.php", form)) {
+        using (UnityWebRequest www = UnityWebRequest.Post("https://xenocidex.herokuapp.com/RetrieveRank.php", form)) {
             yield return www.SendWebRequest();
 
             if (www.result == UnityWebRequest.Result.ProtocolError || www.result == UnityWebRequest.Result.ConnectionError) {
@@ -118,7 +140,7 @@ public class SignUp : MonoBehaviour
         WWWForm form = new WWWForm();
         form.AddField("username", user);
 
-        using (UnityWebRequest www = UnityWebRequest.Post("https://xenoregistertest.000webhostapp.com/RetrieveExperience.php", form)) {
+        using (UnityWebRequest www = UnityWebRequest.Post("https://xenocidex.herokuapp.com/RetrieveExperience.php", form)) {
             yield return www.SendWebRequest();
 
             if (www.result == UnityWebRequest.Result.ProtocolError || www.result == UnityWebRequest.Result.ConnectionError) {

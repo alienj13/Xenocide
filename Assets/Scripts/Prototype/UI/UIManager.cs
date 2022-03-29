@@ -254,7 +254,7 @@ public class UIManager : MonoBehaviour
         WWWForm form = new WWWForm();
         form.AddField("username", user);
 
-        using (UnityWebRequest www = UnityWebRequest.Post("https://xenoregistertest.000webhostapp.com/RetrieveExperience.php", form))
+        using (UnityWebRequest www = UnityWebRequest.Post("https://xenocidex.herokuapp.com/RetrieveExperience.php", form))
         {
             yield return www.SendWebRequest();
 
@@ -286,7 +286,7 @@ public class UIManager : MonoBehaviour
         WWWForm form = new WWWForm();
         form.AddField("username", user);
 
-        using (UnityWebRequest www = UnityWebRequest.Post("https://xenoregistertest.000webhostapp.com/UpdateRank.php", form))
+        using (UnityWebRequest www = UnityWebRequest.Post("https://xenocidex.herokuapp.com/UpdateRank.php", form))
         {
             yield return www.SendWebRequest();
 
@@ -306,7 +306,7 @@ public class UIManager : MonoBehaviour
         WWWForm form = new WWWForm();
         form.AddField("username", user);
 
-        using (UnityWebRequest www = UnityWebRequest.Post("https://xenoregistertest.000webhostapp.com/UpdateExperience.php", form))
+        using (UnityWebRequest www = UnityWebRequest.Post("https://xenocidex.herokuapp.com/UpdateExperience.php", form))
         {
             yield return www.SendWebRequest();
 
