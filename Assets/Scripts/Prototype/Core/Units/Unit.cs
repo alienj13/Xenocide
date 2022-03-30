@@ -223,6 +223,7 @@ public abstract class Unit : MonoBehaviour
         // Debug:
         Debug.Log("[!] " + this + " has died.");
 
+        Field.ShowExecutionAnimation(source, this);
         Field.RemoveUnit(this);
     }
     
@@ -360,22 +361,22 @@ public abstract class Unit : MonoBehaviour
 
         // Reduce HP by damage amount
         HP -= dmg;
-        if (healthbar)
-            healthbar.setHealth(HP);
-        if (healthbarC)
-            healthbarC.setHealthC(HP);
-        if (healthbarQ)
-            healthbarQ.setHealthQ(HP);
 
         // Debug:
         Debug.Log("[-] " + this + " has been damaged, HP before gate: " + this.HP);
 
-        // Animation:
-        DamageAnimation();
-
         // Gate HP to be min 0
         if (this.HP < 0)
             HP = 0;
+
+        // HP bar update
+        if (healthbar)
+            healthbar.setHealth(HP);
+        else if (healthbarC)
+            healthbarC.setHealthC(HP);
+        else if (healthbarQ)
+            healthbarQ.setHealthQ(HP);
+
         // If not alive, then die.
         if (!IsAlive())
             Die(source);
@@ -398,7 +399,13 @@ public abstract class Unit : MonoBehaviour
         if (this.HP >= maxHP)
             HP = maxHP;
 
-        //
+        // HP bar update
+        if (healthbar)
+            healthbar.setHealth(HP);
+        else if (healthbarC)
+            healthbarC.setHealthC(HP);
+        else if (healthbarQ)
+            healthbarQ.setHealthQ(HP);
     }
 
     protected void ClearAttacks()
@@ -455,21 +462,6 @@ public abstract class Unit : MonoBehaviour
             }
         }
         return null;
-    }
-
-    public void DamageAnimation()
-    {
-        // TODO: Fix this
-        //Material damageMaterial = Resources.Load("Materials/Prototype/Damage material", typeof(Material)) as Material;
-        
-        //Material unitMaterial = GetComponent<Material>();
-        //if (this.Team == PlayerTeam.P1)
-        //    unitMaterial = Resources.Load("Materials/Prototype/Player 1", typeof(Material)) as Material;
-        //else if (this.Team == PlayerTeam.P2)
-        //    unitMaterial = Resources.Load("Materials/Prototype/Player 2", typeof(Material)) as Material;
-
-        //SetMaterial(damageMaterial);
-        //SetMaterial(unitMaterial);
     }
 
     // Temporary solution:
