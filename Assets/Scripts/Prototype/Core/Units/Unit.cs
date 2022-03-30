@@ -36,6 +36,8 @@ public abstract class Unit : MonoBehaviour
     [Header("HealthBar")]
     //connects the healthbar script to the units
     public HealthBarScript healthbar;
+    public HealthBarScriptCurer healthbarC;
+    public HealthBarScriptQueen healthbarQ;
 
     // Important properties
     private int id = 0;
@@ -87,6 +89,10 @@ public abstract class Unit : MonoBehaviour
         HP = maxHP;
         if (healthbar)
             healthbar.setMaxHealth(maxHP);
+        if (healthbarC)
+            healthbarC.setMaxHealthC(maxHP);
+        if (healthbarQ)
+            healthbarQ.setMaxHealthQ(maxHP);
     }
 
     private void Update()
@@ -349,6 +355,10 @@ public abstract class Unit : MonoBehaviour
         HP -= dmg;
         if (healthbar)
             healthbar.setHealth(HP);
+        if (healthbarC)
+            healthbarC.setHealthC(HP);
+        if (healthbarQ)
+            healthbarQ.setHealthQ(HP);
 
         // Debug:
         Debug.Log("[-] " + this + " has been damaged, HP before gate: " + this.HP);
