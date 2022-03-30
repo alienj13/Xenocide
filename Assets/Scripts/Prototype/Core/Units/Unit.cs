@@ -341,7 +341,14 @@ public abstract class Unit : MonoBehaviour
 
         // Damage the enemy
         enemy.Damage(dmg, this);
+
+        enemy.PlayDamageSound();
         return true;
+    }
+
+    protected virtual void PlayDamageSound()
+    {
+        SoundEffects.Instance.PlayHit();
     }
 
     public virtual void Damage(int dmg, Unit source)
@@ -372,7 +379,6 @@ public abstract class Unit : MonoBehaviour
         // If not alive, then die.
         if (!IsAlive())
             Die(source);
-        SoundEffects.Instance.PlayHit();
     }
 
     public virtual void Heal(int hpr, Unit source)

@@ -17,7 +17,7 @@ public class FieldInputHandler : MonoBehaviour, IInputHandler
         //Debug.Log("FIH, input Position: " + inputPosition);
         var mousePosition = Input.mousePosition;
         //Debug.Log("FIH, mouse Position: " + mousePosition);
-        //if (mousePosition.x <= (Screen.width * 0.75f))
+        if (mousePosition.x <= (Screen.width * 0.75f))
             field.OnSquareSelected(inputPosition);
     }
 }

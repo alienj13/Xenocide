@@ -18,4 +18,9 @@ public abstract class Destroyer : Unit
         AddAttacks(PatternGen.SquareAttack(this, attackRange));
         return availableAttacks;
     }
+    
+    protected override void PlayDamageSound()
+    {
+        SoundEffects.Instance.PlayDestroyerHit();
+    }
 }

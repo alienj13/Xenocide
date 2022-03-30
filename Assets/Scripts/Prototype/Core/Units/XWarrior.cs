@@ -18,5 +18,10 @@ public class XWarrior : Unit
         AddAttacks(PatternGen.CrossAttack(this, attackRange));
         return availableAttacks;
     }
+    
+    protected override void PlayDamageSound()
+    {
+        SoundEffects.Instance.PlayWarriorHit();
+    }
 
 }
