@@ -54,7 +54,7 @@ public class CameraController : MonoBehaviour
                     c.transform.Translate(0, 0, speed * Time.deltaTime, Space.World);
             }
             // Up and down (scroll up & down
-            if (Input.GetAxis("Mouse ScrollWheel") > 0f)
+            if (Input.GetAxis("Mouse ScrollWheel") > 0f && c.transform.position.y > 4f)
                 c.transform.Translate(new Vector3(0, 0, speed * Time.deltaTime * 5));
 
             if (Input.GetAxis("Mouse ScrollWheel") < 0f)
