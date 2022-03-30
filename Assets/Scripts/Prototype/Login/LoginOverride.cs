@@ -10,6 +10,10 @@ public class LoginOverride : MonoBehaviour
 
     private UI loginUI;
 
+    [Header("Scenes")]
+    [SerializeField] GameObject frontMenu;
+    [SerializeField] GameObject howToPlayMenu;
+
     private void Awake()
     {
         loginUI = GetComponent<UI>();
@@ -33,5 +37,18 @@ public class LoginOverride : MonoBehaviour
         UserAccountDetails.userExist = false;
 
         SceneManager.LoadScene(Scenes.PrototypeX.ToString());
+    }
+
+    // [] Temporary solution
+    public void GoToHowToPlay()
+    {
+        frontMenu.SetActive(false);
+        howToPlayMenu.SetActive(true);
+    }
+
+    public void GoToFront()
+    {
+        frontMenu.SetActive(true);
+        howToPlayMenu.SetActive(false);
     }
 }
