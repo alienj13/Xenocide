@@ -30,11 +30,32 @@ public class AnimationUI : MonoBehaviour
         // Drone -> Drone
         if (attacker is XDrone && defender is XDrone)
         {
-            // Black -> Red
-            if (attacker.Team == PlayerTeam.P2 && defender.Team == PlayerTeam.P1)
-                vp.clip = vids[0];
+            // Red -> Black
             if (attacker.Team == PlayerTeam.P1 && defender.Team == PlayerTeam.P2)
+                vp.clip = vids[0];
+            // Black -> Red
+            else if (attacker.Team == PlayerTeam.P2 && defender.Team == PlayerTeam.P1)
                 vp.clip = vids[1];
+        }
+        // Destroyer -> Drone
+        else if (attacker is Destroyer && defender is XDrone)
+        {
+            // Red -> Black
+            if (attacker.Team == PlayerTeam.P1 && defender.Team == PlayerTeam.P2)
+                vp.clip = vids[2];
+            // Black -> Red
+            else if (attacker.Team == PlayerTeam.P2 && defender.Team == PlayerTeam.P1)
+                vp.clip = vids[3];
+        }
+        // Drone -> Curer
+        else if (attacker is XDrone && defender is Curer)
+        {
+            // Red -> Black
+            if (attacker.Team == PlayerTeam.P1 && defender.Team == PlayerTeam.P2)
+                vp.clip = vids[4];
+            // Black -> Red
+            else if (attacker.Team == PlayerTeam.P2 && defender.Team == PlayerTeam.P1)
+                vp.clip = vids[5];
         }
 
         // Final check
