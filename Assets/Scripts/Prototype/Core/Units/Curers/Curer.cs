@@ -38,4 +38,26 @@ public abstract class Curer : Unit
         }
         return false;
     }
+
+    // [] Temporary solution
+    public override void MoveUnit(Vector2Int coords)
+    {
+        Vector3 offset;
+        if (Team == PlayerTeam.P1)
+            offset = new Vector3(1f, -2.3f, 2.5f);
+        else
+            offset = new Vector3(-1f, -2.3f, -2.5f);
+        Vector3 targetPosition = Field.CalculatePositionFromCoords(coords) + offset;
+        
+
+        // [] Temporary solution
+        targetPosition.y = transform.position.y;
+
+        OccupiedSquare = coords;
+        HasMoved = true;
+
+        tweener.MoveTo(transform, targetPosition);
+
+        SoundEffects.Instance.PlayMovement();
+    }
 }

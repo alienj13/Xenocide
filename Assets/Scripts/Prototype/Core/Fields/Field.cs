@@ -12,13 +12,13 @@ public abstract class Field : MonoBehaviour
     public const int FIELD_SIZE = 21;
 
     [Header("Dependencies")]
-    [SerializeField] private Transform bottomLeftCornerTransform;
+    [SerializeField] public Transform bottomLeftCornerTransform;
     [SerializeField] private Transform bottomRightCornerTransform;
     protected GameController gameController;
     private SquareSelectorCreator squareSelector;
 
     [Header("Property (read-only)")]
-    [SerializeField] private float squareSize;
+    [SerializeField] public float squareSize;
     
     // Grid and selected unit
     private Unit[,] grid;

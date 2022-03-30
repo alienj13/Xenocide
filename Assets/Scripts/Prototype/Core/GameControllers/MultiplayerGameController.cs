@@ -102,4 +102,14 @@ public class MultiplayerGameController : GameController, IOnEventCallback
             activePlayer.OnTurnStart();
         }
     }
+
+    private void Update()
+    {
+        // Space for end-turn
+        if (localPlayer == activePlayer)
+        {
+            if (Input.GetKeyUp(KeyCode.Space))
+                field.EndTurn();
+        }
+    }
 }

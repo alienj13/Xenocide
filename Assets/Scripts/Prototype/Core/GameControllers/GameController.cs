@@ -8,7 +8,7 @@ public abstract class GameController : MonoBehaviour
 {
     [SerializeField] private FieldLayout startingFieldLayout;
     [SerializeField] private FieldLayoutManager fieldLayoutManager;
-    private Field field;
+    protected Field field;
     private UIManager UIManager;
     private CameraController cameraController;
     public UnitCreator unitCreator;
@@ -49,6 +49,9 @@ public abstract class GameController : MonoBehaviour
         SetGameState(GameState.Init);
 
         UIManager.OnGameStarted();
+
+        // Create gridlines
+        CreateGridlines();
 
         // Moved creating units to TryToStartCurrentGame()
         //CreateUnitsFromLayout(startingFieldLayout);
@@ -112,6 +115,35 @@ public abstract class GameController : MonoBehaviour
 
         XPlayer currentPlayer = (team == PlayerTeam.P1) ? player1 : player2;
         currentPlayer.AddUnit(newUnit);
+    }
+
+    public void CreateGridlines()
+    {
+        Vector3 fieldPos = field.gameObject.transform.position;
+        //Vector3 fieldPosX = new Vector3(fieldPos.x - field.transform.localScale.x * 0.5f, fieldPos.y, fieldPos.z);
+        //Vector3 fieldPosZ = new Vector3(fieldPos.x, fieldPos.y, fieldPos.z - field.transform.localScale.z * 0.5f);
+        Vector3 blc = field.bottomLeftCornerTransform.position;
+        float squareSize = field.squareSize;
+        Vector3 fieldPosX = new Vector3(
+            blc.x, -0.5f, (blc.z + field.transform.localScale.z * 0.5f - squareSize));
+        Vector3 fieldPosZ = new Vector3(
+            (blc.x + field.transform.localScale.x * 0.5f - squareSize), -0.5f, blc.z);
+        
+        // Vertical gridlines
+        for (int i = 0; i <= 21; i++)
+        {
+            GameObject gridline = unitCreator.CreateGridline(0);
+            gridline.transform.position = new Vector3(
+                fieldPosX.x + squareSize * i, fieldPosX.y, fieldPosX.z);
+        }
+        // Horizontal gridlines
+        for (int i = 0; i <= 21; i++)
+        {
+            GameObject gridline = unitCreator.CreateGridline(1);
+            gridline.transform.position = new Vector3(
+                fieldPosZ.x, fieldPosZ.y, fieldPosZ.z + squareSize * i);
+        }
+
     }
 
     public bool IsTeamTurnActive(PlayerTeam team)

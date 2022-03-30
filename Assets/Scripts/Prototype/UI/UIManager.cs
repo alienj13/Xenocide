@@ -44,7 +44,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button turnEndButton;
     [SerializeField] private TextMeshProUGUI currentTurnText;
     // Switch this bool for debugButton!
-    private bool debugMode = true;
+    private bool debugMode = false;
 
     private void Awake()
     {

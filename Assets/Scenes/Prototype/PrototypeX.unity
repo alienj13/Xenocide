@@ -1178,6 +1178,9 @@ MonoBehaviour:
   - {fileID: 6420430407625831689, guid: 72f99976a85f3ce4da2b0c0b3c1105ec, type: 3}
   player1Material: {fileID: 2100000, guid: e33fefd43a475c449bd3d2f57b6edf99, type: 2}
   player2Material: {fileID: 2100000, guid: 477bfeba355dec9498700517d6c04fb3, type: 2}
+  fieldPrefabs:
+  - {fileID: 16063367570347532, guid: 0b3fbe593bc5d1e41b2e6bb1044d9c3c, type: 3}
+  - {fileID: 3965112366600335132, guid: c51d02e3e0205ba44bce8fb7ddaebeec, type: 3}
 --- !u!1 &282499399
 GameObject:
   m_ObjectHideFlags: 0

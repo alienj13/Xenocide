@@ -44,4 +44,11 @@ public class SingleplayerGameController : GameController
         //DelayGameOnTeamChange();
         UpdateCameraOnTeamChange(activePlayer);
     }
+
+    public void Update()
+    {
+        // Space for end-turn
+        if (Input.GetKeyUp(KeyCode.Space))
+            EndTurn();
+    }
 }

@@ -5,9 +5,14 @@ using UnityEngine;
 
 public class UnitCreator : MonoBehaviour
 {
+    [Header("Units")]
     [SerializeField] private GameObject[] unitPrefabs;
     [SerializeField] private Material player1Material;
     [SerializeField] private Material player2Material;
+
+    [Header("Field")]
+    [SerializeField] private GameObject[] fieldPrefabs;
+
 
     private Dictionary<string, GameObject> nameToUnitDict = new Dictionary<string, GameObject>();
 
@@ -40,5 +45,9 @@ public class UnitCreator : MonoBehaviour
             return null;
     }
 
-
+    public GameObject CreateGridline(int a)
+    {
+        GameObject gridline = Instantiate(fieldPrefabs[a]);
+        return gridline;
+    }
 }
