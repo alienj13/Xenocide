@@ -51,4 +51,9 @@ public class LoginOverride : MonoBehaviour
         frontMenu.SetActive(true);
         howToPlayMenu.SetActive(false);
     }
+
+    public void OpenRegisterPage()
+    {
+        Application.OpenURL("https://xenocide.me/register");
+    }
 }
