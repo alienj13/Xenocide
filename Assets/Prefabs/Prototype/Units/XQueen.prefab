@@ -220,6 +220,8 @@ MonoBehaviour:
   DEF: 0
   FXHit: {fileID: 9206383620626935351, guid: 94b06e2d1791aa347a9d73c9111ccdde, type: 3}
   healthbar: {fileID: 403439529808686378}
+  healthbarC: {fileID: 0}
+  healthbarQ: {fileID: 0}
 --- !u!114 &1209355259812080988
 MonoBehaviour:
   m_ObjectHideFlags: 0
