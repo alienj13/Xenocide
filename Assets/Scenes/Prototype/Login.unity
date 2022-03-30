@@ -3216,9 +3216,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6736938445920484706}
-        m_TargetAssemblyTypeName: UI, Assembly-CSharp
-        m_MethodName: 
+      - m_Target: {fileID: 6736938445920484712}
+        m_TargetAssemblyTypeName: LoginOverride, Assembly-CSharp
+        m_MethodName: OpenRegisterPage
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
