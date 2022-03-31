@@ -2,4 +2,6 @@
  
 A game for CS2TP module of Aston University. Made by team 5.
 
-Copyrighted 2021-2022.
+Link to site: https://xenocide.me/
+
+Copyrighted Team 5:tm:, 2021-2022.

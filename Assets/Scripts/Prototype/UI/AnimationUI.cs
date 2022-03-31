@@ -67,6 +67,15 @@ public class AnimationUI : MonoBehaviour
             else if (attacker.Team == PlayerTeam.P2 && defender.Team == PlayerTeam.P1)
                 vp.clip = vids[7];
         }
+        else if (attacker is Curer && defender is XWarrior)
+        {
+            // Red -> Black
+            if (attacker.Team == PlayerTeam.P1 && defender.Team == PlayerTeam.P2)
+                vp.clip = vids[8];
+            // Black -> Red
+            else if (attacker.Team == PlayerTeam.P2 && defender.Team == PlayerTeam.P1)
+                vp.clip = vids[9];
+        }
 
         // Final check
         if (vp.clip != null)
