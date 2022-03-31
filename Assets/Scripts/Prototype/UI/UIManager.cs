@@ -35,6 +35,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject gameUIScreen;
     [SerializeField] private GameObject inGameUIScreen;
     [SerializeField] private GameObject animationScreen;
+    [SerializeField] private GameObject waitingPlayerScreen;
 
     [Header("Other UI")]
     [SerializeField] private TMP_Dropdown gameLevelSelection;
@@ -128,6 +129,7 @@ public class UIManager : MonoBehaviour
         teamSelectionScreen.SetActive(false);
         gameoverScreen.SetActive(false);
         gameUIScreen.SetActive(false);
+        waitingPlayerScreen.SetActive(false);
     }
 
     public void SetConnectionStatus(string statusText)
@@ -201,6 +203,19 @@ public class UIManager : MonoBehaviour
     {
         SceneManager.LoadScene(Scenes.Login.ToString());
     }
+
+    // Waiting opponent screen
+    #region Waiting
+    public void ShowWaitingScreen()
+    {
+        waitingPlayerScreen.SetActive(true);
+    }
+
+    public void HideWaitingScreen()
+    {
+        waitingPlayerScreen.SetActive(false);
+    }
+    #endregion
 
     // In-game UI
     #region In-game UI

@@ -9,7 +9,7 @@ public abstract class GameController : MonoBehaviour
     [SerializeField] private FieldLayout startingFieldLayout;
     [SerializeField] private FieldLayoutManager fieldLayoutManager;
     protected Field field;
-    private UIManager UIManager;
+    public UIManager UIManager;
     private CameraController cameraController;
     public UnitCreator unitCreator;
 

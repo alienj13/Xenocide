@@ -67,6 +67,10 @@ public class MultiplayerGameController : GameController, IOnEventCallback
             CreateUnitsEvent();
             SetGameState(GameState.Play);
         }
+        else
+        {
+            UIManager.ShowWaitingScreen();
+        }
     }
     public override bool CanPerformAction()
     {
@@ -97,6 +101,9 @@ public class MultiplayerGameController : GameController, IOnEventCallback
         }
         else if (eventCode == CREATE_UNITS_EVENT_CODE)
         {
+            // UI:
+            UIManager.HideWaitingScreen();
+
             //Debug.Log("CREATE_UNITS_EVENT");
             CreateUnitsBasedOnRank();
             activePlayer.OnTurnStart();
